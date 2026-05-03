@@ -1,0 +1,2010 @@
+<!doctype html>
+<html lang="fr-CA">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>Clinique du Bâtiment — Rénovation résidentielle & travaux après-sinistre · Québec</title>
+<meta name="description" content="Clinique du Bâtiment CDB Inc. — Rénovation résidentielle et reconstruction après-sinistre au Québec. Licence RBQ 5821-2606-01. Montréal · Laval · Longueuil." />
+<meta name="theme-color" content="#1a1612" />
+<meta property="og:title" content="Clinique du Bâtiment — Rénovation résidentielle & après-sinistre" />
+<meta property="og:description" content="Une seule équipe pour diagnostiquer, démolir, reconstruire. Travaux conformes aux bonnes pratiques du bâtiment au Québec." />
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="fr_CA" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700;9..144,800;9..144,900&family=JetBrains+Mono:wght@300;400;500;600&family=Inter+Tight:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --paper:#f3eee5;
+  --paper-2:#ece5d8;
+  --ink:#1a1612;
+  --ink-2:#2a241d;
+  --ink-soft:#3d352b;
+  --rule:#2a241d;
+  --muted:#6e6457;
+  --accent:#d2491b;        /* burnt sienna / safety orange */
+  --accent-2:#a8381a;
+  --steel:#7d7468;
+  --concrete:#bfb6a5;
+  --hi:#fff8e8;
+  --grid: 12;
+  --gutter: clamp(14px, 1.6vw, 28px);
+  --pad: clamp(20px, 4vw, 56px);
+  --maxw: 1480px;
+  --r: 0px;
+  --ease:cubic-bezier(.2,.7,.15,1);
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--paper);color:var(--ink);}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter Tight', system-ui, sans-serif;
+  font-feature-settings:"ss01","ss02","cv11";
+  font-size:17px;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+  overflow-x:hidden;
+}
+
+img,svg,video{max-width:100%;display:block}
+button{font:inherit;cursor:pointer;background:none;border:0;color:inherit;padding:0}
+a{color:inherit;text-decoration:none}
+
+.serif{font-family:'Fraunces', 'Times New Roman', serif; font-variation-settings:"opsz" 144,"SOFT" 30,"WONK" 1; letter-spacing:-0.02em}
+.mono{font-family:'JetBrains Mono', ui-monospace, monospace; font-feature-settings:"ss02"; letter-spacing:0}
+.eyebrow{font-family:'JetBrains Mono', monospace; font-size:11px; text-transform:uppercase; letter-spacing:0.18em; color:var(--ink); font-weight:500}
+
+/* ------- Paper texture overlay ------- */
+body::before{
+  content:"";
+  position:fixed;inset:0;
+  pointer-events:none;
+  z-index:1;
+  mix-blend-mode:multiply;
+  opacity:.45;
+  background-image:
+    radial-gradient(circle at 20% 30%, rgba(60,40,20,.06) 0, transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(60,40,20,.05) 0, transparent 40%);
+}
+body::after{
+  content:"";
+  position:fixed;inset:0;
+  pointer-events:none;
+  z-index:2;
+  opacity:.06;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.5 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+/* ------- Layout ------- */
+.wrap{max-width:var(--maxw);margin:0 auto;padding-left:var(--pad);padding-right:var(--pad);position:relative;z-index:3}
+.rule{height:1px;background:var(--ink);opacity:.85;width:100%}
+.rule.thin{opacity:.18}
+.section{padding:clamp(60px,8vw,140px) 0;position:relative;z-index:3}
+
+/* ------- Top utility bar ------- */
+.utility{
+  background:var(--ink);color:var(--paper);
+  font-family:'JetBrains Mono', monospace;
+  font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+  position:relative;z-index:50;
+}
+.utility-inner{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:10px var(--pad);}
+.utility-inner span{display:inline-flex;align-items:center;gap:10px}
+.utility .dot{width:6px;height:6px;border-radius:50%;background:#39d27a;box-shadow:0 0 0 0 rgba(57,210,122,.6);animation:pulse 2.4s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(57,210,122,.6)}70%{box-shadow:0 0 0 8px rgba(57,210,122,0)}100%{box-shadow:0 0 0 0 rgba(57,210,122,0)}}
+.utility .sep{opacity:.4}
+.utility a:hover{color:var(--accent)}
+.utility .right{display:flex;gap:18px;align-items:center}
+@media(max-width:780px){.utility .hide-sm{display:none}}
+
+/* ------- NAV ------- */
+.nav{
+  position:sticky;top:0;z-index:40;
+  background:var(--paper);
+  border-bottom:1px solid var(--ink);
+  backdrop-filter:saturate(140%) blur(6px);
+}
+.nav-inner{
+  display:grid;
+  grid-template-columns:auto 1fr auto;
+  align-items:center;
+  gap:32px;
+  padding:18px var(--pad);
+}
+.brand{display:flex;align-items:center;gap:14px;text-decoration:none;color:var(--ink)}
+.brand-mark{
+  width:46px;height:46px;border:1.5px solid var(--ink);
+  display:grid;place-items:center;
+  font-family:'Fraunces',serif;font-weight:700;font-size:22px;
+  position:relative;
+  background:var(--ink);color:var(--paper);
+}
+.brand-mark::after{
+  content:"";position:absolute;inset:-5px;border:1px solid var(--ink);pointer-events:none;
+}
+.brand-text{display:flex;flex-direction:column;line-height:1}
+.brand-text .l1{font-family:'Fraunces',serif;font-size:18px;font-weight:600;letter-spacing:-.02em}
+.brand-text .l2{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;margin-top:4px;color:var(--muted)}
+
+.menu{display:flex;gap:28px;justify-content:center;align-items:center;flex-wrap:wrap}
+.menu a{font-size:14px;font-weight:500;position:relative;padding:6px 0;transition:color .25s}
+.menu a::before{content:"";position:absolute;bottom:0;left:0;height:1px;width:0;background:var(--accent);transition:width .35s var(--ease)}
+.menu a:hover{color:var(--accent)}
+.menu a:hover::before{width:100%}
+
+.nav-cta{display:flex;gap:10px;align-items:center}
+.btn{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:13px 18px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;font-weight:500;
+  border:1px solid var(--ink);
+  background:var(--paper);
+  color:var(--ink);
+  transition:all .25s var(--ease);
+  position:relative;overflow:hidden;
+}
+.btn:hover{background:var(--ink);color:var(--paper)}
+.btn .arr{transition:transform .3s var(--ease)}
+.btn:hover .arr{transform:translateX(4px)}
+.btn--solid{background:var(--ink);color:var(--paper)}
+.btn--solid:hover{background:var(--accent);border-color:var(--accent)}
+.btn--accent{background:var(--accent);color:var(--paper);border-color:var(--accent)}
+.btn--accent:hover{background:var(--ink);border-color:var(--ink)}
+.btn--ghost{background:transparent}
+.btn--lg{padding:18px 24px;font-size:12px}
+
+.burger{display:none;width:44px;height:44px;border:1px solid var(--ink);place-items:center}
+.burger span{width:18px;height:1.5px;background:var(--ink);position:relative}
+.burger span::before,.burger span::after{content:"";position:absolute;left:0;width:18px;height:1.5px;background:var(--ink)}
+.burger span::before{top:-6px}.burger span::after{top:6px}
+
+@media(max-width:980px){
+  .menu{display:none}
+  .nav-cta .btn:not(.btn--accent){display:none}
+  .burger{display:grid}
+}
+
+/* ------- HERO ------- */
+.hero{
+  position:relative;
+  padding-top:clamp(40px,6vw,90px);
+  padding-bottom:0;
+  overflow:hidden;
+}
+.hero-grid{
+  display:grid;
+  grid-template-columns:1.1fr .9fr;
+  gap:clamp(24px, 4vw, 64px);
+  align-items:end;
+}
+@media(max-width:980px){.hero-grid{grid-template-columns:1fr}}
+
+.hero-meta{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:48px;flex-wrap:wrap;gap:16px;
+}
+.hero-meta .tag{display:inline-flex;align-items:center;gap:10px}
+.hero-meta .tag::before{content:"";width:14px;height:1px;background:var(--ink)}
+
+.hero h1{
+  font-family:'Fraunces',serif;
+  font-variation-settings:"opsz" 144,"SOFT" 50,"WONK" 1;
+  font-weight:400;
+  font-size:clamp(56px, 9.5vw, 168px);
+  line-height:.86;
+  letter-spacing:-0.045em;
+  margin:0 0 32px;
+  color:var(--ink);
+}
+.hero h1 em{
+  font-style:italic;
+  font-weight:300;
+  color:var(--accent);
+  font-variation-settings:"opsz" 144,"SOFT" 100,"WONK" 1;
+}
+.hero h1 .sm{font-size:.55em;display:inline-block;vertical-align:0.18em;font-weight:500;letter-spacing:-.03em}
+
+.hero .lede{
+  font-size:clamp(16px,1.25vw,19px);
+  line-height:1.55;
+  max-width:42ch;
+  color:var(--ink-soft);
+  margin:0 0 36px;
+}
+.hero .lede strong{color:var(--ink);font-weight:600}
+
+.hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:48px}
+
+.hero-stats{
+  border-top:1px solid var(--ink);
+  display:grid;grid-template-columns:repeat(3,1fr);
+  margin-top:0;
+}
+.hero-stats .stat{padding:22px 18px 22px 0;border-right:1px solid var(--ink)}
+.hero-stats .stat:last-child{border-right:0;padding-right:0}
+.hero-stats .num{font-family:'Fraunces',serif;font-size:clamp(34px,4vw,52px);font-weight:500;letter-spacing:-.04em;line-height:1;color:var(--ink)}
+.hero-stats .num em{font-style:italic;color:var(--accent);font-weight:400}
+.hero-stats .lbl{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-top:10px}
+
+/* Hero side panel — illustration */
+.hero-panel{
+  position:relative;
+  background:var(--ink);
+  color:var(--paper);
+  padding:clamp(28px,3.2vw,48px);
+  min-height:540px;
+  display:flex;flex-direction:column;justify-content:space-between;
+  overflow:hidden;
+  isolation:isolate;
+}
+.hero-panel::before{
+  content:"";position:absolute;inset:0;
+  background:
+    radial-gradient(800px 400px at 80% -10%, rgba(210,73,27,.18), transparent 60%),
+    repeating-linear-gradient(90deg, transparent 0 32px, rgba(255,255,255,.04) 32px 33px);
+  z-index:-1;
+}
+.hero-panel .corner{position:absolute;width:18px;height:18px;border:1px solid var(--paper);opacity:.4}
+.hero-panel .corner.tl{top:14px;left:14px;border-right:0;border-bottom:0}
+.hero-panel .corner.tr{top:14px;right:14px;border-left:0;border-bottom:0}
+.hero-panel .corner.bl{bottom:14px;left:14px;border-right:0;border-top:0}
+.hero-panel .corner.br{bottom:14px;right:14px;border-left:0;border-top:0}
+
+.hero-panel .panel-head{
+  display:flex;justify-content:space-between;align-items:flex-start;
+  font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+  color:rgba(243,238,229,.65);
+}
+.hero-panel .panel-head .ref{display:flex;flex-direction:column;gap:6px;text-align:right}
+.hero-panel .panel-head .ref strong{color:var(--paper);font-weight:500}
+
+.hero-panel .panel-illustration{
+  flex:1;display:grid;place-items:center;position:relative;margin:30px 0;
+}
+.hero-panel svg{width:100%;height:auto;max-width:380px}
+
+.hero-panel .panel-foot{
+  display:grid;grid-template-columns:1fr auto;align-items:end;gap:18px;
+  padding-top:24px;border-top:1px solid rgba(243,238,229,.18);
+}
+.hero-panel .quote{font-family:'Fraunces',serif;font-style:italic;font-size:clamp(18px,1.6vw,22px);line-height:1.3;letter-spacing:-.01em;max-width:30ch}
+.hero-panel .badge{
+  width:84px;height:84px;border-radius:50%;border:1px solid rgba(243,238,229,.4);
+  display:grid;place-items:center;
+  position:relative;
+  flex-shrink:0;
+}
+.hero-panel .badge svg.ring{position:absolute;inset:0;width:100%;height:100%;animation:spin 22s linear infinite}
+.hero-panel .badge .icon{font-family:'Fraunces',serif;font-size:28px;color:var(--accent);font-style:italic}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ------- MARQUEE ------- */
+.marquee{
+  background:var(--ink);
+  color:var(--paper);
+  border-top:1px solid var(--ink);
+  padding:22px 0;
+  overflow:hidden;
+  position:relative;
+}
+.marquee-track{
+  display:flex;gap:64px;
+  animation:marq 38s linear infinite;
+  white-space:nowrap;
+  width:max-content;
+}
+.marquee:hover .marquee-track{animation-play-state:paused}
+.marquee .item{
+  font-family:'Fraunces',serif;
+  font-style:italic;
+  font-weight:400;
+  font-size:clamp(28px,3.5vw,52px);
+  letter-spacing:-.02em;
+  display:inline-flex;align-items:center;gap:64px;
+}
+.marquee .item .dot{width:10px;height:10px;border-radius:50%;background:var(--accent);display:inline-block}
+.marquee .item .num{font-family:'JetBrains Mono',monospace;font-style:normal;font-size:.32em;color:rgba(243,238,229,.5);letter-spacing:.2em;align-self:start;margin-top:.4em}
+@keyframes marq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ------- SECTION HEADERS ------- */
+.section-head{
+  display:grid;grid-template-columns:1fr 2fr;gap:clamp(20px,4vw,80px);
+  align-items:start;padding-bottom:48px;
+  border-bottom:1px solid var(--ink);
+  margin-bottom:64px;
+}
+@media(max-width:780px){.section-head{grid-template-columns:1fr;gap:24px;margin-bottom:40px}}
+.section-head .left{display:flex;flex-direction:column;gap:14px}
+.section-head .num{
+  font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.2em;color:var(--muted);
+  display:flex;align-items:center;gap:12px;
+}
+.section-head .num::before{content:"";width:32px;height:1px;background:var(--ink)}
+.section-head .label{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);font-weight:500}
+.section-head h2{
+  font-family:'Fraunces',serif;
+  font-variation-settings:"opsz" 144,"SOFT" 40,"WONK" 1;
+  font-weight:400;
+  font-size:clamp(42px,5.5vw,86px);
+  line-height:.92;letter-spacing:-.04em;
+  margin:0;
+}
+.section-head h2 em{font-style:italic;color:var(--accent);font-weight:300}
+.section-head .desc{font-size:17px;line-height:1.55;color:var(--ink-soft);max-width:54ch;margin:18px 0 0}
+
+/* ------- INTRO / À PROPOS ------- */
+.about{position:relative}
+.about-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,4vw,80px);
+  align-items:start;
+}
+@media(max-width:880px){.about-grid{grid-template-columns:1fr}}
+
+.about-headline{
+  font-family:'Fraunces',serif;
+  font-weight:400;
+  font-size:clamp(32px,3.6vw,52px);
+  line-height:1.05;letter-spacing:-.03em;
+  margin:0 0 28px;
+}
+.about-headline em{font-style:italic;color:var(--accent)}
+.about p{font-size:17px;line-height:1.65;color:var(--ink-soft);margin:0 0 18px}
+.about p strong{color:var(--ink);font-weight:600}
+
+.values{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:0;
+  border-top:1px solid var(--ink);border-left:1px solid var(--ink);
+  margin-top:32px;
+}
+.values .v{
+  border-right:1px solid var(--ink);border-bottom:1px solid var(--ink);
+  padding:24px 22px;display:flex;flex-direction:column;gap:14px;
+  background:var(--paper);transition:background .3s;
+}
+.values .v:hover{background:var(--paper-2)}
+.values .v .vnum{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;color:var(--muted)}
+.values .v h4{font-family:'Fraunces',serif;font-size:22px;letter-spacing:-.02em;margin:0;font-weight:500}
+.values .v p{font-size:14.5px;line-height:1.5;color:var(--muted);margin:0}
+.values .v .ico{width:36px;height:36px;border:1px solid var(--ink);display:grid;place-items:center;color:var(--accent)}
+@media(max-width:560px){.values{grid-template-columns:1fr}}
+
+/* ------- LICENCE STAMP ------- */
+.licence-stamp{
+  margin-top:36px;
+  border:1.5px dashed var(--ink);
+  padding:18px 22px;display:flex;align-items:center;gap:18px;
+  background:var(--paper-2);
+}
+.licence-stamp .seal{
+  width:60px;height:60px;border-radius:50%;background:var(--accent);color:var(--paper);
+  display:grid;place-items:center;font-family:'Fraunces',serif;font-size:24px;font-weight:600;font-style:italic;
+  flex-shrink:0;
+  box-shadow:inset 0 0 0 2px var(--paper-2), 0 0 0 1px var(--accent);
+}
+.licence-stamp .info{display:flex;flex-direction:column;gap:4px}
+.licence-stamp .info .k{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+.licence-stamp .info .v{font-family:'JetBrains Mono',monospace;font-size:15px;letter-spacing:.08em;color:var(--ink);font-weight:600}
+
+/* ------- SERVICES ------- */
+.services{background:var(--paper-2);border-top:1px solid var(--ink);border-bottom:1px solid var(--ink)}
+.services-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:0;border-top:1px solid var(--ink)}
+.svc{
+  grid-column:span 6;
+  padding:clamp(28px,3vw,44px);
+  border-right:1px solid var(--ink);border-bottom:1px solid var(--ink);
+  position:relative;
+  background:var(--paper-2);
+  transition:background .35s var(--ease);
+  display:flex;flex-direction:column;gap:18px;min-height:340px;
+}
+.svc:hover{background:var(--paper)}
+.svc:nth-child(2n){border-right:0}
+
+@media(min-width:1100px){
+  .svc{grid-column:span 3;min-height:420px}
+  .svc:nth-child(2n){border-right:1px solid var(--ink)}
+  .svc:nth-child(4n){border-right:0}
+  .svc:nth-child(1){grid-column:span 6}
+  .svc:nth-child(1) .svc-ico{width:120px;height:120px}
+  .svc:nth-child(1) h3{font-size:42px}
+}
+@media(max-width:680px){
+  .svc{grid-column:span 12;border-right:0}
+}
+
+.svc-top{display:flex;justify-content:space-between;align-items:flex-start;gap:18px}
+.svc-num{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;color:var(--muted)}
+.svc-tag{
+  font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;
+  background:var(--ink);color:var(--paper);padding:5px 9px;display:inline-flex;align-items:center;gap:6px;
+}
+.svc-tag.urgent{background:var(--accent)}
+.svc-tag.urgent::before{content:"";width:6px;height:6px;background:var(--paper);border-radius:50%;animation:pulse 2s infinite}
+
+.svc-ico{
+  width:78px;height:78px;border:1px solid var(--ink);display:grid;place-items:center;color:var(--ink);
+  background:var(--paper);
+  transition:all .35s var(--ease);
+}
+.svc:hover .svc-ico{background:var(--ink);color:var(--accent)}
+.svc-ico svg{width:52%;height:52%}
+
+.svc h3{
+  font-family:'Fraunces',serif;font-weight:500;
+  font-size:clamp(22px,2vw,30px);letter-spacing:-.02em;line-height:1.05;
+  margin:6px 0 0;
+}
+.svc p{font-size:15px;line-height:1.55;color:var(--ink-soft);margin:0}
+.svc ul{list-style:none;padding:0;margin:auto 0 0;display:flex;flex-direction:column;gap:8px;border-top:1px dashed var(--ink);padding-top:16px}
+.svc ul li{
+  font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.04em;color:var(--ink-soft);
+  display:flex;align-items:flex-start;gap:10px;line-height:1.4;
+}
+.svc ul li::before{content:"→";color:var(--accent);font-family:'Fraunces',serif;font-style:italic}
+
+/* ------- EMERGENCY BANNER ------- */
+.emergency{
+  background:var(--ink);color:var(--paper);
+  padding:clamp(50px,6vw,90px) 0;
+  position:relative;overflow:hidden;
+}
+.emergency::before{
+  content:"URGENCE · URGENCE · URGENCE · URGENCE · URGENCE · URGENCE";
+  position:absolute;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%) rotate(-4deg);
+  font-family:'Fraunces',serif;font-style:italic;font-weight:400;
+  font-size:clamp(70px,11vw,160px);
+  color:rgba(210,73,27,.08);
+  white-space:nowrap;letter-spacing:-.03em;
+  pointer-events:none;
+  z-index:0;
+}
+.emergency-inner{position:relative;z-index:1;display:grid;grid-template-columns:1.4fr 1fr;gap:48px;align-items:center}
+@media(max-width:880px){.emergency-inner{grid-template-columns:1fr}}
+.emergency h2{
+  font-family:'Fraunces',serif;font-weight:400;
+  font-size:clamp(38px,5vw,76px);line-height:.95;letter-spacing:-.035em;
+  margin:0 0 20px;
+}
+.emergency h2 em{font-style:italic;color:var(--accent);font-weight:300}
+.emergency .lede{font-size:17px;line-height:1.6;color:rgba(243,238,229,.75);max-width:48ch;margin:0 0 28px}
+.emergency .chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px}
+.emergency .chips span{
+  font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;
+  border:1px solid rgba(243,238,229,.3);padding:7px 11px;color:rgba(243,238,229,.85);
+}
+.emergency-cta{display:flex;flex-wrap:wrap;gap:12px}
+.emergency .btn{border-color:var(--paper);color:var(--paper);background:transparent}
+.emergency .btn:hover{background:var(--paper);color:var(--ink)}
+.emergency .btn--accent{background:var(--accent);border-color:var(--accent);color:var(--paper)}
+.emergency .btn--accent:hover{background:var(--paper);border-color:var(--paper);color:var(--ink)}
+
+/* phone card */
+.phone-card{
+  border:1px solid rgba(243,238,229,.25);
+  padding:clamp(24px,2.4vw,36px);
+  background:rgba(255,255,255,.03);
+  backdrop-filter:blur(2px);
+  position:relative;
+}
+.phone-card .row{display:flex;flex-direction:column;gap:6px;padding:18px 0;border-bottom:1px solid rgba(243,238,229,.15)}
+.phone-card .row:last-child{border-bottom:0}
+.phone-card .row .k{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:rgba(243,238,229,.5)}
+.phone-card .row a{font-family:'Fraunces',serif;font-size:clamp(26px,2.4vw,34px);letter-spacing:-.02em;font-weight:500;transition:color .25s}
+.phone-card .row a:hover{color:var(--accent)}
+.phone-card .head{display:flex;justify-content:space-between;align-items:center;padding-bottom:14px;border-bottom:1px solid rgba(243,238,229,.25);margin-bottom:6px}
+.phone-card .head .live{display:inline-flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:#39d27a}
+.phone-card .head .live::before{content:"";width:6px;height:6px;border-radius:50%;background:#39d27a;animation:pulse 2s infinite}
+
+/* ------- PROCESS ------- */
+.process-grid{
+  display:grid;grid-template-columns:repeat(5,1fr);gap:0;
+  border-top:1px solid var(--ink);border-left:1px solid var(--ink);
+}
+.step{
+  padding:clamp(22px,2vw,32px);
+  border-right:1px solid var(--ink);border-bottom:1px solid var(--ink);
+  display:flex;flex-direction:column;gap:18px;min-height:280px;
+  position:relative;background:var(--paper);
+  transition:background .3s;
+}
+.step:hover{background:var(--paper-2)}
+.step .stnum{
+  font-family:'Fraunces',serif;font-style:italic;
+  font-size:clamp(48px,5vw,80px);font-weight:300;line-height:1;color:var(--accent);
+  letter-spacing:-.04em;
+}
+.step h4{font-family:'Fraunces',serif;font-size:22px;font-weight:500;letter-spacing:-.02em;margin:0;line-height:1.1}
+.step p{font-size:14px;line-height:1.55;color:var(--ink-soft);margin:auto 0 0}
+.step .stchip{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;color:var(--muted);text-transform:uppercase;margin-top:auto}
+@media(max-width:1100px){.process-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.process-grid{grid-template-columns:1fr}}
+
+/* ------- TESTIMONIALS ------- */
+.testimonials{background:var(--ink);color:var(--paper);border-top:1px solid var(--ink);position:relative;overflow:hidden}
+.testimonials .section-head{border-bottom:1px solid rgba(243,238,229,.18)}
+.testimonials .section-head .num::before{background:var(--paper)}
+.testimonials .section-head .num{color:rgba(243,238,229,.5)}
+.testimonials .section-head h2{color:var(--paper)}
+.testimonials .section-head .desc{color:rgba(243,238,229,.7)}
+
+.tgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-left:1px solid rgba(243,238,229,.18)}
+@media(max-width:980px){.tgrid{grid-template-columns:1fr}}
+.tcard{
+  padding:clamp(28px,2.6vw,40px);
+  border-right:1px solid rgba(243,238,229,.18);
+  border-bottom:1px solid rgba(243,238,229,.18);
+  display:flex;flex-direction:column;gap:22px;min-height:380px;position:relative;
+}
+.tcard .stars{font-family:'Fraunces',serif;font-size:18px;letter-spacing:0.1em;color:var(--accent)}
+.tcard .quote{
+  font-family:'Fraunces',serif;font-weight:400;
+  font-size:clamp(18px,1.5vw,22px);line-height:1.45;letter-spacing:-.015em;
+  color:var(--paper);
+}
+.tcard .quote::before{content:"“";font-family:'Fraunces',serif;font-size:64px;font-style:italic;color:var(--accent);line-height:0.5;display:block;margin-bottom:14px;font-weight:400}
+.tcard .who{display:flex;align-items:center;gap:14px;margin-top:auto;padding-top:22px;border-top:1px solid rgba(243,238,229,.18)}
+.tcard .ini{
+  width:48px;height:48px;border:1px solid var(--paper);border-radius:50%;
+  display:grid;place-items:center;
+  font-family:'Fraunces',serif;font-style:italic;font-size:16px;color:var(--paper);
+}
+.tcard .meta{display:flex;flex-direction:column;line-height:1.3}
+.tcard .meta .name{font-size:14.5px;font-weight:600}
+.tcard .meta .place{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:rgba(243,238,229,.5)}
+.tcard .badge{
+  position:absolute;top:24px;right:28px;
+  font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--accent);
+}
+
+/* ------- ZONE ------- */
+.zone{background:var(--paper-2);border-top:1px solid var(--ink);border-bottom:1px solid var(--ink)}
+.zone-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:clamp(28px,4vw,80px);align-items:start}
+@media(max-width:880px){.zone-grid{grid-template-columns:1fr}}
+.zone h2{font-family:'Fraunces',serif;font-weight:400;font-size:clamp(40px,5vw,76px);line-height:.95;letter-spacing:-.035em;margin:0 0 24px}
+.zone h2 em{font-style:italic;color:var(--accent)}
+.zone p{font-size:17px;line-height:1.6;color:var(--ink-soft);max-width:50ch;margin:0 0 22px}
+
+.zone-list{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:0;
+  border-top:1px solid var(--ink);
+}
+.zone-list li{
+  list-style:none;padding:18px 4px;
+  display:flex;justify-content:space-between;align-items:center;gap:12px;
+  border-bottom:1px solid var(--ink);
+  font-family:'Fraunces',serif;font-size:22px;letter-spacing:-.02em;
+}
+.zone-list li:nth-child(odd){padding-right:18px;border-right:1px solid var(--ink)}
+.zone-list li:nth-child(even){padding-left:18px}
+.zone-list li .qty{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.16em;color:var(--muted)}
+@media(max-width:560px){
+  .zone-list{grid-template-columns:1fr}
+  .zone-list li:nth-child(odd){border-right:0;padding-right:4px}
+  .zone-list li:nth-child(even){padding-left:4px}
+}
+
+/* map illustration */
+.map-card{
+  background:var(--ink);color:var(--paper);
+  padding:clamp(24px,2.6vw,36px);
+  position:relative;min-height:440px;overflow:hidden;
+}
+.map-card .map-head{display:flex;justify-content:space-between;align-items:center;font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:rgba(243,238,229,.6);margin-bottom:24px}
+.map-card .map-head .live{color:#39d27a;display:inline-flex;align-items:center;gap:6px}
+.map-card .map-head .live::before{content:"";width:5px;height:5px;background:#39d27a;border-radius:50%;animation:pulse 2s infinite}
+.map-card svg{width:100%;height:auto;max-height:340px}
+.map-card .pinlabel{position:absolute;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--paper);background:var(--accent);padding:3px 6px}
+
+/* ------- CONTACT ------- */
+.contact{padding:clamp(60px,8vw,140px) 0}
+.contact-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(32px,4vw,80px);align-items:start}
+@media(max-width:980px){.contact-grid{grid-template-columns:1fr}}
+
+.contact-info h2{font-family:'Fraunces',serif;font-weight:400;font-size:clamp(40px,5vw,76px);line-height:.95;letter-spacing:-.035em;margin:0 0 22px}
+.contact-info h2 em{font-style:italic;color:var(--accent)}
+.contact-info p{font-size:17px;line-height:1.6;color:var(--ink-soft);max-width:48ch;margin:0 0 32px}
+
+.info-list{display:flex;flex-direction:column;gap:0;border-top:1px solid var(--ink)}
+.info-list .row{
+  padding:22px 0;border-bottom:1px solid var(--ink);
+  display:grid;grid-template-columns:auto 1fr;gap:24px;align-items:start;
+}
+.info-list .row .k{
+  font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);
+  padding-top:6px;
+}
+.info-list .row .v{display:flex;flex-direction:column;gap:4px}
+.info-list .row .v a, .info-list .row .v span{font-family:'Fraunces',serif;font-size:22px;letter-spacing:-.02em;font-weight:500;line-height:1.25}
+.info-list .row .v a{transition:color .25s}
+.info-list .row .v a:hover{color:var(--accent)}
+.info-list .row .v small{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;color:var(--muted);text-transform:uppercase;font-weight:400}
+
+/* form */
+.form-card{
+  border:1px solid var(--ink);
+  background:var(--paper);
+  padding:clamp(28px,3vw,44px);
+  position:relative;
+}
+.form-card::before{content:"";position:absolute;top:-1px;left:-1px;right:-1px;height:6px;background:var(--accent)}
+.form-head{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;margin-bottom:32px;padding-bottom:22px;border-bottom:1px solid var(--ink)}
+.form-head h3{font-family:'Fraunces',serif;font-weight:500;font-size:clamp(26px,2vw,34px);letter-spacing:-.025em;margin:0;line-height:1.1}
+.form-head .ref{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);text-align:right;line-height:1.5}
+.form-head .ref strong{color:var(--ink);font-weight:600;display:block}
+
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:560px){.fgrid{grid-template-columns:1fr}}
+.field{display:flex;flex-direction:column;gap:8px;margin-bottom:18px}
+.field.full{grid-column:1/-1}
+.field label{
+  font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);
+  display:flex;justify-content:space-between;
+}
+.field label .req{color:var(--accent)}
+.field input, .field select, .field textarea{
+  width:100%;padding:13px 14px;
+  background:var(--paper-2);
+  border:1px solid var(--ink);
+  font:inherit;
+  font-size:15px;
+  color:var(--ink);
+  transition:all .2s;
+  appearance:none;
+  font-family:inherit;
+}
+.field select{
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' stroke='%231a1612' stroke-width='1.5' fill='none'/></svg>");
+  background-repeat:no-repeat;background-position:right 14px center;padding-right:36px;
+}
+.field textarea{min-height:120px;resize:vertical;font-family:inherit}
+.field input:focus, .field select:focus, .field textarea:focus{
+  outline:none;border-color:var(--accent);background:var(--paper);
+  box-shadow:0 0 0 3px rgba(210,73,27,.15);
+}
+
+.checks{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:8px}
+@media(max-width:480px){.checks{grid-template-columns:1fr}}
+.check{
+  display:flex;gap:10px;align-items:center;
+  padding:11px 12px;border:1px solid var(--ink);
+  cursor:pointer;font-size:13px;
+  transition:all .2s;
+  background:var(--paper-2);
+  font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+}
+.check:hover{background:var(--paper)}
+.check input{appearance:none;width:14px;height:14px;border:1px solid var(--ink);background:var(--paper);position:relative;cursor:pointer;flex-shrink:0}
+.check input:checked{background:var(--accent);border-color:var(--accent)}
+.check input:checked::after{content:"✓";position:absolute;inset:0;display:grid;place-items:center;color:var(--paper);font-size:11px;font-weight:700}
+.check.active{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.check.active input{border-color:var(--paper)}
+
+.form-foot{margin-top:24px;display:flex;flex-direction:column;gap:12px}
+.form-foot .submit{
+  width:100%;padding:18px 20px;
+  background:var(--ink);color:var(--paper);
+  font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.2em;text-transform:uppercase;font-weight:600;
+  border:1px solid var(--ink);
+  display:flex;justify-content:space-between;align-items:center;
+  transition:all .25s var(--ease);position:relative;overflow:hidden;
+}
+.form-foot .submit::before{
+  content:"";position:absolute;inset:0;background:var(--accent);transform:translateY(100%);transition:transform .35s var(--ease);z-index:-1;
+}
+.form-foot .submit:hover::before{transform:translateY(0)}
+.form-foot .submit:hover{border-color:var(--accent)}
+.form-foot .submit .arr{font-family:'Fraunces',serif;font-style:italic;font-size:18px;font-weight:300;letter-spacing:0}
+.form-foot .disclaimer{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.08em;color:var(--muted);text-align:center;line-height:1.5}
+
+/* ------- FOOTER ------- */
+.footer{background:var(--ink);color:var(--paper);padding:clamp(60px,7vw,100px) 0 32px;position:relative;overflow:hidden}
+.footer-mega{
+  font-family:'Fraunces',serif;font-weight:400;
+  font-size:clamp(80px,17vw,260px);
+  line-height:.85;letter-spacing:-.06em;
+  margin:0 0 clamp(40px,5vw,80px);
+  color:var(--paper);
+  white-space:nowrap;overflow:hidden;
+}
+.footer-mega em{font-style:italic;color:var(--accent);font-weight:300}
+.footer-grid{
+  display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:clamp(20px,3vw,48px);
+  border-top:1px solid rgba(243,238,229,.18);padding-top:48px;
+}
+@media(max-width:880px){.footer-grid{grid-template-columns:1fr 1fr;gap:36px}}
+@media(max-width:560px){.footer-grid{grid-template-columns:1fr}}
+
+.fcol h5{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:rgba(243,238,229,.5);margin:0 0 18px;font-weight:500}
+.fcol ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:11px}
+.fcol ul a{font-size:15px;color:var(--paper);transition:color .2s;display:inline-flex;align-items:center;gap:8px}
+.fcol ul a:hover{color:var(--accent)}
+.fcol ul a::before{content:"→";font-family:'Fraunces',serif;font-style:italic;color:var(--accent);opacity:0;transition:all .25s;margin-left:-12px;width:0;display:inline-block}
+.fcol ul a:hover::before{opacity:1;margin-left:0;width:auto}
+
+.fbrand p{font-size:15px;line-height:1.55;color:rgba(243,238,229,.7);margin:18px 0 24px;max-width:38ch}
+.fbrand .brand .brand-mark{background:var(--paper);color:var(--ink);border-color:var(--paper)}
+.fbrand .brand .brand-mark::after{border-color:var(--paper)}
+.fbrand .brand-text .l1{color:var(--paper)}
+.fbrand .brand-text .l2{color:rgba(243,238,229,.5)}
+.fbrand .socials{display:flex;gap:8px}
+.fbrand .socials a{
+  width:40px;height:40px;border:1px solid rgba(243,238,229,.3);display:grid;place-items:center;
+  font-family:'JetBrains Mono',monospace;font-size:13px;
+  transition:all .25s;
+}
+.fbrand .socials a:hover{background:var(--accent);border-color:var(--accent)}
+
+.footer-base{
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;
+  padding-top:32px;margin-top:48px;
+  border-top:1px solid rgba(243,238,229,.18);
+  font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:rgba(243,238,229,.5);
+}
+.footer-base a{transition:color .2s}
+.footer-base a:hover{color:var(--paper)}
+.footer-base .links{display:flex;gap:24px;flex-wrap:wrap}
+.footer-base .lic{display:inline-flex;align-items:center;gap:8px;color:var(--paper)}
+.footer-base .lic strong{color:var(--accent);font-weight:500}
+
+/* ------- Scroll reveal ------- */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .9s var(--ease), transform .9s var(--ease)}
+.reveal.in{opacity:1;transform:none}
+.reveal[data-d="1"]{transition-delay:.1s}
+.reveal[data-d="2"]{transition-delay:.2s}
+.reveal[data-d="3"]{transition-delay:.3s}
+.reveal[data-d="4"]{transition-delay:.4s}
+
+/* ------- Scrollbar ------- */
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:var(--paper-2)}
+::-webkit-scrollbar-thumb{background:var(--ink);border:2px solid var(--paper-2)}
+::-webkit-scrollbar-thumb:hover{background:var(--accent)}
+
+/* selection */
+::selection{background:var(--accent);color:var(--paper)}
+
+/* ============ RENOVATION SHOWCASE ============ */
+.reno{position:relative;background:var(--paper);overflow:hidden}
+.reno::before{
+  content:"RÉNOVER · FINIR · TRANSFORMER";
+  position:absolute;
+  top:50%;left:-3%;
+  transform:translateY(-50%) rotate(-90deg);
+  transform-origin:left center;
+  font-family:'Fraunces',serif;font-style:italic;font-weight:300;
+  font-size:clamp(40px,6vw,90px);
+  color:rgba(26,22,18,.04);
+  white-space:nowrap;letter-spacing:-.02em;
+  pointer-events:none;
+}
+.reno-grid{
+  display:grid;grid-template-columns:1.05fr .95fr;
+  gap:clamp(28px,4vw,80px);
+  align-items:start;
+}
+@media(max-width:980px){.reno-grid{grid-template-columns:1fr}}
+
+.reno-lead h2{
+  font-family:'Fraunces',serif;font-weight:400;
+  font-size:clamp(40px,5.5vw,86px);line-height:.94;letter-spacing:-.04em;
+  margin:0 0 28px;
+}
+.reno-lead h2 em{font-style:italic;color:var(--accent);font-weight:300}
+.reno-lead .big{font-size:18px;line-height:1.6;color:var(--ink-soft);max-width:50ch;margin:0 0 20px}
+.reno-lead .big strong{color:var(--ink);font-weight:600}
+
+/* big numeric showcase */
+.reno-stats{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:0;
+  border-top:1px solid var(--ink);
+  margin:36px 0 0;
+}
+.reno-stats .s{
+  padding:24px 18px 24px 0;
+  border-bottom:1px solid var(--ink);
+  border-right:1px solid var(--ink);
+  display:flex;flex-direction:column;gap:8px;
+}
+.reno-stats .s:nth-child(2n){border-right:0;padding-left:24px;padding-right:0}
+.reno-stats .s .n{font-family:'Fraunces',serif;font-style:italic;font-size:clamp(38px,4.4vw,60px);font-weight:300;line-height:1;letter-spacing:-.04em;color:var(--accent)}
+.reno-stats .s .l{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink)}
+.reno-stats .s .d{font-size:13.5px;line-height:1.5;color:var(--muted);margin-top:4px}
+
+/* the two pillars: intérieur / extérieur */
+.pillars{
+  display:grid;grid-template-rows:auto auto;gap:0;
+  border:1px solid var(--ink);
+}
+.pillar{
+  padding:clamp(26px,2.6vw,38px);
+  position:relative;
+  display:flex;flex-direction:column;gap:18px;
+  border-bottom:1px solid var(--ink);
+}
+.pillar:last-child{border-bottom:0}
+.pillar.dark{background:var(--ink);color:var(--paper)}
+.pillar.dark p{color:rgba(243,238,229,.75)}
+.pillar.dark .pillar-num{color:rgba(243,238,229,.5)}
+.pillar.dark .pillar-tags span{border-color:rgba(243,238,229,.3);color:rgba(243,238,229,.85)}
+.pillar.dark h3 em{color:var(--accent)}
+
+.pillar-head{display:flex;justify-content:space-between;align-items:flex-start;gap:18px}
+.pillar-num{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;color:var(--muted)}
+.pillar-ico{
+  width:64px;height:64px;border:1px solid currentColor;
+  display:grid;place-items:center;
+  flex-shrink:0;
+}
+.pillar.dark .pillar-ico{color:var(--accent);border-color:rgba(243,238,229,.3)}
+.pillar h3{
+  font-family:'Fraunces',serif;font-weight:500;
+  font-size:clamp(28px,2.8vw,40px);letter-spacing:-.025em;line-height:1.05;
+  margin:8px 0 0;
+}
+.pillar h3 em{font-style:italic;color:var(--accent);font-weight:400}
+.pillar p{font-size:15px;line-height:1.6;color:var(--ink-soft);margin:0}
+.pillar-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.pillar-tags span{
+  font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;
+  border:1px solid var(--ink);padding:6px 9px;color:var(--ink);
+}
+
+/* checklist style detail */
+.reno-detail{
+  margin-top:28px;
+  border:1px solid var(--ink);
+  background:var(--paper-2);
+  padding:clamp(22px,2.4vw,32px);
+}
+.reno-detail h4{
+  font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.22em;text-transform:uppercase;
+  margin:0 0 18px;color:var(--ink);font-weight:600;
+  display:flex;align-items:center;gap:12px;
+}
+.reno-detail h4::before{content:"";width:24px;height:1px;background:var(--accent)}
+.reno-detail ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:0;}
+.reno-detail ul li{
+  padding:12px 0;
+  border-bottom:1px dashed var(--ink);
+  display:flex;align-items:flex-start;gap:10px;
+  font-size:14.5px;line-height:1.4;color:var(--ink-soft);
+}
+.reno-detail ul li:nth-child(odd){padding-right:18px;border-right:1px dashed var(--ink)}
+.reno-detail ul li:nth-child(even){padding-left:18px}
+.reno-detail ul li::before{content:"✓";color:var(--accent);font-weight:600;flex-shrink:0;font-family:'JetBrains Mono',monospace}
+.reno-detail ul li:nth-last-child(-n+2){border-bottom:0}
+@media(max-width:560px){
+  .reno-detail ul{grid-template-columns:1fr}
+  .reno-detail ul li:nth-child(odd){border-right:0;padding-right:0}
+  .reno-detail ul li:nth-child(even){padding-left:0}
+  .reno-detail ul li{border-bottom:1px dashed var(--ink) !important}
+}
+@media(max-width:560px){
+  .reno-stats{grid-template-columns:1fr}
+  .reno-stats .s:nth-child(2n){padding-left:0;border-right:0}
+  .reno-stats .s{border-right:0}
+}
+
+
+.mobilemenu{
+  position:fixed;inset:0;background:var(--ink);color:var(--paper);
+  z-index:90;display:none;flex-direction:column;padding:32px var(--pad);
+}
+.mobilemenu.open{display:flex}
+.mobilemenu .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:48px}
+.mobilemenu .close{width:44px;height:44px;border:1px solid var(--paper);display:grid;place-items:center;font-size:22px;font-family:'Fraunces',serif}
+.mobilemenu nav{display:flex;flex-direction:column;gap:0}
+.mobilemenu nav a{
+  font-family:'Fraunces',serif;font-size:36px;letter-spacing:-.03em;font-weight:400;
+  padding:20px 0;border-bottom:1px solid rgba(243,238,229,.18);
+  display:flex;justify-content:space-between;align-items:center;
+}
+.mobilemenu nav a em{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;color:rgba(243,238,229,.4);font-style:normal}
+.mobilemenu .mfoot{margin-top:auto;padding-top:32px;display:flex;flex-direction:column;gap:16px}
+.mobilemenu .mfoot a{font-family:'JetBrains Mono',monospace;font-size:14px;letter-spacing:.1em}
+</style>
+</head>
+<body>
+
+<!-- ============ UTILITY BAR ============ -->
+<div class="utility">
+  <div class="utility-inner">
+    <span><i class="dot"></i> RÉNOVATION RÉSIDENTIELLE · INTÉRIEUR · EXTÉRIEUR · APRÈS‑SINISTRE</span>
+    <div class="right">
+      <span class="hide-sm">LICENCE RBQ <strong>5821-2606-01</strong></span>
+      <span class="sep hide-sm">/</span>
+      <a href="tel:8194524788">(819) 452-4788</a>
+    </div>
+  </div>
+</div>
+
+<!-- ============ NAV ============ -->
+<header class="nav">
+  <div class="nav-inner">
+    <a href="#" class="brand" aria-label="Clinique du Bâtiment - Accueil">
+      <img src="logo.png" alt="Logo" style="height: 60px; width: auto;">
+    </a>
+    <nav class="menu" aria-label="Navigation principale">
+      <a href="#about">À propos</a>
+      <a href="#services">Services</a>
+      <a href="#renovation">Rénovation</a>
+      <a href="#process">Méthode</a>
+      <a href="#testimonials">Témoignages</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <div class="nav-cta">
+      <a href="tel:8194524788" class="btn btn--ghost">(819) 452-4788</a>
+      <a href="#contact" class="btn btn--accent">Soumission <span class="arr">→</span></a>
+      <button class="burger" aria-label="Ouvrir le menu" id="burger"><span></span></button>
+    </div>
+  </div>
+</header>
+
+<!-- ============ MOBILE MENU ============ -->
+<div class="mobilemenu" id="mmenu">
+  <div class="top">
+    <span class="brand">
+      <span class="brand-mark" style="background:var(--paper);color:var(--ink)">C<span style="color:var(--accent)">·</span>B</span>
+      <span class="brand-text"><span class="l1" style="color:var(--paper)">Clinique du Bâtiment</span><span class="l2">CDB Inc.</span></span>
+    </span>
+    <button class="close" id="mclose" aria-label="Fermer">×</button>
+  </div>
+  <nav>
+    <a href="#about" class="mlink">À propos <em>01</em></a>
+    <a href="#services" class="mlink">Services <em>02</em></a>
+    <a href="#renovation" class="mlink">Rénovation <em>03</em></a>
+    <a href="#process" class="mlink">Méthode <em>04</em></a>
+    <a href="#testimonials" class="mlink">Témoignages <em>05</em></a>
+    <a href="#zone" class="mlink">Zone <em>06</em></a>
+    <a href="#contact" class="mlink">Contact <em>07</em></a>
+  </nav>
+  <div class="mfoot">
+    <a href="tel:8194524788">📞 (819) 452-4788</a>
+    <a href="tel:5149438061">📞 (514) 943-8061</a>
+    <a href="mailto:info@cliniquedubatiment.ca">✉ info@cliniquedubatiment.ca</a>
+  </div>
+</div>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="wrap">
+
+    <div class="hero-meta">
+      <span class="eyebrow tag">Rénovation résidentielle · Québec</span>
+      <span class="eyebrow mono">EST. PLUSIEURS ANNÉES — MTL/LAV/LON</span>
+    </div>
+
+    <div class="hero-grid">
+      <div class="hero-left">
+        <h1 class="reveal in">
+          Rénover. <em>Finir.</em><br>
+          Reconstruire.<br>
+          <span class="sm">Un seul intervenant, tout réglé.</span>
+        </h1>
+        <p class="lede reveal in" data-d="1">
+          <strong>Clinique du Bâtiment CDB Inc.</strong> exécute la rénovation résidentielle complète — intérieur, extérieur, finition — et la reconstruction après-sinistre. Une approche rigoureuse, axée sur la qualité d'exécution, la durabilité des ouvrages et le strict respect des normes du bâtiment au Québec.
+        </p>
+        <div class="hero-actions reveal in" data-d="2">
+          <a href="#contact" class="btn btn--solid btn--lg">Demander une soumission <span class="arr">→</span></a>
+          <a href="#services" class="btn btn--lg">Voir nos services</a>
+        </div>
+
+        <div class="hero-stats reveal in" data-d="3">
+          <div class="stat">
+            <div class="num">08<em>/</em></div>
+            <div class="lbl">Services clés</div>
+          </div>
+          <div class="stat">
+            <div class="num">24<em>h</em></div>
+            <div class="lbl">Réponse moyenne</div>
+          </div>
+          <div class="stat">
+            <div class="num">100<em>%</em></div>
+            <div class="lbl">Conformité RBQ</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-panel reveal in" data-d="2">
+        <span class="corner tl"></span><span class="corner tr"></span>
+        <span class="corner bl"></span><span class="corner br"></span>
+
+        <div class="panel-head">
+          <span>FICHE / PROJET TYPE</span>
+          <span class="ref"><strong>CDB · 0247</strong>RÉNO COMPLÈTE · ROSEMONT</span>
+        </div>
+
+        <div class="panel-illustration">
+          <svg viewBox="0 0 380 300" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <!-- Architectural blueprint of a house section -->
+            <defs>
+              <pattern id="hatch" patternUnits="userSpaceOnUse" width="6" height="6" patternTransform="rotate(45)">
+                <line x1="0" y1="0" x2="0" y2="6" stroke="rgba(210,73,27,0.4)" stroke-width="1"/>
+              </pattern>
+              <pattern id="dotgrid" patternUnits="userSpaceOnUse" width="20" height="20">
+                <circle cx="1" cy="1" r="0.6" fill="rgba(243,238,229,0.18)"/>
+              </pattern>
+            </defs>
+
+            <rect width="380" height="300" fill="url(#dotgrid)"/>
+
+            <!-- House outline -->
+            <g stroke="#f3eee5" stroke-width="1.4" fill="none">
+              <!-- Roof -->
+              <path d="M60 110 L190 40 L320 110" stroke-linejoin="miter"/>
+              <!-- Body -->
+              <path d="M85 110 L85 250 L295 250 L295 110"/>
+              <!-- Floor -->
+              <line x1="85" y1="180" x2="295" y2="180"/>
+              <!-- Walls inside -->
+              <line x1="170" y1="180" x2="170" y2="250"/>
+              <line x1="220" y1="180" x2="220" y2="250"/>
+              <!-- Top floor windows -->
+              <rect x="115" y="130" width="35" height="35"/>
+              <rect x="170" y="130" width="35" height="35"/>
+              <rect x="225" y="130" width="35" height="35"/>
+              <!-- Door -->
+              <path d="M125 250 L125 215 L155 215 L155 250"/>
+              <!-- Chimney -->
+              <path d="M250 70 L250 50 L270 50 L270 88"/>
+            </g>
+
+            <!-- Renovation zones highlighted -->
+            <rect x="115" y="130" width="35" height="35" fill="rgba(210,73,27,0.12)" stroke="#d2491b" stroke-width="1.2" stroke-dasharray="3 2"/>
+            <rect x="170" y="180" width="50" height="70" fill="url(#hatch)" stroke="#d2491b" stroke-width="1.5" stroke-dasharray="4 3"/>
+            <!-- Annotation -->
+            <g font-family="JetBrains Mono, monospace" font-size="9" fill="#d2491b" letter-spacing="1">
+              <line x1="220" y1="215" x2="280" y2="200" stroke="#d2491b" stroke-width="1"/>
+              <circle cx="220" cy="215" r="2.5" fill="#d2491b"/>
+              <text x="285" y="198">ZONE</text>
+              <text x="285" y="210">RÉNO</text>
+            </g>
+            <!-- Dimension line -->
+            <g stroke="rgba(243,238,229,0.4)" stroke-width="0.8">
+              <line x1="85" y1="270" x2="295" y2="270"/>
+              <line x1="85" y1="265" x2="85" y2="275"/>
+              <line x1="295" y1="265" x2="295" y2="275"/>
+            </g>
+            <text x="190" y="285" font-family="JetBrains Mono, monospace" font-size="9" fill="rgba(243,238,229,0.6)" text-anchor="middle" letter-spacing="2">21 PIEDS · 6.4 M</text>
+
+            <!-- Top labels -->
+            <g font-family="JetBrains Mono, monospace" font-size="8" fill="rgba(243,238,229,0.4)" letter-spacing="1.5">
+              <text x="60" y="32">N</text>
+              <text x="60" y="42">↑</text>
+              <text x="320" y="32" text-anchor="end">ÉCH. 1:50</text>
+            </g>
+
+            <!-- Compass -->
+            <g transform="translate(345, 270)">
+              <circle r="14" fill="none" stroke="rgba(243,238,229,0.3)" stroke-width="0.8"/>
+              <path d="M0 -10 L3 0 L0 10 L-3 0 Z" fill="#d2491b"/>
+              <text y="-18" font-family="JetBrains Mono, monospace" font-size="7" fill="rgba(243,238,229,0.5)" text-anchor="middle">N</text>
+            </g>
+          </svg>
+        </div>
+
+        <div class="panel-foot">
+          <p class="quote">« Finition soignée, exécution rigoureuse — chaque détail compte. »</p>
+          <div class="badge">
+            <svg class="ring" viewBox="0 0 100 100">
+              <defs>
+                <path id="circ" d="M 50,50 m -36,0 a 36,36 0 1,1 72,0 a 36,36 0 1,1 -72,0"/>
+              </defs>
+              <text font-family="JetBrains Mono, monospace" font-size="8" fill="#f3eee5" letter-spacing="2">
+                <textPath href="#circ">RBQ · 5821-2606-01 · CONFORME · </textPath>
+              </text>
+            </svg>
+            <span class="icon">✦</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MARQUEE ============ -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    <span class="item"><span class="num">01</span> Rénovation complète <span class="dot"></span></span>
+    <span class="item"><span class="num">02</span> Finition intérieure <span class="dot"></span></span>
+    <span class="item"><span class="num">03</span> Travaux extérieurs <span class="dot"></span></span>
+    <span class="item"><span class="num">04</span> Salles de bain <span class="dot"></span></span>
+    <span class="item"><span class="num">05</span> Cuisine <span class="dot"></span></span>
+    <span class="item"><span class="num">06</span> Planchers <span class="dot"></span></span>
+    <span class="item"><span class="num">07</span> Après-sinistre <span class="dot"></span></span>
+    <span class="item"><span class="num">08</span> Devis Xactimate <span class="dot"></span></span>
+    <!-- duplicate for seamless loop -->
+    <span class="item"><span class="num">01</span> Rénovation complète <span class="dot"></span></span>
+    <span class="item"><span class="num">02</span> Finition intérieure <span class="dot"></span></span>
+    <span class="item"><span class="num">03</span> Travaux extérieurs <span class="dot"></span></span>
+    <span class="item"><span class="num">04</span> Salles de bain <span class="dot"></span></span>
+    <span class="item"><span class="num">05</span> Cuisine <span class="dot"></span></span>
+    <span class="item"><span class="num">06</span> Planchers <span class="dot"></span></span>
+    <span class="item"><span class="num">07</span> Après-sinistre <span class="dot"></span></span>
+    <span class="item"><span class="num">08</span> Devis Xactimate <span class="dot"></span></span>
+  </div>
+</div>
+
+<!-- ============ ABOUT ============ -->
+<section class="section about" id="about">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="left">
+        <span class="num">01 / 06</span>
+        <span class="label">Notre histoire</span>
+      </div>
+      <div>
+        <h2>Un seul intervenant.<br><em>Tout réglé.</em></h2>
+        <p class="desc">De la première inspection à la remise des clés — Clinique du Bâtiment vous accompagne avec rigueur, transparence et une seule équipe responsable.</p>
+      </div>
+    </div>
+
+    <div class="about-grid">
+      <div class="reveal" data-d="1">
+        <h3 class="about-headline">Une approche <em>rigoureuse</em>, des travaux <em>durables</em>.</h3>
+        <p>Clinique du Bâtiment CDB Inc. est une entreprise spécialisée en <strong>rénovation résidentielle</strong> au Québec. Nous intervenons avec une méthode rigoureuse, axée sur la qualité d'exécution, la durabilité des ouvrages et le strict respect des normes du bâtiment.</p>
+        <p>Des travaux mineurs à la <strong>remise en état complète après sinistre</strong> — nous gérons chaque projet avec le même niveau d'exigence et de transparence. Un seul interlocuteur du début à la fin, pour des décisions claires et un chantier sans surprise.</p>
+
+        <div class="licence-stamp">
+          <div class="seal">RBQ</div>
+          <div class="info">
+            <div class="k">Licence Régie du Bâtiment du Québec</div>
+            <div class="v">5821-2606-01</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="values reveal" data-d="2">
+        <div class="v">
+          <div class="ico">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10" cy="10" r="7"/><circle cx="10" cy="10" r="3"/><circle cx="10" cy="10" r="0.8" fill="currentColor"/></svg>
+          </div>
+          <span class="vnum">01.</span>
+          <h4>Analyse précise</h4>
+          <p>Diagnostic rigoureux avant chaque intervention. Aucune approximation.</p>
+        </div>
+        <div class="v">
+          <div class="ico">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="3" width="12" height="14"/><line x1="7" y1="7" x2="13" y2="7"/><line x1="7" y1="10" x2="13" y2="10"/><line x1="7" y1="13" x2="11" y2="13"/></svg>
+          </div>
+          <span class="vnum">02.</span>
+          <h4>Devis détaillé</h4>
+          <p>Transparence totale sur les coûts et les délais.</p>
+        </div>
+        <div class="v">
+          <div class="ico">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 17 L3 8 L10 3 L17 8 L17 17"/><line x1="3" y1="17" x2="17" y2="17"/><line x1="8" y1="17" x2="8" y2="11"/><line x1="12" y1="17" x2="12" y2="11"/></svg>
+          </div>
+          <span class="vnum">03.</span>
+          <h4>Chantier géré</h4>
+          <p>Suivi rigoureux de A à Z, par une équipe dédiée à votre projet.</p>
+        </div>
+        <div class="v">
+          <div class="ico">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 5 L17 5 L17 14 L11 14 L7 17 L7 14 L3 14 Z"/></svg>
+          </div>
+          <span class="vnum">04.</span>
+          <h4>Communication</h4>
+          <p>Un point de contact unique, toujours disponible.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SERVICES ============ -->
+<section class="section services" id="services">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="left">
+        <span class="num">02 / 06</span>
+        <span class="label">Nos domaines</span>
+      </div>
+      <div>
+        <h2>Huit services clés.<br><em>Une seule équipe.</em></h2>
+        <p class="desc">De la rénovation complète à la finition intérieure et aux travaux extérieurs — sans oublier l'intervention après-sinistre — Clinique du Bâtiment prend en charge l'ensemble du processus pour un résultat conforme et durable.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="services-grid">
+
+      <article class="svc reveal" data-d="1">
+        <div class="svc-top">
+          <span class="svc-num">01 / 08</span>
+          <span class="svc-tag urgent">Intervention 24/7</span>
+        </div>
+        <div class="svc-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+            <path d="M12 2 L12 8 M2 12 L8 12 M16 12 L22 12 M12 16 L12 22 M5 5 L9 9 M15 9 L19 5 M5 19 L9 15 M15 15 L19 19"/>
+            <circle cx="12" cy="12" r="3"/>
+          </svg>
+        </div>
+        <h3>Travaux après-sinistre</h3>
+        <p>Interventions rapides et structurées suite à un dégât d'eau, une infiltration ou tout autre sinistre. Nous remettons votre bâtiment en état conforme, en coordination directe avec les assureurs.</p>
+        <ul>
+          <li>Démolition contrôlée — gypse, isolation, planchers</li>
+          <li>Découpe contrôlée des murs (jusqu'à 24 po)</li>
+          <li>Traitement humidité &amp; moisissures</li>
+          <li>Reconstruction complète</li>
+          <li>Devis type Xactimate pour assureurs</li>
+        </ul>
+      </article>
+
+      <article class="svc reveal" data-d="2">
+        <div class="svc-top">
+          <span class="svc-num">02 / 08</span>
+        </div>
+        <div class="svc-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+            <rect x="4" y="3" width="16" height="18" rx="1"/>
+            <circle cx="9" cy="9" r="1.5"/>
+            <path d="M13 7 L17 7 M13 10 L17 10"/>
+            <path d="M7 14 L17 14 L17 19 L7 19 Z"/>
+            <path d="M9 14 L9 11 L15 11 L15 14"/>
+          </svg>
+        </div>
+        <h3>Salles de bain</h3>
+        <p>Prise en charge complète, de la démolition à la finition. Fonctionnalité, durabilité et esthétique moderne.</p>
+        <ul>
+          <li>Douche, bain, vanité, robinetterie</li>
+          <li>Céramique plancher et murs</li>
+          <li>Étanchéité et calfeutrage</li>
+        </ul>
+      </article>
+
+      <article class="svc reveal" data-d="3">
+        <div class="svc-top">
+          <span class="svc-num">03 / 08</span>
+        </div>
+        <div class="svc-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+            <rect x="3" y="6" width="6" height="14"/>
+            <rect x="9" y="4" width="6" height="16"/>
+            <rect x="15" y="7" width="6" height="13"/>
+            <line x1="3" y1="20" x2="21" y2="20"/>
+          </svg>
+        </div>
+        <h3>Planchers</h3>
+        <p>Installation et remplacement de revêtements adaptés à chaque usage et chaque espace.</p>
+        <ul>
+          <li>Vinyle (click, SPC, résistant à l'eau)</li>
+          <li>Bois franc et ingénierie</li>
+          <li>Céramique et sous-plancher</li>
+          <li>Nivellement et correction de structure</li>
+        </ul>
+      </article>
+
+      <article class="svc reveal" data-d="4">
+        <div class="svc-top">
+          <span class="svc-num">04 / 08</span>
+        </div>
+        <div class="svc-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+            <path d="M14 3 L21 10 L10 21 L3 21 L3 14 Z"/>
+            <line x1="14" y1="3" x2="3" y2="14"/>
+            <line x1="17" y1="6" x2="6" y2="17"/>
+          </svg>
+        </div>
+        <h3>Finition intérieure</h3>
+        <p>Amélioration esthétique et remise à neuf des espaces. Finition nette, alignée et uniforme.</p>
+        <ul>
+          <li>Pose de gypse et tirage de joints</li>
+          <li>Peinture (murs, plafonds, boiseries)</li>
+          <li>Moulures, cadrages, portes</li>
+        </ul>
+      </article>
+
+      <article class="svc reveal" data-d="1">
+        <div class="svc-top">
+          <span class="svc-num">05 / 08</span>
+        </div>
+        <div class="svc-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+            <rect x="3" y="3" width="18" height="6"/>
+            <rect x="3" y="11" width="18" height="10"/>
+            <line x1="3" y1="15" x2="21" y2="15"/>
+            <circle cx="7" cy="6" r="0.6" fill="currentColor"/>
+            <circle cx="17" cy="6" r="0.6" fill="currentColor"/>
+            <line x1="6" y1="13" x2="9" y2="13"/>
+            <line x1="15" y1="13" x2="18" y2="13"/>
+          </svg>
+        </div>
+        <h3>Cuisine</h3>
+        <p>Moderniser sans tout démolir. Solution économique pour rafraîchir votre cuisine efficacement.</p>
+        <ul>
+          <li>Peinture et ajustement d'armoires</li>
+          <li>Évier, robinetterie, plancher</li>
+          <li>Poignées et pentures</li>
+        </ul>
+      </article>
+
+      <article class="svc reveal" data-d="2">
+        <div class="svc-top">
+          <span class="svc-num">06 / 08</span>
+        </div>
+        <div class="svc-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+            <path d="M3 12 L12 4 L21 12"/>
+            <path d="M5 11 L5 21 L19 21 L19 11"/>
+            <rect x="10" y="14" width="4" height="7"/>
+          </svg>
+        </div>
+        <h3>Travaux extérieurs</h3>
+        <p>Réparations et améliorations des structures exposées. Résistance aux conditions climatiques du Québec.</p>
+        <ul>
+          <li>Réparation de balcons</li>
+          <li>Traitement de fissures</li>
+          <li>Clôtures et finition extérieure</li>
+        </ul>
+      </article>
+
+      <article class="svc reveal" data-d="3">
+        <div class="svc-top">
+          <span class="svc-num">07 / 08</span>
+        </div>
+        <div class="svc-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+            <rect x="3" y="3" width="18" height="18"/>
+            <line x1="12" y1="3" x2="12" y2="21"/>
+            <line x1="3" y1="12" x2="21" y2="12"/>
+            <circle cx="12" cy="12" r="2"/>
+          </svg>
+        </div>
+        <h3>Structure &amp; division</h3>
+        <p>Modification des espaces pour optimiser l'aménagement selon vos besoins.</p>
+        <ul>
+          <li>Murs ossature bois ou acier</li>
+          <li>Fermeture et division de pièces</li>
+          <li>Portes intérieures et isolation</li>
+        </ul>
+      </article>
+
+      <article class="svc reveal" data-d="4">
+        <div class="svc-top">
+          <span class="svc-num">08 / 08</span>
+        </div>
+        <div class="svc-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+            <path d="M14 3 L18 7 L14 11"/>
+            <path d="M18 7 L8 7 C5 7 5 11 8 11 L16 11 C19 11 19 17 16 17 L6 17"/>
+            <path d="M10 21 L6 17 L10 13"/>
+          </svg>
+        </div>
+        <h3>Plomberie mineure</h3>
+        <p>Interventions rapides et ciblées sans complexité lourde.</p>
+        <ul>
+          <li>Remplacement robinetterie et toilette</li>
+          <li>Débouchage évier et toilette</li>
+          <li>Clapet anti-retour</li>
+        </ul>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ RENOVATION SHOWCASE ============ -->
+<section class="section reno" id="renovation">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="left">
+        <span class="num">— FOCUS</span>
+        <span class="label">Rénovation générale</span>
+      </div>
+      <div>
+        <h2>Rénover votre maison.<br><em>Du gros œuvre à la finition.</em></h2>
+        <p class="desc">La rénovation résidentielle est notre cœur de métier. Nous prenons en charge l'ensemble du projet — démolition, structure, finition intérieure, travaux extérieurs — avec la même rigueur et un seul interlocuteur du début à la fin.</p>
+      </div>
+    </div>
+
+    <div class="reno-grid">
+      <div class="reno-lead reveal">
+        <h2>Une <em>finition</em> qui change tout — à l'intérieur comme à l'extérieur.</h2>
+        <p class="big"><strong>Repenser un espace, moderniser une pièce, rafraîchir l'extérieur de votre maison</strong> : nous coordonnons tous les corps de métier nécessaires pour un résultat aligné, durable et conforme aux bonnes pratiques du bâtiment au Québec.</p>
+        <p class="big">Que ce soit une <strong>rénovation complète</strong>, une remise à neuf de la finition intérieure, ou des travaux extérieurs pour préparer votre bâtiment aux conditions climatiques d'ici — nous travaillons proprement, dans les délais, avec un devis détaillé en amont.</p>
+
+        <div class="reno-stats">
+          <div class="s">
+            <span class="n">A → Z</span>
+            <span class="l">Prise en charge complète</span>
+            <span class="d">Coordination de tous les corps de métier sur un seul mandat.</span>
+          </div>
+          <div class="s">
+            <span class="n">100%</span>
+            <span class="l">Conformité bâtiment</span>
+            <span class="d">Travaux exécutés selon les normes du Québec et la licence RBQ.</span>
+          </div>
+          <div class="s">
+            <span class="n">1 seul</span>
+            <span class="l">Interlocuteur</span>
+            <span class="d">Pas de sous-traitance opaque — nous restons votre point de contact.</span>
+          </div>
+          <div class="s">
+            <span class="n">∅</span>
+            <span class="l">Surprise au devis</span>
+            <span class="d">Soumission claire et détaillée avant le moindre coup de marteau.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="reno-right reveal" data-d="2">
+        <div class="pillars">
+
+          <article class="pillar">
+            <div class="pillar-head">
+              <div class="pillar-ico">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+                  <path d="M3 21 L3 9 L12 3 L21 9 L21 21 Z"/>
+                  <line x1="3" y1="14" x2="21" y2="14"/>
+                  <line x1="9" y1="14" x2="9" y2="21"/>
+                  <line x1="15" y1="14" x2="15" y2="21"/>
+                  <rect x="10.5" y="16" width="3" height="5"/>
+                </svg>
+              </div>
+              <span class="pillar-num">— PILIER 01</span>
+            </div>
+            <h3>Finition <em>intérieure</em>.</h3>
+            <p>Remise à neuf complète des espaces intérieurs : pose de gypse, tirage de joints, peinture, moulures, cadrages, portes — exécutés avec une finition nette, alignée et uniforme.</p>
+            <div class="pillar-tags">
+              <span>Gypse &amp; joints</span>
+              <span>Peinture</span>
+              <span>Moulures</span>
+              <span>Portes &amp; cadrages</span>
+              <span>Plafonds</span>
+              <span>Boiseries</span>
+            </div>
+          </article>
+
+          <article class="pillar dark">
+            <div class="pillar-head">
+              <div class="pillar-ico">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+                  <path d="M3 12 L12 4 L21 12"/>
+                  <path d="M5 11 L5 21 L19 21 L19 11"/>
+                  <line x1="9" y1="21" x2="9" y2="14"/>
+                  <line x1="15" y1="21" x2="15" y2="14"/>
+                  <line x1="5" y1="17" x2="19" y2="17"/>
+                  <path d="M2 21 L22 21"/>
+                </svg>
+              </div>
+              <span class="pillar-num">— PILIER 02</span>
+            </div>
+            <h3>Travaux <em>extérieurs</em>.</h3>
+            <p>Réparations et améliorations des structures exposées aux intempéries québécoises : balcons, fissures, clôtures, finition extérieure — pour une enveloppe durable et bien protégée.</p>
+            <div class="pillar-tags">
+              <span>Balcons</span>
+              <span>Fissures</span>
+              <span>Clôtures</span>
+              <span>Finition ext.</span>
+              <span>Préparation hiver</span>
+            </div>
+          </article>
+
+        </div>
+
+        <div class="reno-detail">
+          <h4>— Inclus dans nos rénovations</h4>
+          <ul>
+            <li>Démolition contrôlée et propre</li>
+            <li>Coordination des corps de métier</li>
+            <li>Gestion complète du chantier</li>
+            <li>Devis détaillé en amont</li>
+            <li>Respect des délais convenus</li>
+            <li>Nettoyage de fin de chantier</li>
+            <li>Inspection finale &amp; livraison</li>
+            <li>Conformité aux normes RBQ</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ EMERGENCY ============ -->
+<section class="emergency">
+  <div class="wrap">
+    <div class="emergency-inner">
+      <div class="reveal">
+        <span class="eyebrow" style="color:var(--accent)">— INTERVENTION D'URGENCE</span>
+        <h2 style="margin-top:18px">Dégât d'eau ?<br>Infiltration ? <em>On arrive.</em></h2>
+        <p class="lede">Nous intervenons rapidement, coordonnons avec votre assureur et produisons les devis Xactimate. Une seule équipe, de A à Z — pour limiter les dégâts et remettre votre bâtiment en état conforme.</p>
+        <div class="chips">
+          <span>Réponse rapide</span>
+          <span>Coordination assureur</span>
+          <span>Devis Xactimate</span>
+          <span>Normes Québec</span>
+        </div>
+        <div class="emergency-cta">
+          <a href="tel:8194524788" class="btn btn--accent btn--lg">📞 Appeler maintenant</a>
+          <a href="#contact" class="btn btn--lg">Soumettre une demande</a>
+        </div>
+      </div>
+
+      <div class="phone-card reveal" data-d="2">
+        <div class="head">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--paper)">LIGNES DIRECTES</span>
+          <span class="live">DISPONIBLE</span>
+        </div>
+        <div class="row">
+          <span class="k">Principale</span>
+          <a href="tel:8194524788">(819) 452-4788</a>
+        </div>
+        <div class="row">
+          <span class="k">Secondaire</span>
+          <a href="tel:5149438061">(514) 943-8061</a>
+        </div>
+        <div class="row">
+          <span class="k">Courriel</span>
+          <a href="mailto:info@cliniquedubatiment.ca" style="font-size:18px">info@cliniquedubatiment.ca</a>
+        </div>
+        <div class="row" style="border-bottom:0;padding-bottom:0">
+          <span class="k">Heures</span>
+          <span style="font-size:16px;font-weight:400">Lun–Ven · 8h00–18h00<br><small style="color:rgba(243,238,229,.5);font-family:'JetBrains Mono',monospace;font-size:11px">Sam · 9h00–16h00</small></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROCESS ============ -->
+<section class="section" id="process">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="left">
+        <span class="num">03 / 06</span>
+        <span class="label">Notre méthode</span>
+      </div>
+      <div>
+        <h2>Comment <em>ça fonctionne.</em></h2>
+        <p class="desc">Cinq étapes claires, exécutées avec la même rigueur sur chaque projet — pour des décisions transparentes et un chantier sans surprise.</p>
+      </div>
+    </div>
+
+    <div class="process-grid">
+      <div class="step reveal" data-d="1">
+        <span class="stnum">i.</span>
+        <h4>Prise de contact</h4>
+        <p>Appelez-nous ou remplissez le formulaire. Réponse rapide, généralement sous 24 h.</p>
+        <span class="stchip">— ÉTAPE 01</span>
+      </div>
+      <div class="step reveal" data-d="2">
+        <span class="stnum">ii.</span>
+        <h4>Visite &amp; analyse</h4>
+        <p>Inspection sur place pour évaluer précisément l'état et les besoins du chantier.</p>
+        <span class="stchip">— ÉTAPE 02</span>
+      </div>
+      <div class="step reveal" data-d="3">
+        <span class="stnum">iii.</span>
+        <h4>Devis détaillé</h4>
+        <p>Soumission claire, structurée et transparente — aucune surprise en cours de chantier.</p>
+        <span class="stchip">— ÉTAPE 03</span>
+      </div>
+      <div class="step reveal" data-d="4">
+        <span class="stnum">iv.</span>
+        <h4>Exécution</h4>
+        <p>Travaux réalisés avec rigueur, dans les délais convenus, selon les normes du bâtiment.</p>
+        <span class="stchip">— ÉTAPE 04</span>
+      </div>
+      <div class="step reveal" data-d="4">
+        <span class="stnum">v.</span>
+        <h4>Livraison</h4>
+        <p>Inspection finale, nettoyage du chantier et remise des clés. Satisfaction garantie.</p>
+        <span class="stchip">— ÉTAPE 05</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TESTIMONIALS ============ -->
+<section class="section testimonials" id="testimonials">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="left">
+        <span class="num" style="color:rgba(243,238,229,.5)">04 / 06</span>
+        <span class="label">Ce qu'ils disent</span>
+      </div>
+      <div>
+        <h2>Nos clients <em>parlent.</em></h2>
+        <p class="desc">Des témoignages réels, pour des projets exécutés avec rigueur — de la rénovation planifiée à l'intervention d'urgence.</p>
+      </div>
+    </div>
+
+    <div class="tgrid">
+      <article class="tcard reveal" data-d="1">
+        <span class="badge">— APRÈS-SINISTRE</span>
+        <div class="stars">★★★★★</div>
+        <p class="quote">Suite à un important dégât d'eau dans notre sous-sol, CDB est intervenu rapidement. Démolition, traitement, reconstruction — tout a été pris en charge. La coordination avec l'assureur s'est faite sans que j'aie à gérer quoi que ce soit. Résultat impeccable.</p>
+        <div class="who">
+          <span class="ini">ML</span>
+          <div class="meta">
+            <span class="name">Marie-Luce P.</span>
+            <span class="place">Montréal — Rosemont</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="tcard reveal" data-d="2">
+        <span class="badge">— SALLE DE BAIN</span>
+        <div class="stars">★★★★★</div>
+        <p class="quote">Rénovation complète de la salle de bain de notre condo. Travail propre, délais respectés, finitions soignées. L'équipe a su s'adapter à un espace compact et le résultat dépasse ce qu'on avait imaginé. Je recommande sans réserve.</p>
+        <div class="who">
+          <span class="ini">JF</span>
+          <div class="meta">
+            <span class="name">Jean-François B.</span>
+            <span class="place">Laval — Chomedey</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="tcard reveal" data-d="3">
+        <span class="badge">— PLANCHERS</span>
+        <div class="stars">★★★★★</div>
+        <p class="quote">Remplacement des planchers et travaux de peinture dans toute la maison. Ponctualité, propreté et communication claire du début à la fin. On a déjà planifié la rénovation de la cuisine avec eux pour cet automne.</p>
+        <div class="who">
+          <span class="ini">SK</span>
+          <div class="meta">
+            <span class="name">Sophie K.</span>
+            <span class="place">Longueuil — Saint-Hubert</span>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ZONE ============ -->
+<section class="section zone" id="zone">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="left">
+        <span class="num">05 / 06</span>
+        <span class="label">Zone de service</span>
+      </div>
+      <div>
+        <h2>Montréal et <em>région métropolitaine.</em></h2>
+        <p class="desc">Nous intervenons sur l'île de Montréal, à Laval, à Longueuil et dans l'ensemble de la région métropolitaine.</p>
+      </div>
+    </div>
+
+    <div class="zone-grid">
+      <div class="reveal">
+        <ul class="zone-list">
+          <li><span>Montréal</span><span class="qty">— H1A → H4Z</span></li>
+          <li><span>Laval</span><span class="qty">— H7A → H7Z</span></li>
+          <li><span>Longueuil</span><span class="qty">— J3Y → J4P</span></li>
+          <li><span>Rive-Nord</span><span class="qty">— SUR DEMANDE</span></li>
+          <li><span>Rive-Sud</span><span class="qty">— SUR DEMANDE</span></li>
+          <li><span>Région métro.</span><span class="qty">— GTA QC</span></li>
+        </ul>
+        <p style="margin-top:32px">Vous êtes en dehors de cette zone ? <strong style="color:var(--ink)">Contactez-nous</strong> — certains projets peuvent être pris en charge selon leur nature et leur volume.</p>
+        <a href="#contact" class="btn btn--solid" style="margin-top:18px">Vérifier ma zone <span class="arr">→</span></a>
+      </div>
+
+      <div class="map-card reveal" data-d="2">
+        <div class="map-head">
+          <span>CARTE / SECTEUR</span>
+          <span class="live">EN SERVICE</span>
+        </div>
+        <svg viewBox="0 0 400 360" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs>
+            <pattern id="watergrid" patternUnits="userSpaceOnUse" width="14" height="14">
+              <path d="M0 7 Q3.5 4 7 7 T14 7" stroke="rgba(243,238,229,.08)" stroke-width="0.6" fill="none"/>
+            </pattern>
+            <pattern id="landgrid" patternUnits="userSpaceOnUse" width="22" height="22">
+              <circle cx="2" cy="2" r="0.6" fill="rgba(243,238,229,.12)"/>
+            </pattern>
+          </defs>
+          <rect width="400" height="360" fill="url(#watergrid)"/>
+
+          <!-- Stylized Montreal Island -->
+          <path d="M70 130 Q90 95 140 90 Q200 80 250 100 Q310 115 340 150 Q360 180 340 210 Q300 245 240 250 Q170 255 110 235 Q70 215 60 180 Q55 150 70 130 Z"
+                fill="url(#landgrid)" stroke="rgba(243,238,229,.4)" stroke-width="1.2"/>
+          <!-- Laval -->
+          <path d="M100 60 Q140 50 200 55 Q260 60 300 75 Q280 90 230 85 Q180 80 140 85 Q110 90 100 60 Z"
+                fill="rgba(210,73,27,.06)" stroke="rgba(243,238,229,.3)" stroke-width="1" stroke-dasharray="3 2"/>
+          <!-- Longueuil / Rive-Sud -->
+          <path d="M180 280 Q230 270 290 275 Q340 280 370 295 Q360 320 310 325 Q260 330 210 325 Q175 315 180 280 Z"
+                fill="rgba(210,73,27,.06)" stroke="rgba(243,238,229,.3)" stroke-width="1" stroke-dasharray="3 2"/>
+
+          <!-- Pins -->
+          <g>
+            <circle cx="200" cy="170" r="6" fill="#d2491b"/>
+            <circle cx="200" cy="170" r="14" fill="none" stroke="#d2491b" stroke-width="1" opacity=".5">
+              <animate attributeName="r" from="6" to="20" dur="2.4s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" from=".7" to="0" dur="2.4s" repeatCount="indefinite"/>
+            </circle>
+
+            <circle cx="200" cy="72" r="5" fill="#f3eee5"/>
+            <circle cx="280" cy="300" r="5" fill="#f3eee5"/>
+          </g>
+
+          <!-- Labels -->
+          <g font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="2" fill="#f3eee5">
+            <text x="200" y="60" text-anchor="middle" opacity=".75">LAVAL</text>
+            <text x="200" y="195" text-anchor="middle" font-weight="600" fill="#d2491b">MONTRÉAL</text>
+            <text x="280" y="320" text-anchor="middle" opacity=".75">LONGUEUIL</text>
+          </g>
+          <!-- compass -->
+          <g transform="translate(360,40)">
+            <circle r="14" fill="none" stroke="rgba(243,238,229,.3)" stroke-width="0.8"/>
+            <path d="M0 -10 L3 0 L0 10 L-3 0 Z" fill="#d2491b"/>
+            <text y="-18" font-family="JetBrains Mono, monospace" font-size="8" fill="rgba(243,238,229,.5)" text-anchor="middle">N</text>
+          </g>
+        </svg>
+        <div style="display:flex;justify-content:space-between;margin-top:18px;padding-top:18px;border-top:1px solid rgba(243,238,229,.18);font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.16em;color:rgba(243,238,229,.6)">
+          <span>45.50°N / 73.56°W</span>
+          <span>QUÉBEC · CA</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section class="contact" id="contact" style="background:var(--paper)">
+  <div class="wrap">
+    <div class="section-head reveal" style="margin-bottom:48px">
+      <div class="left">
+        <span class="num">06 / 06</span>
+        <span class="label">Démarrez votre projet</span>
+      </div>
+      <div>
+        <h2>Demandez votre <em>soumission.</em></h2>
+        <p class="desc">Réponse rapide · Devis détaillé et transparent · Aucune obligation · Travaux conformes aux bonnes pratiques du bâtiment au Québec · Un seul interlocuteur du début à la fin.</p>
+      </div>
+    </div>
+
+    <div class="contact-grid">
+      <div class="contact-info reveal">
+        <h3 style="font-family:'Fraunces',serif;font-size:32px;font-weight:500;letter-spacing:-.02em;margin:0 0 22px">Nous joindre</h3>
+        <p>Pour toute question, urgence ou demande de soumission — voici comment nous joindre directement.</p>
+        <div class="info-list">
+          <div class="row">
+            <span class="k">Téléphones</span>
+            <div class="v">
+              <a href="tel:8194524788">(819) 452-4788</a>
+              <a href="tel:5149438061">(514) 943-8061</a>
+              <small>Disponible aussi pour urgences</small>
+            </div>
+          </div>
+          <div class="row">
+            <span class="k">Courriel</span>
+            <div class="v">
+              <a href="mailto:info@cliniquedubatiment.ca">info@cliniquedubatiment.ca</a>
+              <small>Réponse sous 24h ouvrables</small>
+            </div>
+          </div>
+          <div class="row">
+            <span class="k">Zone</span>
+            <div class="v">
+              <span>Montréal, Laval, Longueuil</span>
+              <small>Et région métropolitaine</small>
+            </div>
+          </div>
+          <div class="row">
+            <span class="k">Heures</span>
+            <div class="v">
+              <span>Lun–Ven · 8h00 – 18h00</span>
+              <small>Sam · 9h00 – 16h00 — Urgences 24/7</small>
+            </div>
+          </div>
+          <div class="row" style="border-bottom:0">
+            <span class="k">Licence</span>
+            <div class="v">
+              <span style="font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.06em">RBQ 5821-2606-01</span>
+              <small>Conforme à la Régie du Bâtiment du Québec</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <form class="form-card reveal" data-d="2" id="quoteForm" novalidate>
+        <div class="form-head">
+          <h3>Demande de soumission</h3>
+          <div class="ref"><strong>CDB · FORM-01</strong>Réponse < 24h ouvrables</div>
+        </div>
+
+        <div class="fgrid">
+          <div class="field">
+            <label for="prenom">Prénom <span class="req">*</span></label>
+            <input id="prenom" name="prenom" type="text" required autocomplete="given-name">
+          </div>
+          <div class="field">
+            <label for="nom">Nom <span class="req">*</span></label>
+            <input id="nom" name="nom" type="text" required autocomplete="family-name">
+          </div>
+          <div class="field">
+            <label for="tel">Téléphone <span class="req">*</span></label>
+            <input id="tel" name="tel" type="tel" required autocomplete="tel" placeholder="(514) 000-0000">
+          </div>
+          <div class="field">
+            <label for="email">Courriel <span class="req">*</span></label>
+            <input id="email" name="email" type="email" required autocomplete="email">
+          </div>
+          <div class="field full">
+            <label for="service">Type de service <span class="req">*</span></label>
+            <select id="service" name="service" required>
+              <option value="">Sélectionnez un service…</option>
+              <option>Travaux après-sinistre (dégât d'eau, etc.)</option>
+              <option>Rénovation salle de bain</option>
+              <option>Planchers</option>
+              <option>Finition intérieure</option>
+              <option>Cuisine</option>
+              <option>Travaux extérieurs</option>
+              <option>Structure & Division intérieure</option>
+              <option>Plomberie mineure</option>
+              <option>Autre / Plusieurs services</option>
+            </select>
+          </div>
+          <div class="field full">
+            <label for="ville">Ville / Quartier</label>
+            <input id="ville" name="ville" type="text" placeholder="ex. Rosemont, Chomedey, Saint-Hubert…">
+          </div>
+        </div>
+
+        <div class="field full">
+          <label>Services additionnels <span style="color:var(--muted)">— optionnel</span></label>
+          <div class="checks">
+            <label class="check"><input type="checkbox" name="add" value="assureur"> Coordination assureur</label>
+            <label class="check"><input type="checkbox" name="add" value="xactimate"> Devis Xactimate</label>
+            <label class="check"><input type="checkbox" name="add" value="urgence"> Urgence (48 h)</label>
+            <label class="check"><input type="checkbox" name="add" value="multi"> Plusieurs pièces</label>
+          </div>
+        </div>
+
+        <div class="field full">
+          <label for="message">Description du projet</label>
+          <textarea id="message" name="message" placeholder="Décrivez brièvement votre projet, son urgence, et toute information utile…"></textarea>
+        </div>
+
+        <div class="form-foot">
+          <button class="submit" type="submit">
+            <span>Envoyer ma demande</span>
+            <span class="arr">→</span>
+          </button>
+          <p class="disclaimer">En soumettant ce formulaire, vous acceptez d'être contacté par notre équipe. <strong style="color:var(--ink)">Aucun engagement.</strong></p>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-mega">CLINIQUE<em>·</em>DU<em>·</em>BÂTIMENT</div>
+
+    <div class="footer-grid">
+      <div class="fcol fbrand">
+        <a href="#" class="brand">
+          <span class="brand-mark">C<span style="color:var(--accent)">·</span>B</span>
+          <span class="brand-text"><span class="l1">Clinique du Bâtiment</span><span class="l2">CDB Inc. — Québec</span></span>
+        </a>
+        <p>Expert en rénovation résidentielle et travaux après-sinistre au Québec depuis plusieurs années. Un seul intervenant, tout réglé.</p>
+        <div class="socials">
+          <a href="#" aria-label="Facebook">f</a>
+          <a href="#" aria-label="Instagram">ig</a>
+          <a href="#" aria-label="LinkedIn">in</a>
+        </div>
+      </div>
+
+      <div class="fcol">
+        <h5>— Services</h5>
+        <ul>
+          <li><a href="#services">Après-sinistre</a></li>
+          <li><a href="#services">Salles de bain</a></li>
+          <li><a href="#services">Planchers</a></li>
+          <li><a href="#services">Finition intérieure</a></li>
+          <li><a href="#services">Cuisine</a></li>
+          <li><a href="#services">Travaux extérieurs</a></li>
+        </ul>
+      </div>
+
+      <div class="fcol">
+        <h5>— Navigation</h5>
+        <ul>
+          <li><a href="#about">À propos</a></li>
+          <li><a href="#process">Notre processus</a></li>
+          <li><a href="#testimonials">Témoignages</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li><a href="#contact">Soumission gratuite</a></li>
+        </ul>
+      </div>
+
+      <div class="fcol">
+        <h5>— Zone de service</h5>
+        <ul>
+          <li><a href="#zone">Montréal</a></li>
+          <li><a href="#zone">Laval</a></li>
+          <li><a href="#zone">Longueuil</a></li>
+          <li><a href="#zone">Rive-Nord</a></li>
+          <li><a href="#zone">Rive-Sud</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-base">
+      <div>© 2026 Clinique du Bâtiment CDB Inc. — Tous droits réservés.</div>
+      <div class="lic">LICENCE RBQ <strong>5821-2606-01</strong></div>
+      <div class="links">
+        <a href="#">Politique de confidentialité</a>
+        <a href="#">Conditions d'utilisation</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Scroll reveal
+(function(){
+  const els = document.querySelectorAll('.reveal');
+  if(!('IntersectionObserver' in window)){ els.forEach(e=>e.classList.add('in')); return; }
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(en=>{
+      if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); }
+    });
+  }, {rootMargin:'-50px 0px -50px 0px', threshold:0.05});
+  els.forEach(e=>io.observe(e));
+})();
+
+// Mobile menu
+(function(){
+  const burger = document.getElementById('burger');
+  const menu = document.getElementById('mmenu');
+  const close = document.getElementById('mclose');
+  if(!burger) return;
+  const open = ()=>{ menu.classList.add('open'); document.body.style.overflow='hidden'; };
+  const shut = ()=>{ menu.classList.remove('open'); document.body.style.overflow=''; };
+  burger.addEventListener('click', open);
+  close.addEventListener('click', shut);
+  menu.querySelectorAll('.mlink').forEach(a=>a.addEventListener('click', shut));
+})();
+
+// Toggle "active" state on checkbox cards
+document.querySelectorAll('.check input').forEach(input=>{
+  const sync = ()=> input.parentElement.classList.toggle('active', input.checked);
+  input.addEventListener('change', sync); sync();
+});
+
+// Form submit (demo handler)
+const f = document.getElementById('quoteForm');
+if(f){
+  f.addEventListener('submit', e=>{
+    e.preventDefault();
+    const btn = f.querySelector('.submit span:first-child');
+    const orig = btn.textContent;
+    btn.textContent = 'Demande envoyée ✓';
+    f.querySelector('.submit').style.background = 'var(--accent)';
+    f.querySelector('.submit').style.borderColor = 'var(--accent)';
+    setTimeout(()=>{ btn.textContent = orig; f.reset();
+      document.querySelectorAll('.check').forEach(c=>c.classList.remove('active'));
+      f.querySelector('.submit').style.background = '';
+      f.querySelector('.submit').style.borderColor = '';
+    }, 3500);
+  });
+}
+
+// Phone format helper
+const tel = document.getElementById('tel');
+if(tel){
+  tel.addEventListener('input', ()=>{
+    let v = tel.value.replace(/\D/g,'').slice(0,10);
+    if(v.length>=7) tel.value = `(${v.slice(0,3)}) ${v.slice(3,6)}-${v.slice(6)}`;
+    else if(v.length>=4) tel.value = `(${v.slice(0,3)}) ${v.slice(3)}`;
+    else if(v.length>=1) tel.value = `(${v}`;
+  });
+}
+</script>
+
+</body>
+</html>
