@@ -1809,6 +1809,8 @@ body::after{
       </div>
 
       <form class="form-card reveal" data-d="2" id="quoteForm" action="https://formspree.io/f/01fca7a5e21a4c54a2e58f4033b2b1f7" method="POST">
+        <input type="hidden" name="_cc" value="crimaud@hotmail.com">
+        <input type="hidden" name="_to" value="info@cliniquedubatiment.ca">
         <div class="form-head">
           <h3>Demande de soumission</h3>
           <div class="ref"><strong>CDB · FORM-01</strong>Réponse < 24h ouvrables</div>
@@ -1975,21 +1977,58 @@ document.querySelectorAll('.check input').forEach(input=>{
   input.addEventListener('change', sync); sync();
 });
 
-// Form submit (demo handler)
+// Form submit handler
 const f = document.getElementById('quoteForm');
 if(f){
   f.addEventListener('submit', e=>{
     e.preventDefault();
     const btn = f.querySelector('.submit span:first-child');
     const orig = btn.textContent;
-    btn.textContent = 'Demande envoyée ✓';
-    f.querySelector('.submit').style.background = 'var(--accent)';
-    f.querySelector('.submit').style.borderColor = 'var(--accent)';
-    setTimeout(()=>{ btn.textContent = orig; f.reset();
-      document.querySelectorAll('.check').forEach(c=>c.classList.remove('active'));
-      f.querySelector('.submit').style.background = '';
-      f.querySelector('.submit').style.borderColor = '';
-    }, 3500);
+    
+    // Create FormData from the form
+    const formData = new FormData(f);
+    
+    // Show loading state
+    btn.textContent = 'Envoi en cours...';
+    f.querySelector('.submit').disabled = true;
+
+    fetch(f.action, {
+      method: f.method,
+      body: formData,
+      headers: {
+        'Accept': 'application/json'
+      }
+    })
+    .then(response => {
+      if (response.ok) {
+        btn.textContent = 'Demande envoyée ✓';
+        f.querySelector('.submit').style.background = 'var(--accent)';
+        f.querySelector('.submit').style.borderColor = 'var(--accent)';
+        f.reset();
+        document.querySelectorAll('.check').forEach(c=>c.classList.remove('active'));
+      } else {
+        response.json().then(data => {
+          if (Object.hasOwn(data, 'errors')) {
+            alert(data["errors"].map(error => error["message"]).join(", "));
+          } else {
+            alert("Oups! Il y a eu un problème lors de l'envoi.");
+          }
+        });
+        btn.textContent = orig;
+      }
+    })
+    .catch(error => {
+      alert("Oups! Il y a eu un problème lors de l'envoi.");
+      btn.textContent = orig;
+    })
+    .finally(() => {
+      f.querySelector('.submit').disabled = false;
+      setTimeout(()=>{ 
+        btn.textContent = orig;
+        f.querySelector('.submit').style.background = '';
+        f.querySelector('.submit').style.borderColor = '';
+      }, 5000);
+    });
   });
 }
 
