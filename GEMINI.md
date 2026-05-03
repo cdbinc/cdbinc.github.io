@@ -30,5 +30,5 @@ Ce projet utilise Git et GitHub CLI (`gh`).
 - [x] Remplacer `index.html` par du vrai code HTML.
 - [x] Créer `style.css` et `script.js`.
 - [ ] Personnaliser le contenu (textes et images).
-- [ ] Créer le dépôt GitHub avec `gh repo create`.
+- [x] Créer le dépôt GitHub avec `gh repo create`.
 
