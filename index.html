@@ -2016,8 +2016,11 @@ body::after{
         </div>
       </div>
 
-      <form class="form-card reveal" data-d="2" id="quoteForm" action="https://formspree.io/info@cliniquedubatiment.ca" method="POST" aria-labelledby="form-title">
+      <form class="form-card reveal" data-d="2" id="quoteForm" action="https://formsubmit.co/ajax/info@cliniquedubatiment.ca" method="POST" aria-labelledby="form-title">
         <input type="hidden" name="_cc" value="crimaud@hotmail.com">
+        <input type="hidden" name="_subject" value="Nouvelle soumission — Clinique du Bâtiment CDB Inc.">
+        <input type="hidden" name="_template" value="table">
+        <input type="hidden" name="_captcha" value="false">
         <div class="form-head">
           <h3 id="form-title">Demande de soumission</h3>
           <div class="ref"><strong>CDB · FORM-01</strong>Réponse < 24h ouvrables</div>
@@ -2205,39 +2208,33 @@ if(f){
     fetch(f.action, {
       method: f.method,
       body: formData,
-      headers: {
-        'Accept': 'application/json'
-      }
+      headers: { 'Accept': 'application/json' }
     })
-    .then(response => {
-      if (response.ok) {
+    .then(response => response.json())
+    .then(data => {
+      const ok = data.success === 'true' || data.success === true || data.ok;
+      if (ok) {
         btn.textContent = 'Demande envoyée ✓';
         f.querySelector('.submit').style.background = 'var(--accent)';
         f.querySelector('.submit').style.borderColor = 'var(--accent)';
         f.reset();
         document.querySelectorAll('.check').forEach(c=>c.classList.remove('active'));
       } else {
-        response.json().then(data => {
-          if (Object.hasOwn(data, 'errors')) {
-            alert(data["errors"].map(error => error["message"]).join(", "));
-          } else {
-            alert("Oups! Il y a eu un problème lors de l'envoi.");
-          }
-        });
+        alert("Oups ! Il y a eu un problème lors de l'envoi. Appelez-nous au (819) 452-4788.");
         btn.textContent = orig;
       }
     })
-    .catch(error => {
-      alert("Oups! Il y a eu un problème lors de l'envoi.");
+    .catch(() => {
+      alert("Oups ! Erreur réseau. Appelez-nous au (819) 452-4788 ou écrivez sur WhatsApp.");
       btn.textContent = orig;
     })
     .finally(() => {
       f.querySelector('.submit').disabled = false;
-      setTimeout(()=>{ 
+      setTimeout(()=>{
         btn.textContent = orig;
         f.querySelector('.submit').style.background = '';
         f.querySelector('.submit').style.borderColor = '';
-      }, 5000);
+      }, 6000);
     });
   });
 }
