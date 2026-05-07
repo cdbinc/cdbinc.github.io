@@ -11,6 +11,20 @@
 <meta property="og:type" content="website" />
 <meta property="og:locale" content="fr_CA" />
 
+<link rel="canonical" href="https://cliniquedubatiment.ca/" />
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="logo.png" type="image/png">
+<link rel="preload" as="image" href="logo.png" fetchpriority="high">
+
+<meta property="og:url" content="https://cliniquedubatiment.ca/" />
+<meta property="og:image" content="https://cliniquedubatiment.ca/logo.png" />
+<meta property="og:image:alt" content="Clinique du Bâtiment — Rénovation résidentielle Québec" />
+<meta property="og:site_name" content="Clinique du Bâtiment CDB Inc." />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Clinique du Bâtiment — Rénovation résidentielle & après-sinistre · Québec" />
+<meta name="twitter:description" content="Rénovation résidentielle et reconstruction après-sinistre. Licence RBQ 5821-2606-01. Montréal · Laval · Longueuil." />
+<meta name="twitter:image" content="https://cliniquedubatiment.ca/logo.png" />
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700;9..144,800;9..144,900&family=JetBrains+Mono:wght@300;400;500;600&family=Inter+Tight:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -910,9 +924,138 @@ body::after{
 .mobilemenu nav a em{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;color:rgba(243,238,229,.4);font-style:normal}
 .mobilemenu .mfoot{margin-top:auto;padding-top:32px;display:flex;flex-direction:column;gap:16px}
 .mobilemenu .mfoot a{font-family:'JetBrains Mono',monospace;font-size:14px;letter-spacing:.1em}
+
+/* ------- Skip link ------- */
+.skip-link{position:absolute;top:-100%;left:1rem;z-index:9999;padding:12px 20px;background:var(--accent);color:var(--paper);font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.1em;text-transform:uppercase;transition:top .2s}
+.skip-link:focus{top:1rem}
+
+/* ------- WhatsApp FAB ------- */
+.wa-fab{position:fixed;bottom:24px;right:24px;z-index:80;width:56px;height:56px;border-radius:50%;background:#25d366;color:#fff;display:grid;place-items:center;box-shadow:0 4px 16px rgba(37,211,102,.4);transition:transform .25s,box-shadow .25s;text-decoration:none}
+.wa-fab:hover{transform:scale(1.08);box-shadow:0 6px 24px rgba(37,211,102,.6)}
+.wa-fab svg{width:28px;height:28px}
+
+/* ------- Bouton submit désactivé ------- */
+.form-foot .submit:disabled{opacity:.7;cursor:not-allowed}
+
+/* ------- FAQ ------- */
+.faq{background:var(--paper-2);border-top:1px solid var(--ink)}
+.faq-list{display:grid;grid-template-columns:1fr 1fr;gap:0;border-top:1px solid var(--ink);border-left:1px solid var(--ink)}
+.faq-item{border-right:1px solid var(--ink);border-bottom:1px solid var(--ink);padding:clamp(22px,2.4vw,34px);display:flex;flex-direction:column;gap:10px}
+.faq-prefix{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.2em;color:var(--accent);text-transform:uppercase}
+.faq-q{font-family:'Fraunces',serif;font-size:clamp(18px,1.5vw,22px);font-weight:500;letter-spacing:-.02em;line-height:1.2;margin:0;color:var(--ink)}
+.faq-a{font-size:15px;line-height:1.65;color:var(--ink-soft);margin:0}
+.faq-a strong{color:var(--ink);font-weight:600}
+@media(max-width:780px){
+  .faq-list{grid-template-columns:1fr}
+  .faq-item{border-right:0}
+}
 </style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HomeAndConstructionBusiness",
+  "name": "Clinique du Bâtiment CDB Inc.",
+  "url": "https://cliniquedubatiment.ca",
+  "logo": "https://cliniquedubatiment.ca/logo.png",
+  "image": "https://cliniquedubatiment.ca/logo.png",
+  "description": "Rénovation résidentielle complète et reconstruction après-sinistre au Québec. Licence RBQ 5821-2606-01. Montréal · Laval · Longueuil.",
+  "telephone": ["+18194524788", "+15149438061"],
+  "email": "info@cliniquedubatiment.ca",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Montréal",
+    "addressRegion": "QC",
+    "addressCountry": "CA"
+  },
+  "areaServed": [
+    {"@type": "City", "name": "Montréal"},
+    {"@type": "City", "name": "Laval"},
+    {"@type": "City", "name": "Longueuil"}
+  ],
+  "openingHoursSpecification": [
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"],
+      "opens": "08:00",
+      "closes": "18:00"
+    },
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": "Saturday",
+      "opens": "09:00",
+      "closes": "16:00"
+    }
+  ],
+  "priceRange": "$$",
+  "currenciesAccepted": "CAD",
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "5",
+    "reviewCount": "3",
+    "bestRating": "5",
+    "worstRating": "1"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Dans quelles villes intervenez-vous ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Nous couvrons Montréal, Laval et Longueuil ainsi que l'ensemble de la région métropolitaine. Pour des projets hors zone, contactez-nous — certains mandats peuvent être pris en charge selon leur nature."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Avez-vous une licence RBQ en règle ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Oui. CDB Inc. détient la licence RBQ 5821-2606-01, délivrée par la Régie du Bâtiment du Québec. Tous nos travaux sont réalisés dans le strict respect des normes en vigueur."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Quel est le délai pour recevoir une soumission ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Nous répondons généralement sous 24 heures ouvrables. Une visite sur place est ensuite planifiée pour évaluer précisément le chantier avant de remettre un devis détaillé et transparent."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Travaillez-vous avec les compagnies d'assurance ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Oui. Pour les travaux après-sinistre, nous coordonnons directement avec votre assureur et produisons les devis au format Xactimate — le standard utilisé par l'industrie de l'assurance au Québec."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Intervenez-vous en situation d'urgence ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Oui. En cas de dégât d'eau, d'infiltration ou de sinistre, nous pouvons intervenir rapidement. Appelez-nous directement au (819) 452-4788 ou écrivez-nous sur WhatsApp pour une prise en charge prioritaire."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Y a-t-il des frais pour la visite et la soumission ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "La visite et la soumission sont gratuites et sans engagement. Nous nous déplaçons pour évaluer votre projet, puis vous remettons un devis clair et structuré — sans pression ni surprise."
+      }
+    }
+  ]
+}
+</script>
 </head>
 <body>
+<a href="#main" class="skip-link">Aller au contenu principal</a>
 
 <!-- ============ UTILITY BAR ============ -->
 <div class="utility">
@@ -932,7 +1075,7 @@ body::after{
 <header class="nav">
   <div class="nav-inner">
     <a href="tel:8194524788" class="brand" aria-label="Appeler Clinique du Bâtiment">
-      <img src="logo.png" alt="Logo Clinique du Bâtiment" style="height: 60px; width: auto;">
+      <img src="logo.png" alt="Logo Clinique du Bâtiment" style="height: 60px; width: auto;" width="200" height="60" fetchpriority="high">
     </a>
     <nav class="menu" aria-label="Navigation principale">
       <a href="#about">À propos</a>
@@ -974,6 +1117,8 @@ body::after{
     <a href="mailto:info@cliniquedubatiment.ca">✉ info@cliniquedubatiment.ca</a>
   </div>
 </div>
+
+<main id="main">
 
 <!-- ============ HERO ============ -->
 <section class="hero">
@@ -1752,6 +1897,55 @@ body::after{
   </div>
 </section>
 
+<!-- ============ FAQ ============ -->
+<section class="section faq" id="faq">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="left">
+        <span class="num">— FAQ</span>
+        <span class="label">Questions fréquentes</span>
+      </div>
+      <div>
+        <h2>Vos questions.<br><em>Nos réponses.</em></h2>
+        <p class="desc">Tout ce que vous devez savoir avant de nous contacter — pour démarrer votre projet en toute confiance.</p>
+      </div>
+    </div>
+
+    <div class="faq-list">
+      <div class="faq-item reveal">
+        <span class="faq-prefix">— Q.01</span>
+        <h3 class="faq-q">Dans quelles villes intervenez-vous ?</h3>
+        <p class="faq-a">Nous couvrons <strong>Montréal, Laval et Longueuil</strong> ainsi que l'ensemble de la région métropolitaine. Pour des projets hors zone, contactez-nous — certains mandats peuvent être pris en charge selon leur nature.</p>
+      </div>
+      <div class="faq-item reveal" data-d="1">
+        <span class="faq-prefix">— Q.02</span>
+        <h3 class="faq-q">Avez-vous une licence RBQ en règle ?</h3>
+        <p class="faq-a">Oui. CDB Inc. détient la <strong>licence RBQ 5821-2606-01</strong>, délivrée par la Régie du Bâtiment du Québec. Tous nos travaux sont réalisés dans le strict respect des normes en vigueur.</p>
+      </div>
+      <div class="faq-item reveal">
+        <span class="faq-prefix">— Q.03</span>
+        <h3 class="faq-q">Quel est le délai pour recevoir une soumission ?</h3>
+        <p class="faq-a">Nous répondons généralement <strong>sous 24 heures ouvrables</strong>. Une visite sur place est ensuite planifiée pour évaluer précisément le chantier avant de remettre un devis détaillé.</p>
+      </div>
+      <div class="faq-item reveal" data-d="1">
+        <span class="faq-prefix">— Q.04</span>
+        <h3 class="faq-q">Travaillez-vous avec les compagnies d'assurance ?</h3>
+        <p class="faq-a">Oui. Pour les travaux après-sinistre, nous <strong>coordonnons directement avec votre assureur</strong> et produisons les devis au format Xactimate — le standard utilisé par l'industrie de l'assurance au Québec.</p>
+      </div>
+      <div class="faq-item reveal">
+        <span class="faq-prefix">— Q.05</span>
+        <h3 class="faq-q">Intervenez-vous en situation d'urgence ?</h3>
+        <p class="faq-a">Oui. En cas de <strong>dégât d'eau, d'infiltration ou de sinistre</strong>, appelez-nous au (819) 452-4788 ou écrivez-nous sur WhatsApp — nous assurons une prise en charge prioritaire et rapide.</p>
+      </div>
+      <div class="faq-item reveal" data-d="1">
+        <span class="faq-prefix">— Q.06</span>
+        <h3 class="faq-q">Y a-t-il des frais pour la visite et la soumission ?</h3>
+        <p class="faq-a"><strong>La visite et la soumission sont gratuites et sans engagement.</strong> Nous nous déplaçons pour évaluer votre projet et vous remettons un devis clair et structuré — sans pression ni surprise.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ============ CONTACT ============ -->
 <section class="contact" id="contact" style="background:var(--paper)">
   <div class="wrap">
@@ -1787,6 +1981,16 @@ body::after{
             </div>
           </div>
           <div class="row">
+            <span class="k">WhatsApp</span>
+            <div class="v">
+              <a href="https://wa.me/18194524788" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:10px;">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="#25d366" aria-hidden="true" style="flex-shrink:0"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.017.502 3.919 1.384 5.594L0 24l6.545-1.378C8.205 23.496 10.063 24 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.804c-1.856 0-3.585-.5-5.074-1.37l-.363-.216-3.885.818.824-3.795-.237-.39A9.769 9.769 0 0 1 2.196 12C2.196 6.572 6.572 2.196 12 2.196c5.428 0 9.804 4.376 9.804 9.804 0 5.428-4.376 9.804-9.804 9.804z"/></svg>
+                (819) 452-4788
+              </a>
+              <small>Message direct — réponse rapide</small>
+            </div>
+          </div>
+          <div class="row">
             <span class="k">Zone</span>
             <div class="v">
               <span>Montréal, Laval, Longueuil</span>
@@ -1810,10 +2014,10 @@ body::after{
         </div>
       </div>
 
-      <form class="form-card reveal" data-d="2" id="quoteForm" action="https://formspree.io/info@cliniquedubatiment.ca" method="POST">
+      <form class="form-card reveal" data-d="2" id="quoteForm" action="https://formspree.io/info@cliniquedubatiment.ca" method="POST" aria-labelledby="form-title">
         <input type="hidden" name="_cc" value="crimaud@hotmail.com">
         <div class="form-head">
-          <h3>Demande de soumission</h3>
+          <h3 id="form-title">Demande de soumission</h3>
           <div class="ref"><strong>CDB · FORM-01</strong>Réponse < 24h ouvrables</div>
         </div>
 
@@ -1882,21 +2086,24 @@ body::after{
   </div>
 </section>
 
+</main>
+
 <!-- ============ FOOTER ============ -->
 <footer class="footer">
   <div class="wrap">
-    <div class="footer-mega">CLINIQUE<em>·</em>DU<em>·</em>BÂTIMENT</div>
-
     <div class="footer-grid">
       <div class="fcol fbrand">
-        <a href="tel:8194524788" class="brand">
-          <img src="logo.png" alt="Logo" style="height: 50px; width: auto; filter: brightness(0) invert(1);">
+        <a href="tel:8194524788" style="display:inline-flex;align-items:center;background:var(--paper-2);padding:10px 14px;border:1px solid rgba(243,238,229,.18);">
+          <img src="logo.png" alt="Logo Clinique du Bâtiment" style="height: 44px; width: auto;" loading="lazy">
         </a>
         <p>Expert en rénovation résidentielle et travaux après-sinistre au Québec depuis plusieurs années. Un seul intervenant, tout réglé.</p>
         <div class="socials">
           <a href="#" aria-label="Facebook">f</a>
           <a href="#" aria-label="Instagram">ig</a>
           <a href="#" aria-label="LinkedIn">in</a>
+          <a href="https://wa.me/18194524788" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" title="WhatsApp — (819) 452-4788">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.017.502 3.919 1.384 5.594L0 24l6.545-1.378C8.205 23.496 10.063 24 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.804c-1.856 0-3.585-.5-5.074-1.37l-.363-.216-3.885.818.824-3.795-.237-.39A9.769 9.769 0 0 1 2.196 12C2.196 6.572 6.572 2.196 12 2.196c5.428 0 9.804 4.376 9.804 9.804 0 5.428-4.376 9.804-9.804 9.804z"/></svg>
+          </a>
         </div>
       </div>
 
@@ -1918,6 +2125,7 @@ body::after{
           <li><a href="#about">À propos</a></li>
           <li><a href="#process">Notre processus</a></li>
           <li><a href="#testimonials">Témoignages</a></li>
+          <li><a href="#faq">FAQ</a></li>
           <li><a href="#contact">Contact</a></li>
           <li><a href="#contact">Soumission gratuite</a></li>
         </ul>
@@ -2044,6 +2252,14 @@ if(tel){
   });
 }
 </script>
+
+<!-- WhatsApp floating button -->
+<a href="https://wa.me/18194524788" class="wa-fab" target="_blank" rel="noopener noreferrer" aria-label="Nous contacter sur WhatsApp">
+  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+    <path d="M12 0C5.373 0 0 5.373 0 12c0 2.017.502 3.919 1.384 5.594L0 24l6.545-1.378C8.205 23.496 10.063 24 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.804c-1.856 0-3.585-.5-5.074-1.37l-.363-.216-3.885.818.824-3.795-.237-.39A9.769 9.769 0 0 1 2.196 12C2.196 6.572 6.572 2.196 12 2.196c5.428 0 9.804 4.376 9.804 9.804 0 5.428-4.376 9.804-9.804 9.804z"/>
+  </svg>
+</a>
 
 </body>
 </html>
