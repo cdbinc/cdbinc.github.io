@@ -3,3 +3,27 @@ node_modules/
 dist/
 build/
 .env
+
+# Installateurs & exécutables
+*.exe
+
+# Médias lourds / archives
+*.mp4
+*.zip
+
+# Fichiers de sauvegarde
+*.bak
+index.html.bak*
+script.js.bak
+style.css.bak
+
+# Brouillons & notes
+prompts.txt
+Prompt.docx
+
+# Dossier de livrables internes (non destiné au web public)
+LIVRABLES_FINAUX/
+
+# Fichiers images temporaires hors charte
+what.png
+whatsapp-icon-*.avif

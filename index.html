@@ -953,6 +953,219 @@ body::after{
   .faq-item{border-right:0}
 }
 
+/* ============ PORTFOLIO (éditorial) ============ */
+.portfolio{background:var(--paper);border-top:1px solid var(--ink);position:relative;overflow:hidden}
+.portfolio::before{
+  content:"RÉALISATIONS · 2022 → 2026 ·";
+  position:absolute;top:50%;right:-3%;
+  transform:translateY(-50%) rotate(90deg);
+  transform-origin:right center;
+  font-family:'Fraunces',serif;font-style:italic;font-weight:300;
+  font-size:clamp(40px,6vw,90px);
+  color:rgba(26,22,18,.04);
+  white-space:nowrap;letter-spacing:-.02em;
+  pointer-events:none;z-index:0;
+}
+.portfolio .wrap{position:relative;z-index:1}
+
+.portfolio-filters{
+  display:flex;flex-wrap:wrap;gap:0;
+  border-top:1px solid var(--ink);border-left:1px solid var(--ink);
+  margin-bottom:48px;
+}
+.portfolio-filters .filter-btn{
+  flex:1 1 auto;min-width:160px;
+  padding:14px 18px;min-height:54px;
+  border-right:1px solid var(--ink);border-bottom:1px solid var(--ink);
+  background:var(--paper);color:var(--ink);
+  font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:500;
+  display:inline-flex;align-items:center;justify-content:space-between;gap:10px;
+  transition:all .25s var(--ease);
+  cursor:pointer;text-align:left;
+}
+.portfolio-filters .filter-btn .count{
+  font-size:10px;color:var(--muted);letter-spacing:.16em;
+  transition:color .25s;
+}
+.portfolio-filters .filter-btn:hover{background:var(--paper-2);color:var(--accent)}
+.portfolio-filters .filter-btn.active{background:var(--ink);color:var(--paper)}
+.portfolio-filters .filter-btn.active .count{color:rgba(243,238,229,.5)}
+
+.portfolio-category{margin-bottom:64px;animation:fadeIn .4s var(--ease)}
+.portfolio-category.hidden{display:none}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+.portfolio-category-head{
+  display:flex;justify-content:space-between;align-items:baseline;
+  padding-bottom:18px;margin-bottom:24px;
+  border-bottom:1px solid var(--ink);
+  gap:18px;flex-wrap:wrap;
+}
+.portfolio-category-head h3{
+  font-family:'Fraunces',serif;font-weight:500;
+  font-size:clamp(24px,2.4vw,34px);letter-spacing:-.02em;line-height:1.1;
+  margin:0;color:var(--ink);
+}
+.portfolio-category-head h3 em{font-style:italic;color:var(--accent);font-weight:400}
+.portfolio-category-head .cat-meta{
+  font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);
+  display:inline-flex;align-items:center;gap:10px;
+}
+.portfolio-category-head .cat-meta::before{content:"";width:24px;height:1px;background:var(--accent)}
+
+.portfolio-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:0;
+  border-top:1px solid var(--ink);border-left:1px solid var(--ink);
+}
+@media(max-width:980px){.portfolio-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.portfolio-grid{grid-template-columns:1fr}}
+
+.portfolio-item{
+  margin:0;position:relative;
+  border-right:1px solid var(--ink);border-bottom:1px solid var(--ink);
+  background:var(--paper-2);
+  overflow:hidden;
+  cursor:pointer;
+  aspect-ratio:4/3;
+}
+.portfolio-item.hidden{display:none}
+.portfolio-item img{
+  width:100%;height:100%;
+  object-fit:cover;display:block;
+  transition:transform .6s var(--ease), filter .35s var(--ease);
+  filter:grayscale(.15) contrast(1.02);
+}
+.portfolio-item:hover img{transform:scale(1.04);filter:grayscale(0) contrast(1)}
+
+.portfolio-item .overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to top, rgba(26,22,18,.92) 0%, rgba(26,22,18,.45) 45%, transparent 70%);
+  display:flex;flex-direction:column;justify-content:flex-end;
+  padding:18px 20px;
+  opacity:0;
+  transition:opacity .35s var(--ease);
+  pointer-events:none;
+}
+.portfolio-item:hover .overlay,
+.portfolio-item:focus-visible .overlay{opacity:1}
+
+.portfolio-item .overlay-tag{
+  font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:8px;
+  display:inline-flex;align-items:center;gap:8px;
+}
+.portfolio-item .overlay-tag::before{content:"—";color:var(--accent)}
+.portfolio-item .overlay-title{
+  font-family:'Fraunces',serif;font-size:18px;font-weight:500;letter-spacing:-.015em;line-height:1.25;
+  color:var(--paper);margin:0;
+}
+.portfolio-item .overlay-zoom{
+  position:absolute;top:14px;right:14px;
+  width:36px;height:36px;
+  border:1px solid var(--paper);
+  display:grid;place-items:center;
+  color:var(--paper);background:rgba(26,22,18,.6);
+  font-family:'Fraunces',serif;font-size:20px;font-weight:400;line-height:1;
+  transform:translate(8px,-8px);opacity:0;
+  transition:all .3s var(--ease);
+}
+.portfolio-item:hover .overlay-zoom,
+.portfolio-item:focus-visible .overlay-zoom{transform:none;opacity:1}
+
+.portfolio-item:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+
+.portfolio-footer{
+  margin-top:48px;padding-top:32px;
+  border-top:1px solid var(--ink);
+  display:flex;justify-content:space-between;align-items:center;
+  flex-wrap:wrap;gap:18px;
+}
+.portfolio-footer .pf-note{
+  font-size:14px;line-height:1.55;color:var(--ink-soft);max-width:48ch;margin:0;
+}
+.portfolio-footer .pf-note strong{color:var(--ink);font-weight:600}
+
+/* ============ LIGHTBOX ============ */
+.lightbox{
+  position:fixed;inset:0;z-index:100;
+  background:rgba(26,22,18,.96);
+  display:none;align-items:center;justify-content:center;
+  padding:clamp(20px,4vw,60px);
+  animation:lbFade .25s var(--ease);
+}
+.lightbox.open{display:flex}
+@keyframes lbFade{from{opacity:0}to{opacity:1}}
+
+.lightbox-frame{
+  position:relative;max-width:1400px;width:100%;
+  display:flex;flex-direction:column;gap:18px;
+  max-height:100%;
+}
+.lightbox-img-wrap{
+  position:relative;flex:1;
+  display:flex;align-items:center;justify-content:center;
+  min-height:0;
+  border:1px solid rgba(243,238,229,.18);
+}
+.lightbox-img{
+  max-width:100%;max-height:calc(100vh - 200px);
+  object-fit:contain;display:block;
+  background:var(--ink);
+}
+.lightbox-meta{
+  display:flex;justify-content:space-between;align-items:center;
+  flex-wrap:wrap;gap:18px;
+  color:var(--paper);
+  padding:0 4px;
+}
+.lightbox-meta .lb-title{
+  font-family:'Fraunces',serif;font-size:clamp(18px,2vw,24px);font-weight:500;letter-spacing:-.015em;
+  margin:0;flex:1 1 auto;
+}
+.lightbox-meta .lb-tag{
+  font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);
+}
+.lightbox-meta .lb-counter{
+  font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.2em;color:rgba(243,238,229,.6);
+}
+
+.lightbox-nav{
+  position:absolute;top:50%;transform:translateY(-50%);
+  width:48px;height:48px;
+  display:grid;place-items:center;
+  background:rgba(26,22,18,.7);border:1px solid rgba(243,238,229,.3);
+  color:var(--paper);
+  font-family:'Fraunces',serif;font-size:24px;font-weight:300;line-height:1;
+  cursor:pointer;transition:all .25s var(--ease);
+  z-index:2;
+}
+.lightbox-nav:hover{background:var(--accent);border-color:var(--accent)}
+.lightbox-nav.prev{left:14px}
+.lightbox-nav.next{right:14px}
+.lightbox-close{
+  position:absolute;top:18px;right:18px;
+  width:44px;height:44px;
+  display:grid;place-items:center;
+  background:rgba(26,22,18,.7);border:1px solid rgba(243,238,229,.3);
+  color:var(--paper);
+  font-family:'Fraunces',serif;font-size:24px;line-height:1;
+  cursor:pointer;transition:all .25s var(--ease);
+  z-index:3;
+}
+.lightbox-close:hover{background:var(--accent);border-color:var(--accent)}
+
+@media(max-width:560px){
+  .portfolio-filters .filter-btn{flex:1 1 100%;min-width:0;justify-content:flex-start}
+  .lightbox-nav{width:40px;height:40px;font-size:20px}
+  .lightbox{padding:12px}
+}
+
+/* Active scroll-spy state on nav */
+.menu a.is-active{color:var(--accent)}
+.menu a.is-active::before{width:100%}
+
 /* ------- Mobile-specific fixes ------- */
 @media(max-width:560px){
   .zone-list li{font-size:16px}
@@ -1136,9 +1349,9 @@ body::after{
     <a href="#renovation" class="mlink">Rénovation <em>03</em></a>
     <a href="#process" class="mlink">Méthode <em>04</em></a>
     <a href="#testimonials" class="mlink">Témoignages <em>05</em></a>
-    <a href="#zone" class="mlink">Zone <em>06</em></a>
-    <a href="#contact" class="mlink">Contact <em>07</em></a>
-    <a href="#portfolio" class="mlink">Réalisations <em>08</em></a>
+    <a href="#portfolio" class="mlink">Réalisations <em>06</em></a>
+    <a href="#zone" class="mlink">Zone <em>07</em></a>
+    <a href="#contact" class="mlink">Contact <em>08</em></a>
   </nav>
   <div class="mfoot">
     <a href="tel:8194524788">📞 (819) 452-4788</a>
@@ -1314,7 +1527,7 @@ body::after{
   <div class="wrap">
     <div class="section-head reveal">
       <div class="left">
-        <span class="num">01 / 06</span>
+        <span class="num">01 / 08</span>
         <span class="label">Notre entreprise</span>
       </div>
       <div>
@@ -1382,7 +1595,7 @@ body::after{
   <div class="wrap">
     <div class="section-head reveal">
       <div class="left">
-        <span class="num">02 / 06</span>
+        <span class="num">02 / 08</span>
         <span class="label">Nos domaines</span>
       </div>
       <div>
@@ -1575,7 +1788,7 @@ body::after{
   <div class="wrap">
     <div class="section-head reveal">
       <div class="left">
-        <span class="num">— FOCUS</span>
+        <span class="num">03 / 08</span>
         <span class="label">Rénovation générale</span>
       </div>
       <div>
@@ -1738,7 +1951,7 @@ body::after{
   <div class="wrap">
     <div class="section-head reveal">
       <div class="left">
-        <span class="num">03 / 06</span>
+        <span class="num">04 / 08</span>
         <span class="label">Notre méthode</span>
       </div>
       <div>
@@ -1787,7 +2000,7 @@ body::after{
   <div class="wrap">
     <div class="section-head reveal">
       <div class="left">
-        <span class="num" style="color:rgba(243,238,229,.5)">04 / 06</span>
+        <span class="num" style="color:rgba(243,238,229,.5)">05 / 08</span>
         <span class="label">Ce qu'ils disent</span>
       </div>
       <div>
@@ -1839,12 +2052,300 @@ body::after{
   </div>
 </section>
 
+<!-- ============ PORTFOLIO ============ -->
+<section class="section portfolio" id="portfolio">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="left">
+        <span class="num">06 / 08</span>
+        <span class="label">Nos réalisations</span>
+      </div>
+      <div>
+        <h2>Le chantier <em>parle.</em></h2>
+        <p class="desc">26 projets résidentiels — de la charpente brute à la livraison clé en main, en passant par la remise en état après-sinistre. Cliquez sur une image pour la voir en grand format.</p>
+      </div>
+    </div>
+
+    <!-- Filtres -->
+    <div class="portfolio-filters reveal" role="tablist" aria-label="Filtrer les réalisations par catégorie">
+      <button class="filter-btn active" data-filter="all" role="tab" aria-selected="true">
+        <span>Tous les projets</span><span class="count">26</span>
+      </button>
+      <button class="filter-btn" data-filter="gros-oeuvre" role="tab" aria-selected="false">
+        <span>Gros œuvre &amp; charpente</span><span class="count">07</span>
+      </button>
+      <button class="filter-btn" data-filter="en-cours" role="tab" aria-selected="false">
+        <span>Travaux en cours</span><span class="count">07</span>
+      </button>
+      <button class="filter-btn" data-filter="finition" role="tab" aria-selected="false">
+        <span>Projets finis</span><span class="count">08</span>
+      </button>
+      <button class="filter-btn" data-filter="remise-en-etat" role="tab" aria-selected="false">
+        <span>Remise en état</span><span class="count">04</span>
+      </button>
+    </div>
+
+    <!-- Catégorie 1 : Gros œuvre -->
+    <div class="portfolio-category" data-category-wrapper="gros-oeuvre">
+      <div class="portfolio-category-head">
+        <h3>Gros œuvre <em>&amp; charpente</em></h3>
+        <span class="cat-meta">Structure · fondations · ossature</span>
+      </div>
+      <div class="portfolio-grid">
+        <figure class="portfolio-item" data-category="gros-oeuvre" tabindex="0" role="button" aria-label="Agrandir : Poutre structurelle d'ingénierie — Boucherville">
+          <img src="images/gros-oeuvre-boucherville-03.webp" alt="Pose de poutre d'ingénierie pour modification de mur porteur à Boucherville par Clinique du Bâtiment" loading="lazy" decoding="async" width="800" height="600">
+          <div class="overlay">
+            <span class="overlay-tag">Gros œuvre · Boucherville</span>
+            <p class="overlay-title">Poutre structurelle d'ingénierie</p>
+          </div>
+          <span class="overlay-zoom" aria-hidden="true">+</span>
+        </figure>
+        <figure class="portfolio-item" data-category="gros-oeuvre" tabindex="0" role="button" aria-label="Agrandir : Structure de charpente neuve — Brossard">
+          <img src="images/gros-oeuvre-brossard-02.webp" alt="Travaux de charpente et gros œuvre résidentiel à Brossard — RBQ 5821-2606-01" loading="lazy" decoding="async" width="800" height="600">
+          <div class="overlay">
+            <span class="overlay-tag">Gros œuvre · Brossard</span>
+            <p class="overlay-title">Charpente neuve</p>
+          </div>
+          <span class="overlay-zoom" aria-hidden="true">+</span>
+        </figure>
+        <figure class="portfolio-item" data-category="gros-oeuvre" tabindex="0" role="button" aria-label="Agrandir : Ossature en bois — Brossard">
+          <img src="images/gros-oeuvre-brossard-06.webp" alt="Assemblage de structure en bois et colombages résidentiels à Brossard" loading="lazy" decoding="async" width="800" height="600">
+          <div class="overlay">
+            <span class="overlay-tag">Gros œuvre · Brossard</span>
+            <p class="overlay-title">Ossature en bois</p>
+          </div>
+          <span class="overlay-zoom" aria-hidden="true">+</span>
+        </figure>
+        <figure class="portfolio-item" data-category="gros-oeuvre" tabindex="0" role="button" aria-label="Agrandir : Charpente de toiture — Rive-Sud">
+          <img src="images/gros-oeuvre-rive-sud-04.webp" alt="Ossature bois et charpente résidentielle sur la Rive-Sud — RBQ 5821-2606-01" loading="lazy" decoding="async" width="800" height="600">
+          <div class="overlay">
+            <span class="overlay-tag">Gros œuvre · Rive-Sud</span>
+            <p class="overlay-title">Charpente de toiture</p>
+          </div>
+          <span class="overlay-zoom" aria-hidden="true">+</span>
+        </figure>
+        <figure class="portfolio-item" data-category="gros-oeuvre" tabindex="0" role="button" aria-label="Agrandir : Coffrage de fondations — Brossard">
+          <img src="images/disaster-recovery-brossard-04.webp" alt="Travaux de coffrage et fondations de béton résidentielles à Brossard" loading="lazy" decoding="async" width="800" height="600">
+          <div class="overlay">
+            <span class="overlay-tag">Gros œuvre · Brossard</span>
+            <p class="overlay-title">Coffrage de fondations</p>
+          </div>
+          <span class="overlay-zoom" aria-hidden="true">+</span>
+        </figure>
+        <figure class="portfolio-item" data-category="gros-oeuvre" tabindex="0" role="button" aria-label="Agrandir : Structure extérieure — Longueuil">
+          <img src="images/finished-delivery-longueuil-05.webp" alt="Coffrage et travaux de structure extérieure à Longueuil par Clinique du Bâtiment" loading="lazy" decoding="async" width="800" height="600">
+          <div class="overlay">
+            <span class="overlay-tag">Gros œuvre · Longueuil</span>
+            <p class="overlay-title">Structure extérieure</p>
+          </div>
+          <span class="overlay-zoom" aria-hidden="true">+</span>
+        </figure>
+        <figure class="portfolio-item" data-category="gros-oeuvre" tabindex="0" role="button" aria-label="Agrandir : Modification de cloisons — Rive-Sud">
+          <img src="images/finished-delivery-rive-sud-04.webp" alt="Charpente de bois résidentielle et modification de cloisons sur la Rive-Sud — RBQ 5821-2606-01" loading="lazy" decoding="async" width="800" height="600">
+          <div class="overlay">
+            <span class="overlay-tag">Gros œuvre · Rive-Sud</span>
+            <p class="overlay-title">Modification de cloisons</p>
+          </div>
+          <span class="overlay-zoom" aria-hidden="true">+</span>
+        </figure>
+      </div>
+    </div>
+
+    <!-- Catégorie 2 : En cours -->
+    <div class="portfolio-category" data-category-wrapper="en-cours">
+      <div class="portfolio-category-head">
+        <h3>Travaux <em>en cours</em></h3>
+        <span class="cat-meta">Gypse · joints · plâtrage</span>
+      </div>
+      <div class="portfolio-grid">
+        <figure class="portfolio-item" data-category="en-cours" tabindex="0" role="button" aria-label="Agrandir : Sablage et finition de joints — Boucherville">
+          <img src="images/progress-work-boucherville-03.webp" alt="Tirage de joints et sablage de cloisons sèches à Boucherville" loading="lazy" decoding="async" width="800" height="600">
+          <div class="overlay">
+            <span class="overlay-tag">En cours · Boucherville</span>
+            <p class="overlay-title">Sablage et finition de joints</p>
+          </div>
+          <span class="overlay-zoom" aria-hidden="true">+</span>
+        </figure>
+        <figure class="portfolio-item" data-category="en-cours" tabindex="0" role="button" aria-label="Agrandir : Application d'enduit sur gypse — Boucherville">
+          <img src="images/progress-work-boucherville-07.webp" alt="Finition de joints et plâtrage de cloisons sèches à Boucherville — RBQ 5821-2606-01" loading="lazy" decoding="async" width="800" height="600">
+          <div class="overlay">
+            <span class="overlay-tag">En cours · Boucherville</span>
+            <p class="overlay-title">Application d'enduit sur gypse</p>
+          </div>
+          <span class="overlay-zoom" aria-hidden="true">+</span>
+        </figure>
+        <figure class="portfolio-item" data-category="en-cours" tabindex="0" role="button" aria-label="Agrandir : Tirage de joints — Brossard">
+          <img src="images/progress-work-brossard-02.webp" alt="Tirage de joints de gypse de haute précision à Brossard" loading="lazy" decoding="async" width="800" height="600">
+          <div class="overlay">
+            <span class="overlay-tag">En cours · Brossard</span>
+            <p class="overlay-title">Tirage de joints</p>
+          </div>
+          <span class="overlay-zoom" aria-hidden="true">+</span>
+        </figure>
+        <figure class="portfolio-item" data-category="en-cours" tabindex="0" role="button" aria-label="Agrandir : Pose de plaques de plâtre — Brossard">
+          <img src="images/progress-work-brossard-06.webp" alt="Installation de cloisons en panneaux de gypse résidentielles à Brossard" loading="lazy" decoding="async" width="800" height="600">
+          <div class="overlay">
+            <span class="overlay-tag">En cours · Brossard</span>
+            <p class="overlay-title">Pose de plaques de plâtre</p>
+          </div>
+          <span class="overlay-zoom" aria-hidden="true">+</span>
+        </figure>
+        <figure class="portfolio-item" data-category="en-cours" tabindex="0" role="button" aria-label="Agrandir : Cloisonnement et gypsement — Longueuil">
+          <img src="images/progress-work-longueuil-01.webp" alt="Pose de panneaux de gypse au plafond et sur les cloisons à Longueuil — RBQ 5821-2606-01" loading="lazy" decoding="async" width="800" height="600">
+          <div class="overlay">
+            <span class="overlay-tag">En cours · Longueuil</span>
+            <p class="overlay-title">Cloisonnement et gypsement</p>
+          </div>
+          <span class="overlay-zoom" aria-hidden="true">+</span>
+        </figure>
+        <figure class="portfolio-item" data-category="en-cours" tabindex="0" role="button" aria-label="Agrandir : Plâtrage et enduit — Longueuil">
+          <img src="images/progress-work-longueuil-05.webp" alt="Plâtrage et finition des joints de plaques de plâtre à Longueuil" loading="lazy" decoding="async" width="800" height="600">
+          <div class="overlay">
+            <span class="overlay-tag">En cours · Longueuil</span>
+            <p class="overlay-title">Plâtrage et enduit</p>
+          </div>
+          <span class="overlay-zoom" aria-hidden="true">+</span>
+        </figure>
+        <figure class="portfolio-item" data-category="en-cours" tabindex="0" role="button" aria-label="Agrandir : Préparation avant peinture — Longueuil">
+          <img src="images/finished-delivery-longueuil-01.webp" alt="Tirage de joints de gypse et préparation des surfaces à Longueuil — RBQ 5821-2606-01" loading="lazy" decoding="async" width="800" height="600">
+          <div class="overlay">
+            <span class="overlay-tag">En cours · Longueuil</span>
+            <p class="overlay-title">Préparation avant peinture</p>
+          </div>
+          <span class="overlay-zoom" aria-hidden="true">+</span>
+        </figure>
+      </div>
+    </div>
+
+    <!-- Catégorie 3 : Finition -->
+    <div class="portfolio-category" data-category-wrapper="finition">
+      <div class="portfolio-category-head">
+        <h3>Projets <em>finis</em> — clé en main</h3>
+        <span class="cat-meta">Cuisines · planchers · finitions</span>
+      </div>
+      <div class="portfolio-grid">
+        <figure class="portfolio-item" data-category="finition" tabindex="0" role="button" aria-label="Agrandir : Moulures architecturales — Boucherville">
+          <img src="images/finished-delivery-boucherville-03.webp" alt="Travaux de finition intérieure, moulures et peinture de chambre à Boucherville — RBQ 5821-2606-01" loading="lazy" decoding="async" width="800" height="600">
+          <div class="overlay">
+            <span class="overlay-tag">Finition · Boucherville</span>
+            <p class="overlay-title">Moulures architecturales</p>
+          </div>
+          <span class="overlay-zoom" aria-hidden="true">+</span>
+        </figure>
+        <figure class="portfolio-item" data-category="finition" tabindex="0" role="button" aria-label="Agrandir : Cuisine contemporaine — Brossard">
+          <img src="images/finished-delivery-brossard-02.webp" alt="Cuisine résidentielle contemporaine livrée clé en main à Brossard" loading="lazy" decoding="async" width="800" height="600">
+          <div class="overlay">
+            <span class="overlay-tag">Finition · Brossard</span>
+            <p class="overlay-title">Cuisine contemporaine</p>
+          </div>
+          <span class="overlay-zoom" aria-hidden="true">+</span>
+        </figure>
+        <figure class="portfolio-item" data-category="finition" tabindex="0" role="button" aria-label="Agrandir : Plancher de bois franc — Brossard">
+          <img src="images/finished-delivery-brossard-06.webp" alt="Revêtement de sol en bois franc et ajustement des menuiseries à Brossard" loading="lazy" decoding="async" width="800" height="600">
+          <div class="overlay">
+            <span class="overlay-tag">Finition · Brossard</span>
+            <p class="overlay-title">Plancher de bois franc</p>
+          </div>
+          <span class="overlay-zoom" aria-hidden="true">+</span>
+        </figure>
+        <figure class="portfolio-item" data-category="finition" tabindex="0" role="button" aria-label="Agrandir : Armoires sur mesure — Rive-Sud">
+          <img src="images/progress-work-rive-sud-04.webp" alt="Ébénisterie résidentielle et armoires sur mesure livrées sur la Rive-Sud" loading="lazy" decoding="async" width="800" height="600">
+          <div class="overlay">
+            <span class="overlay-tag">Finition · Rive-Sud</span>
+            <p class="overlay-title">Armoires sur mesure</p>
+          </div>
+          <span class="overlay-zoom" aria-hidden="true">+</span>
+        </figure>
+        <figure class="portfolio-item" data-category="finition" tabindex="0" role="button" aria-label="Agrandir : Cuisine avec îlot — Rive-Sud">
+          <img src="images/progress-work-rive-sud-08.webp" alt="Cuisine moderne clé en main avec îlot livrée sur la Rive-Sud — RBQ 5821-2606-01" loading="lazy" decoding="async" width="800" height="600">
+          <div class="overlay">
+            <span class="overlay-tag">Finition · Rive-Sud</span>
+            <p class="overlay-title">Cuisine avec îlot</p>
+          </div>
+          <span class="overlay-zoom" aria-hidden="true">+</span>
+        </figure>
+        <figure class="portfolio-item" data-category="finition" tabindex="0" role="button" aria-label="Agrandir : Chambre clé en main — Longueuil">
+          <img src="images/disaster-recovery-longueuil-03.webp" alt="Finition intérieure et pose de plancher de bois franc à Longueuil" loading="lazy" decoding="async" width="800" height="600">
+          <div class="overlay">
+            <span class="overlay-tag">Finition · Longueuil</span>
+            <p class="overlay-title">Chambre clé en main</p>
+          </div>
+          <span class="overlay-zoom" aria-hidden="true">+</span>
+        </figure>
+        <figure class="portfolio-item" data-category="finition" tabindex="0" role="button" aria-label="Agrandir : Cuisine à aire ouverte — Rive-Sud">
+          <img src="images/disaster-recovery-rive-sud-06.webp" alt="Rénovation de cuisine moderne livrée clé en main sur la Rive-Sud" loading="lazy" decoding="async" width="800" height="600">
+          <div class="overlay">
+            <span class="overlay-tag">Finition · Rive-Sud</span>
+            <p class="overlay-title">Cuisine à aire ouverte</p>
+          </div>
+          <span class="overlay-zoom" aria-hidden="true">+</span>
+        </figure>
+        <figure class="portfolio-item" data-category="finition" tabindex="0" role="button" aria-label="Agrandir : Cuisine sur mesure — Longueuil">
+          <img src="images/gros-oeuvre-longueuil-05.webp" alt="Cuisine contemporaine livrée clé en main à Longueuil" loading="lazy" decoding="async" width="800" height="600">
+          <div class="overlay">
+            <span class="overlay-tag">Finition · Longueuil</span>
+            <p class="overlay-title">Cuisine sur mesure</p>
+          </div>
+          <span class="overlay-zoom" aria-hidden="true">+</span>
+        </figure>
+      </div>
+    </div>
+
+    <!-- Catégorie 4 : Remise en état -->
+    <div class="portfolio-category" data-category-wrapper="remise-en-etat">
+      <div class="portfolio-category-head">
+        <h3>Remise en état <em>/ après-sinistre</em></h3>
+        <span class="cat-meta">Dégâts d'eau · démolition · assèchement</span>
+      </div>
+      <div class="portfolio-grid">
+        <figure class="portfolio-item" data-category="remise-en-etat" tabindex="0" role="button" aria-label="Agrandir : Démolition sélective post-sinistre — Boucherville">
+          <img src="images/disaster-recovery-boucherville-01.webp" alt="Démolition sélective propre après sinistre à Boucherville — RBQ 5821-2606-01" loading="lazy" decoding="async" width="800" height="600">
+          <div class="overlay">
+            <span class="overlay-tag">Sinistre · Boucherville</span>
+            <p class="overlay-title">Démolition sélective</p>
+          </div>
+          <span class="overlay-zoom" aria-hidden="true">+</span>
+        </figure>
+        <figure class="portfolio-item" data-category="remise-en-etat" tabindex="0" role="button" aria-label="Agrandir : Assèchement structurel — Boucherville">
+          <img src="images/disaster-recovery-boucherville-05.webp" alt="Assèchement structurel et contrôle du taux d'humidité à Boucherville" loading="lazy" decoding="async" width="800" height="600">
+          <div class="overlay">
+            <span class="overlay-tag">Sinistre · Boucherville</span>
+            <p class="overlay-title">Assèchement structurel</p>
+          </div>
+          <span class="overlay-zoom" aria-hidden="true">+</span>
+        </figure>
+        <figure class="portfolio-item" data-category="remise-en-etat" tabindex="0" role="button" aria-label="Agrandir : Assainissement des bois — Rive-Sud">
+          <img src="images/disaster-recovery-rive-sud-02.webp" alt="Remise en état et traitement du bois de charpente après sinistre sur la Rive-Sud" loading="lazy" decoding="async" width="800" height="600">
+          <div class="overlay">
+            <span class="overlay-tag">Sinistre · Rive-Sud</span>
+            <p class="overlay-title">Assainissement des bois</p>
+          </div>
+          <span class="overlay-zoom" aria-hidden="true">+</span>
+        </figure>
+        <figure class="portfolio-item" data-category="remise-en-etat" tabindex="0" role="button" aria-label="Agrandir : Démolition de cuisine avant reconstruction — Longueuil">
+          <img src="images/gros-oeuvre-longueuil-01.webp" alt="Démolition et dégagement de cuisine résidentielle à Longueuil avant reconstruction — RBQ 5821-2606-01" loading="lazy" decoding="async" width="800" height="600">
+          <div class="overlay">
+            <span class="overlay-tag">Sinistre · Longueuil</span>
+            <p class="overlay-title">Démolition de cuisine avant reconstruction</p>
+          </div>
+          <span class="overlay-zoom" aria-hidden="true">+</span>
+        </figure>
+      </div>
+    </div>
+
+    <div class="portfolio-footer reveal">
+      <p class="pf-note"><strong>Un projet en tête ?</strong> Chaque chantier ci-dessus a démarré par un simple appel ou un courriel. La visite et le devis sont toujours gratuits.</p>
+      <a href="#contact" class="btn btn--solid">Démarrer mon projet <span class="arr">→</span></a>
+    </div>
+  </div>
+</section>
+
 <!-- ============ ZONE ============ -->
 <section class="section zone" id="zone">
   <div class="wrap">
     <div class="section-head reveal">
       <div class="left">
-        <span class="num">05 / 06</span>
+        <span class="num">07 / 08</span>
         <span class="label">Zone de service</span>
       </div>
       <div>
@@ -1981,7 +2482,7 @@ body::after{
   <div class="wrap">
     <div class="section-head reveal" style="margin-bottom:48px">
       <div class="left">
-        <span class="num">06 / 06</span>
+        <span class="num">08 / 08</span>
         <span class="label">Démarrez votre projet</span>
       </div>
       <div>
@@ -2123,157 +2624,6 @@ body::after{
 </main>
 
 <!-- ============ FOOTER ============ -->
-<!-- ==================== SECTION PORTFOLIO ==================== -->
-<section id="portfolio" class="portfolio-section">
-  <div class="container">
-    <h2 class="section-title">Nos Réalisations</h2>
-    <p class="section-subtitle">Entrepreneur général licencié — Licence RBQ : 5821-2606-01 — Rive-Sud de Montréal</p>
-
-    <!-- Filtres du Portfolio -->
-    <div class="portfolio-filters">
-      <button class="filter-btn active" data-filter="all">Tous les projets</button>
-      <button class="filter-btn" data-filter="gros-oeuvre">Gros Œuvre &amp; Charpente</button>
-      <button class="filter-btn" data-filter="en-cours">Travaux en cours</button>
-      <button class="filter-btn" data-filter="finition">Projets finis</button>
-      <button class="filter-btn" data-filter="remise-en-etat">Remise en état / Après-sinistre</button>
-    </div>
-
-    <!-- CATÉGORIE 1 : GROS ŒUVRE -->
-    <div class="portfolio-category" data-category-wrapper="gros-oeuvre">
-      <h3 class="category-title">Gros Œuvre &amp; Charpente</h3>
-      <div class="portfolio-grid">
-        <figure class="portfolio-item" data-category="gros-oeuvre">
-          <img src="images/gros-oeuvre-boucherville-03.webp" alt="Pose de poutre ingéniée pour modification de mur porteur à Boucherville par Clinique du Bâtiment" loading="lazy" decoding="async">
-          <figcaption>Poutre structurelle ingéniée — Boucherville</figcaption>
-        </figure>
-        <figure class="portfolio-item" data-category="gros-oeuvre">
-          <img src="images/gros-oeuvre-brossard-02.webp" alt="Travaux de charpente et de gros œuvre résidentiel à Brossard par un entrepreneur licencié RBQ 5821-2606-01" loading="lazy" decoding="async">
-          <figcaption>Structure de charpente neuve — Brossard</figcaption>
-        </figure>
-        <figure class="portfolio-item" data-category="gros-oeuvre">
-          <img src="images/gros-oeuvre-brossard-06.webp" alt="Assemblage de structure en bois et colombages résidentiels à Brossard par Clinique du Bâtiment" loading="lazy" decoding="async">
-          <figcaption>Ossature de bâtiment en bois — Brossard</figcaption>
-        </figure>
-        <figure class="portfolio-item" data-category="gros-oeuvre">
-          <img src="images/gros-oeuvre-rive-sud-04.webp" alt="Ossature bois et charpente résidentielle sur la Rive-Sud par un entrepreneur licencié RBQ 5821-2606-01" loading="lazy" decoding="async">
-          <figcaption>Charpente de toiture et isolation brute — Rive-Sud</figcaption>
-        </figure>
-        <figure class="portfolio-item" data-category="gros-oeuvre">
-          <img src="images/disaster-recovery-brossard-04.webp" alt="Travaux de coffrage et fondations de béton résidentielles à Brossard par un entrepreneur licencié RBQ 5821-2606-01" loading="lazy" decoding="async">
-          <figcaption>Coffrage de fondations résidentielles — Brossard</figcaption>
-        </figure>
-        <figure class="portfolio-item" data-category="gros-oeuvre">
-          <img src="images/finished-delivery-longueuil-05.webp" alt="Coffrage et travaux de structure extérieure à Longueuil par Clinique du Bâtiment" loading="lazy" decoding="async">
-          <figcaption>Coffrage de structure extérieure — Longueuil</figcaption>
-        </figure>
-        <figure class="portfolio-item" data-category="gros-oeuvre">
-          <img src="images/finished-delivery-rive-sud-04.webp" alt="Charpente de bois résidentielle et modification de cloisons sur la Rive-Sud par un entrepreneur licencié RBQ 5821-2606-01" loading="lazy" decoding="async">
-          <figcaption>Charpente et modification intérieure — Rive-Sud</figcaption>
-        </figure>
-      </div>
-    </div>
-
-    <!-- CATÉGORIE 2 : TRAVAUX EN COURS -->
-    <div class="portfolio-category" data-category-wrapper="en-cours">
-      <h3 class="category-title">Travaux en cours</h3>
-      <div class="portfolio-grid">
-        <figure class="portfolio-item" data-category="en-cours">
-          <img src="images/progress-work-boucherville-03.webp" alt="Tirage de joints et sablage de cloisons sèches à Boucherville par Clinique du Bâtiment" loading="lazy" decoding="async">
-          <figcaption>Sablage et finition de joints — Boucherville</figcaption>
-        </figure>
-        <figure class="portfolio-item" data-category="en-cours">
-          <img src="images/progress-work-boucherville-07.webp" alt="Finition de joints et plâtrage de cloisons sèches à Boucherville par un entrepreneur licencié RBQ 5821-2606-01" loading="lazy" decoding="async">
-          <figcaption>Application d'enduit sur gypse — Boucherville</figcaption>
-        </figure>
-        <figure class="portfolio-item" data-category="en-cours">
-          <img src="images/progress-work-brossard-02.webp" alt="Tirage de joints de gypse de haute précision à Brossard par Clinique du Bâtiment" loading="lazy" decoding="async">
-          <figcaption>Tirage de joints de cloisons sèches — Brossard</figcaption>
-        </figure>
-        <figure class="portfolio-item" data-category="en-cours">
-          <img src="images/progress-work-brossard-06.webp" alt="Installation de cloisons en panneaux de gypse résidentielles à Brossard par Clinique du Bâtiment" loading="lazy" decoding="async">
-          <figcaption>Pose de plaques de plâtre — Brossard</figcaption>
-        </figure>
-        <figure class="portfolio-item" data-category="en-cours">
-          <img src="images/progress-work-longueuil-01.webp" alt="Pose de panneaux de gypse au plafond et sur les cloisons à Longueuil par un entrepreneur licencié RBQ 5821-2606-01" loading="lazy" decoding="async">
-          <figcaption>Cloisonnement et gypsement — Longueuil</figcaption>
-        </figure>
-        <figure class="portfolio-item" data-category="en-cours">
-          <img src="images/progress-work-longueuil-05.webp" alt="Plâtrage et finition des joints de plaques de plâtre à Longueuil par Clinique du Bâtiment" loading="lazy" decoding="async">
-          <figcaption>Plâtrage et application d'enduit — Longueuil</figcaption>
-        </figure>
-        <figure class="portfolio-item" data-category="en-cours">
-          <img src="images/finished-delivery-longueuil-01.webp" alt="Travaux de tirage de joints de gypse et préparation des surfaces à Longueuil par un entrepreneur licencié RBQ 5821-2606-01" loading="lazy" decoding="async">
-          <figcaption>Préparation des cloisons avant peinture — Longueuil</figcaption>
-        </figure>
-      </div>
-    </div>
-
-    <!-- CATÉGORIE 3 : PROJETS FINIS -->
-    <div class="portfolio-category" data-category-wrapper="finition">
-      <h3 class="category-title">Projets finis — Clé en main</h3>
-      <div class="portfolio-grid">
-        <figure class="portfolio-item" data-category="finition">
-          <img src="images/finished-delivery-boucherville-03.webp" alt="Travaux de finition intérieure, moulures et peinture de chambre à Boucherville par un entrepreneur licencié RBQ 5821-2606-01" loading="lazy" decoding="async">
-          <figcaption>Finition intérieure et moulures architecturales — Boucherville</figcaption>
-        </figure>
-        <figure class="portfolio-item" data-category="finition">
-          <img src="images/finished-delivery-brossard-02.webp" alt="Cuisine résidentielle contemporaine livrée clé en main à Brossard par Clinique du Bâtiment" loading="lazy" decoding="async">
-          <figcaption>Rénovation complète de cuisine — Brossard</figcaption>
-        </figure>
-        <figure class="portfolio-item" data-category="finition">
-          <img src="images/finished-delivery-brossard-06.webp" alt="Revêtement de sol en bois franc et ajustement des menuiseries intérieures à Brossard par Clinique du Bâtiment" loading="lazy" decoding="async">
-          <figcaption>Pose de planchers de bois franc — Brossard</figcaption>
-        </figure>
-        <figure class="portfolio-item" data-category="finition">
-          <img src="images/progress-work-rive-sud-04.webp" alt="Ébénisterie résidentielle et armoires sur mesure livrées sur la Rive-Sud par Clinique du Bâtiment" loading="lazy" decoding="async">
-          <figcaption>Ébénisterie et armoires sur mesure — Rive-Sud</figcaption>
-        </figure>
-        <figure class="portfolio-item" data-category="finition">
-          <img src="images/progress-work-rive-sud-08.webp" alt="Cuisine moderne clé en main avec îlot de déjeuner livrée sur la Rive-Sud par un entrepreneur licencié RBQ 5821-2606-01" loading="lazy" decoding="async">
-          <figcaption>Cuisine contemporaine avec îlot — Rive-Sud</figcaption>
-        </figure>
-        <figure class="portfolio-item" data-category="finition">
-          <img src="images/disaster-recovery-longueuil-03.webp" alt="Finition intérieure et pose de plancher de bois franc à Longueuil par Clinique du Bâtiment" loading="lazy" decoding="async">
-          <figcaption>Chambre à coucher clé en main — Longueuil</figcaption>
-        </figure>
-        <figure class="portfolio-item" data-category="finition">
-          <img src="images/disaster-recovery-rive-sud-06.webp" alt="Rénovation de cuisine moderne livrée clé en main sur la Rive-Sud par Clinique du Bâtiment" loading="lazy" decoding="async">
-          <figcaption>Cuisine moderne à aire ouverte — Rive-Sud</figcaption>
-        </figure>
-        <figure class="portfolio-item" data-category="finition">
-          <img src="images/gros-oeuvre-longueuil-05.webp" alt="Cuisine contemporaine livrée clé en main à Longueuil par Clinique du Bâtiment" loading="lazy" decoding="async">
-          <figcaption>Cuisine contemporaine avec finitions sur mesure — Longueuil</figcaption>
-        </figure>
-      </div>
-    </div>
-
-    <!-- CATÉGORIE 4 : REMISE EN ÉTAT -->
-    <div class="portfolio-category" data-category-wrapper="remise-en-etat">
-      <h3 class="category-title">Remise en état / Après-sinistre</h3>
-      <div class="portfolio-grid">
-        <figure class="portfolio-item" data-category="remise-en-etat">
-          <img src="images/disaster-recovery-boucherville-01.webp" alt="Démolition sélective propre après sinistre à Boucherville par un entrepreneur licencié RBQ 5821-2606-01" loading="lazy" decoding="async">
-          <figcaption>Démolition sélective propre post-sinistre — Boucherville</figcaption>
-        </figure>
-        <figure class="portfolio-item" data-category="remise-en-etat">
-          <img src="images/disaster-recovery-boucherville-05.webp" alt="Assèchement structurel et contrôle du taux d'humidité à Boucherville par Clinique du Bâtiment" loading="lazy" decoding="async">
-          <figcaption>Assèchement et contrôle d'humidité — Boucherville</figcaption>
-        </figure>
-        <figure class="portfolio-item" data-category="remise-en-etat">
-          <img src="images/disaster-recovery-rive-sud-02.webp" alt="Remise en état et traitement du bois de charpente après sinistre sur la Rive-Sud de Montréal" loading="lazy" decoding="async">
-          <figcaption>Assainissement et stabilisation des bois — Rive-Sud</figcaption>
-        </figure>
-        <figure class="portfolio-item" data-category="remise-en-etat">
-          <img src="images/gros-oeuvre-longueuil-01.webp" alt="Démolition et dégagement de cuisine résidentielle à Longueuil avant reconstruction par un entrepreneur licencié RBQ 5821-2606-01" loading="lazy" decoding="async">
-          <figcaption>Démolition sélective de cuisine ancienne — Longueuil</figcaption>
-        </figure>
-      </div>
-    </div>
-
-  </div>
-</section>
-<!-- ==================== FIN PORTFOLIO ==================== -->
-
 <footer class="footer">
   <div class="wrap">
     <div class="footer-grid">
@@ -2335,8 +2685,9 @@ body::after{
       <div>© 2026 cliniquedubatiment.ca — Tous droits réservés.</div>
       <div class="lic">LICENCE RBQ <strong>5821-2606-01</strong></div>
       <div class="links">
-        <a href="#">Politique de confidentialité</a>
-        <a href="#">Conditions d'utilisation</a>
+        <a href="mentions-legales.html#politique-confidentialite">Politique de confidentialité</a>
+        <a href="mentions-legales.html#conditions-utilisation">Conditions d'utilisation</a>
+        <a href="mentions-legales.html">Mentions légales</a>
       </div>
     </div>
   </div>
@@ -2410,6 +2761,147 @@ if(tel){
     else if(v.length>=1) tel.value = `(${v}`;
   });
 }
+
+// ====== PORTFOLIO : filtres + lightbox ======
+(function(){
+  const filterBtns = document.querySelectorAll('.portfolio-filters .filter-btn');
+  const items = document.querySelectorAll('.portfolio-item');
+  const categories = document.querySelectorAll('.portfolio-category');
+  if(!filterBtns.length || !items.length) return;
+
+  // Filtres
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', function(){
+      const filter = this.getAttribute('data-filter');
+      filterBtns.forEach(b => {
+        b.classList.toggle('active', b === this);
+        b.setAttribute('aria-selected', b === this ? 'true' : 'false');
+      });
+      items.forEach(it => {
+        const match = filter === 'all' || it.getAttribute('data-category') === filter;
+        it.classList.toggle('hidden', !match);
+      });
+      categories.forEach(cat => {
+        const wrap = cat.getAttribute('data-category-wrapper');
+        cat.classList.toggle('hidden', filter !== 'all' && wrap !== filter);
+      });
+    });
+  });
+
+  // Lightbox
+  const lightbox = document.createElement('div');
+  lightbox.className = 'lightbox';
+  lightbox.setAttribute('role', 'dialog');
+  lightbox.setAttribute('aria-modal', 'true');
+  lightbox.setAttribute('aria-label', 'Aperçu de la réalisation');
+  lightbox.innerHTML = `
+    <div class="lightbox-frame">
+      <button class="lightbox-close" aria-label="Fermer (Échap)">×</button>
+      <div class="lightbox-img-wrap">
+        <button class="lightbox-nav prev" aria-label="Image précédente">‹</button>
+        <img class="lightbox-img" src="" alt="">
+        <button class="lightbox-nav next" aria-label="Image suivante">›</button>
+      </div>
+      <div class="lightbox-meta">
+        <span class="lb-tag"></span>
+        <p class="lb-title"></p>
+        <span class="lb-counter"></span>
+      </div>
+    </div>`;
+  document.body.appendChild(lightbox);
+
+  const lbImg = lightbox.querySelector('.lightbox-img');
+  const lbTag = lightbox.querySelector('.lb-tag');
+  const lbTitle = lightbox.querySelector('.lb-title');
+  const lbCounter = lightbox.querySelector('.lb-counter');
+  let currentIndex = 0;
+  let visibleItems = [];
+
+  const refreshVisible = () => {
+    visibleItems = Array.from(items).filter(i => !i.classList.contains('hidden'));
+  };
+
+  const renderLightbox = (idx) => {
+    refreshVisible();
+    if(!visibleItems.length) return;
+    currentIndex = (idx + visibleItems.length) % visibleItems.length;
+    const item = visibleItems[currentIndex];
+    const img = item.querySelector('img');
+    const tag = item.querySelector('.overlay-tag')?.textContent || '';
+    const title = item.querySelector('.overlay-title')?.textContent || '';
+    lbImg.src = img.src;
+    lbImg.alt = img.alt;
+    lbTag.textContent = tag;
+    lbTitle.textContent = title;
+    lbCounter.textContent = `${String(currentIndex + 1).padStart(2,'0')} / ${String(visibleItems.length).padStart(2,'0')}`;
+  };
+
+  const openLightbox = (idx) => {
+    renderLightbox(idx);
+    lightbox.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    lightbox.querySelector('.lightbox-close').focus();
+  };
+  const closeLightbox = () => {
+    lightbox.classList.remove('open');
+    document.body.style.overflow = '';
+  };
+
+  items.forEach((item, i) => {
+    const trigger = (e) => {
+      if(e.type === 'keydown' && e.key !== 'Enter' && e.key !== ' ') return;
+      e.preventDefault();
+      refreshVisible();
+      const visibleIdx = visibleItems.indexOf(item);
+      if(visibleIdx >= 0) openLightbox(visibleIdx);
+    };
+    item.addEventListener('click', trigger);
+    item.addEventListener('keydown', trigger);
+  });
+
+  lightbox.querySelector('.lightbox-close').addEventListener('click', closeLightbox);
+  lightbox.querySelector('.prev').addEventListener('click', () => renderLightbox(currentIndex - 1));
+  lightbox.querySelector('.next').addEventListener('click', () => renderLightbox(currentIndex + 1));
+  lightbox.addEventListener('click', (e) => { if(e.target === lightbox) closeLightbox(); });
+
+  document.addEventListener('keydown', (e) => {
+    if(!lightbox.classList.contains('open')) return;
+    if(e.key === 'Escape') closeLightbox();
+    if(e.key === 'ArrowLeft') renderLightbox(currentIndex - 1);
+    if(e.key === 'ArrowRight') renderLightbox(currentIndex + 1);
+  });
+})();
+
+// ====== SCROLL-SPY : lien nav actif selon la section visible ======
+(function(){
+  const links = document.querySelectorAll('.menu a[href^="#"]');
+  if(!links.length || !('IntersectionObserver' in window)) return;
+
+  const linkMap = new Map();
+  links.forEach(a => {
+    const id = a.getAttribute('href').slice(1);
+    const target = document.getElementById(id);
+    if(target) linkMap.set(target, a);
+  });
+
+  const setActive = (el) => {
+    links.forEach(a => a.classList.remove('is-active'));
+    const a = linkMap.get(el);
+    if(a) a.classList.add('is-active');
+  };
+
+  const io = new IntersectionObserver((entries) => {
+    const visible = entries
+      .filter(e => e.isIntersecting)
+      .sort((a,b) => b.intersectionRatio - a.intersectionRatio)[0];
+    if(visible) setActive(visible.target);
+  }, {
+    rootMargin: '-30% 0px -55% 0px',
+    threshold: [0, 0.25, 0.5, 0.75, 1]
+  });
+
+  linkMap.forEach((_, target) => io.observe(target));
+})();
 </script>
 
 <!-- WhatsApp floating button -->
