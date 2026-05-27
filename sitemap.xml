@@ -7,6 +7,24 @@
     <priority>1.0</priority>
   </url>
   <url>
+    <loc>https://cliniquedubatiment.ca/services/apres-sinistre.html</loc>
+    <lastmod>2026-05-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://cliniquedubatiment.ca/services/renovation-salle-de-bain.html</loc>
+    <lastmod>2026-05-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://cliniquedubatiment.ca/services/finition-interieure.html</loc>
+    <lastmod>2026-05-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
     <loc>https://cliniquedubatiment.ca/mentions-legales.html</loc>
     <lastmod>2026-05-27</lastmod>
     <changefreq>yearly</changefreq>
