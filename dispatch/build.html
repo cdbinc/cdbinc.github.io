@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="fr-CA">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="robots" content="noindex,nofollow" />
+<meta name="theme-color" content="#1b2d6b" />
+<title>Dispatch CDB — Générateur de lien</title>
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<style>
+  :root{--navy:#1b2d6b;--orange:#e8680a;--ink:#16213a;--muted:#5b6680;--bg:#eef1f7;--line:#e2e7f0;--card:#fff}
+  *{box-sizing:border-box}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+    background:var(--bg);color:var(--ink);margin:0;padding:22px 16px;line-height:1.4}
+  .wrap{max-width:620px;margin:0 auto}
+  h1{color:var(--navy);font-size:20px;margin:0 0 4px}
+  p.sub{color:var(--muted);font-size:13px;margin:0 0 18px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:0 8px 24px rgba(27,45,107,.07)}
+  label{display:block;font-size:12px;font-weight:700;color:var(--muted);margin:14px 0 5px}
+  input,textarea,select{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:11px;font:inherit;font-size:15px;color:var(--ink)}
+  textarea{min-height:70px;resize:vertical}
+  .hint{font-size:11px;color:var(--muted);margin:4px 0 0}
+  button{margin-top:18px;width:100%;background:var(--navy);color:#fff;border:0;border-radius:13px;padding:15px;font:inherit;font-size:16px;font-weight:800;cursor:pointer}
+  .out{margin-top:18px;display:none}
+  .out textarea{font-family:ui-monospace,monospace;font-size:12px;background:#f6f8fc}
+  .copybtns{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+  .copybtns a,.copybtns button{flex:1;min-width:120px;margin:0;font-size:14px;padding:12px;border-radius:11px}
+  .copybtns a{display:flex;align-items:center;justify-content:center;text-decoration:none;background:var(--orange);color:#fff;font-weight:700}
+  .copybtns button{background:#e7ecf6;color:var(--navy)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Générateur de lien Dispatch</h1>
+  <p class="sub">Crée un lien d'approbation à envoyer à Bobby par SMS. Aucune donnée n'est stockée — tout est encodé dans le lien.</p>
+  <div class="card">
+    <label>Type</label>
+    <select id="t">
+      <option value="soumission">Soumission</option>
+      <option value="facture">Facture</option>
+      <option value="marketing">Marketing / publication</option>
+      <option value="task">Tâche générale</option>
+    </select>
+
+    <label>Référence (ex. CDB-S-2026-004)</label>
+    <input id="id" placeholder="CDB-S-2026-004">
+
+    <label>Titre *</label>
+    <input id="title" placeholder="Salle de bain clé en main — Brossard">
+
+    <label>Client</label>
+    <input id="client" placeholder="Jean Tremblay">
+
+    <label>Adresse</label>
+    <input id="adresse" placeholder="123 rue Principale, Brossard">
+
+    <label>Date</label>
+    <input id="date" placeholder="12 juin 2026">
+
+    <label>Montant</label>
+    <input id="amount" placeholder="4 250,00 $">
+
+    <label>Résumé</label>
+    <textarea id="summary" placeholder="Description courte de la demande…"></textarea>
+
+    <label>Détails / lignes (une par ligne)</label>
+    <textarea id="lines" placeholder="Démolition&#10;Plomberie mineure&#10;Pose de céramique"></textarea>
+
+    <label>Liens (label | url, un par ligne)</label>
+    <textarea id="links" placeholder="Voir le PDF | https://…&#10;Carte | https://maps.google.com/?q=…"></textarea>
+
+    <button id="go">Générer le lien</button>
+
+    <div class="out" id="out">
+      <label>Lien à envoyer à Bobby</label>
+      <textarea id="url" rows="4" readonly></textarea>
+      <div class="copybtns">
+        <button id="copy">Copier</button>
+        <a id="sms" href="#">Envoyer par SMS</a>
+        <a id="open" href="#" target="_blank">Aperçu</a>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  function b64urlEncode(str){
+    var b = btoa(unescape(encodeURIComponent(str)));
+    return b.replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+  }
+  function val(id){ return document.getElementById(id).value.trim(); }
+
+  document.getElementById('go').addEventListener('click', function(){
+    var d = { t: val('t') };
+    ['id','title','client','adresse','date','amount','summary'].forEach(function(k){
+      var v = val(k); if(v) d[k]=v;
+    });
+    var lines = val('lines').split('\n').map(function(s){return s.trim();}).filter(Boolean);
+    if(lines.length) d.lines = lines;
+    var links = val('links').split('\n').map(function(s){return s.trim();}).filter(Boolean)
+      .map(function(row){
+        var i = row.indexOf('|');
+        if(i<0) return {label:'Ouvrir', url:row};
+        return {label:row.slice(0,i).trim(), url:row.slice(i+1).trim()};
+      });
+    if(links.length) d.links = links;
+
+    var base = location.origin + location.pathname.replace(/build\.html$/,'') ;
+    var url = base + '#' + b64urlEncode(JSON.stringify(d));
+    document.getElementById('url').value = url;
+    document.getElementById('out').style.display='block';
+    document.getElementById('open').href = url;
+    document.getElementById('sms').href = 'sms:?&body=' + encodeURIComponent('Approbation CDB : ' + url);
+    document.getElementById('out').scrollIntoView({behavior:'smooth'});
+  });
+
+  document.getElementById('copy').addEventListener('click', function(){
+    var t = document.getElementById('url'); t.select();
+    navigator.clipboard && navigator.clipboard.writeText(t.value);
+    this.textContent='Copié ✓'; var b=this; setTimeout(function(){b.textContent='Copier';},1500);
+  });
+})();
+</script>
+</body>
+</html>

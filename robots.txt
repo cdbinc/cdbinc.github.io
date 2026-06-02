@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /dispatch/
 
 Sitemap: https://cliniquedubatiment.ca/sitemap.xml

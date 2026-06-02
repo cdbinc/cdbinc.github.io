@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="fr-CA">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<meta name="robots" content="noindex,nofollow" />
+<meta name="theme-color" content="#1b2d6b" />
+<title>Dispatch CDB — Approbation</title>
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../logo.png" type="image/png">
+<style>
+  :root{
+    --navy:#1b2d6b; --orange:#e8680a; --ink:#16213a; --muted:#5b6680;
+    --bg:#eef1f7; --card:#ffffff; --line:#e2e7f0; --ok:#1c7c4a; --no:#b5341f;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Inter,Arial,sans-serif;
+    background:var(--bg); color:var(--ink);
+    min-height:100dvh; padding:18px 14px calc(env(safe-area-inset-bottom) + 24px);
+    -webkit-text-size-adjust:100%;
+  }
+  .wrap{max-width:520px; margin:0 auto}
+  .brand{display:flex; align-items:center; gap:10px; margin:4px 0 16px}
+  .brand img{height:34px; width:auto; border-radius:8px}
+  .brand b{color:var(--navy); font-size:17px; letter-spacing:.2px}
+  .brand span{color:var(--muted); font-size:12px; display:block; font-weight:500}
+  .card{background:var(--card); border:1px solid var(--line); border-radius:18px;
+    box-shadow:0 10px 30px rgba(27,45,107,.08); overflow:hidden}
+  .head{background:var(--navy); color:#fff; padding:16px 18px}
+  .kind{display:inline-block; background:rgba(255,255,255,.16); color:#fff;
+    font-size:11px; font-weight:700; letter-spacing:.8px; text-transform:uppercase;
+    padding:4px 10px; border-radius:999px}
+  .id{font-family:"JetBrains Mono",ui-monospace,monospace; opacity:.9; font-size:12px; margin-top:8px}
+  .title{font-size:20px; font-weight:700; line-height:1.25; margin:6px 0 0}
+  .body{padding:18px}
+  .row{display:flex; justify-content:space-between; gap:14px; padding:10px 0; border-bottom:1px solid var(--line)}
+  .row:last-child{border-bottom:0}
+  .row .k{color:var(--muted); font-size:13px; font-weight:600}
+  .row .v{text-align:right; font-weight:600; font-size:14px}
+  .amount{color:var(--navy); font-size:22px; font-weight:800}
+  .summary{margin:12px 0 0; color:#33405e; font-size:14px; line-height:1.5; white-space:pre-wrap}
+  ul.lines{margin:12px 0 0; padding:0; list-style:none}
+  ul.lines li{padding:7px 0 7px 22px; position:relative; font-size:14px; border-bottom:1px dashed var(--line)}
+  ul.lines li:before{content:"›"; color:var(--orange); position:absolute; left:4px; font-weight:800}
+  ul.lines li:last-child{border-bottom:0}
+  .links{display:flex; flex-wrap:wrap; gap:8px; margin:14px 0 0}
+  .links a{display:inline-flex; align-items:center; gap:6px; text-decoration:none;
+    border:1px solid var(--line); background:#f6f8fc; color:var(--navy);
+    padding:9px 13px; border-radius:11px; font-size:13px; font-weight:600}
+  .note{margin:16px 0 0}
+  .note label{display:block; font-size:12px; font-weight:700; color:var(--muted); margin:0 0 6px}
+  .note textarea{width:100%; min-height:64px; resize:vertical; padding:11px 12px;
+    border:1px solid var(--line); border-radius:12px; font:inherit; font-size:15px; color:var(--ink)}
+  .actions{display:grid; grid-template-columns:1fr 1fr; gap:12px; padding:0 18px 20px}
+  button{appearance:none; border:0; border-radius:14px; padding:16px 12px; font:inherit;
+    font-size:16px; font-weight:800; color:#fff; cursor:pointer; -webkit-tap-highlight-color:transparent}
+  button:active{transform:translateY(1px)}
+  .approve{background:var(--ok)}
+  .reject{background:var(--no)}
+  button:disabled{opacity:.5}
+  .foot{text-align:center; color:var(--muted); font-size:11px; margin:18px 0 0}
+  .state{display:none; text-align:center; padding:32px 18px}
+  .state .big{font-size:46px; line-height:1}
+  .state h2{margin:14px 0 4px; font-size:20px}
+  .state p{margin:0; color:var(--muted); font-size:14px}
+  .err{color:var(--no)}
+  .spin{display:inline-block; width:18px; height:18px; border:3px solid rgba(255,255,255,.5);
+    border-top-color:#fff; border-radius:50%; animation:r .8s linear infinite; vertical-align:-3px}
+  @keyframes r{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand">
+    <img src="../logo.png" alt="CDB" onerror="this.style.display='none'">
+    <div><b>Clinique du Bâtiment</b><span>Dispatch · approbation</span></div>
+  </div>
+
+  <div id="app"></div>
+
+  <div class="foot">Lien privé — ne pas partager · © 2026 Clinique du Bâtiment CDB Inc.</div>
+</div>
+
+<script>
+(function(){
+  // ---- email destination for approvals (same as the public contact form) ----
+  var TO = "info@cliniquedubatiment.ca";
+
+  function b64urlDecode(s){
+    s = s.replace(/-/g,'+').replace(/_/g,'/');
+    while (s.length % 4) s += '=';
+    try { return decodeURIComponent(escape(atob(s))); }
+    catch(e){ return atob(s); }
+  }
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+
+  function getPayload(){
+    var raw = (location.hash||'').replace(/^#/,'');
+    if(!raw){
+      var m = location.search.match(/[?&]d=([^&]+)/);
+      raw = m ? decodeURIComponent(m[1]) : '';
+    }
+    if(!raw) return null;
+    try { return JSON.parse(b64urlDecode(raw)); } catch(e){ return null; }
+  }
+
+  var KIND = { soumission:'Soumission', facture:'Facture', marketing:'Marketing', task:'Tâche' };
+  var app = document.getElementById('app');
+  var data = getPayload();
+
+  if(!data){
+    app.innerHTML = '<div class="card"><div class="body"><p class="err" style="text-align:center;margin:8px 0">'+
+      'Lien invalide ou expiré.<br>Demande un nouveau lien via Claude.</p></div></div>';
+    return;
+  }
+
+  var to = data.to || TO;
+  var kind = KIND[data.t] || 'Demande';
+
+  var rows = '';
+  if(data.client) rows += '<div class="row"><span class="k">Client</span><span class="v">'+esc(data.client)+'</span></div>';
+  if(data.adresse) rows += '<div class="row"><span class="k">Adresse</span><span class="v">'+esc(data.adresse)+'</span></div>';
+  if(data.date) rows += '<div class="row"><span class="k">Date</span><span class="v">'+esc(data.date)+'</span></div>';
+  if(data.amount) rows += '<div class="row"><span class="k">Montant</span><span class="v amount">'+esc(data.amount)+'</span></div>';
+
+  var lines = '';
+  if(Array.isArray(data.lines) && data.lines.length){
+    lines = '<ul class="lines">'+data.lines.map(function(l){return '<li>'+esc(l)+'</li>';}).join('')+'</ul>';
+  }
+
+  var links = '';
+  if(Array.isArray(data.links) && data.links.length){
+    links = '<div class="links">'+data.links.map(function(l){
+      return '<a href="'+esc(l.url)+'" target="_blank" rel="noopener">'+esc(l.label||'Ouvrir')+'</a>';
+    }).join('')+'</div>';
+  }
+
+  app.innerHTML =
+    '<div class="card" id="card">'+
+      '<div class="head">'+
+        '<span class="kind">'+esc(kind)+'</span>'+
+        (data.id? '<div class="id">'+esc(data.id)+'</div>':'')+
+        '<div class="title">'+esc(data.title||'Demande d\'approbation')+'</div>'+
+      '</div>'+
+      '<div class="body">'+
+        rows +
+        (data.summary? '<div class="summary">'+esc(data.summary)+'</div>':'') +
+        lines + links +
+        '<div class="note"><label for="note">Note (optionnel)</label>'+
+        '<textarea id="note" placeholder="Commentaire pour l\'équipe…"></textarea></div>'+
+      '</div>'+
+      '<div class="actions">'+
+        '<button class="reject" id="btnNo">✕ Refuser</button>'+
+        '<button class="approve" id="btnYes">✓ Approuver</button>'+
+      '</div>'+
+    '</div>'+
+    '<div class="state" id="state"></div>';
+
+  function send(decision){
+    var btnY = document.getElementById('btnYes');
+    var btnN = document.getElementById('btnNo');
+    var note = (document.getElementById('note')||{}).value || '';
+    btnY.disabled = btnN.disabled = true;
+    (decision==='approuvé'?btnY:btnN).innerHTML = '<span class="spin"></span>';
+
+    var label = decision==='approuvé' ? 'APPROUVÉ' : 'REFUSÉ';
+    var payload = {
+      _subject: '['+label+'] '+kind+(data.id?' '+data.id:'')+' — '+(data.title||''),
+      decision: label,
+      type: kind,
+      reference: data.id || '—',
+      titre: data.title || '—',
+      client: data.client || '—',
+      montant: data.amount || '—',
+      note: note || '—',
+      horodatage: new Date().toLocaleString('fr-CA'),
+      _template: 'table'
+    };
+
+    fetch('https://formsubmit.co/ajax/'+encodeURIComponent(to), {
+      method:'POST',
+      headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body: JSON.stringify(payload)
+    }).then(function(r){ return r.json(); })
+      .then(function(){ done(decision); })
+      .catch(function(){ fail(decision); });
+  }
+
+  function done(decision){
+    var card = document.getElementById('card'); card.style.display='none';
+    var s = document.getElementById('state'); s.style.display='block';
+    var ok = decision==='approuvé';
+    s.innerHTML = '<div class="big">'+(ok?'✅':'🚫')+'</div>'+
+      '<h2>'+(ok?'Approuvé':'Refusé')+'</h2>'+
+      '<p>'+(data.id?esc(data.id)+' — ':'')+'l\'équipe a été notifiée par courriel.</p>';
+  }
+  function fail(decision){
+    var btnY = document.getElementById('btnYes');
+    var btnN = document.getElementById('btnNo');
+    btnY.disabled = btnN.disabled = false;
+    btnY.textContent='✓ Approuver'; btnN.textContent='✕ Refuser';
+    var s = document.getElementById('state'); s.style.display='block';
+    s.innerHTML = '<p class="err">Échec de l\'envoi. Vérifie la connexion et réessaie.</p>';
+  }
+
+  document.getElementById('btnYes').addEventListener('click', function(){ send('approuvé'); });
+  document.getElementById('btnNo').addEventListener('click', function(){ send('refusé'); });
+})();
+</script>
+</body>
+</html>
