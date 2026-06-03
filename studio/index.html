@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CDB Studio — Marketing · Vidéo · Affaires</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0b1521; --bg2:#0d1b2a; --panel:#14222f; --panel2:#1a2b3c; --elev:#1f3346;
+  --line:#22384e; --line2:#2d4660;
+  --text:#e8eef4; --muted:#8aa0b2; --faint:#5f7689;
+  --navy:#0a2a43; --orange:#f2792a; --orange2:#ff8c3f; --orangesoft:rgba(242,121,42,.16);
+  --green:#3fb950; --greensoft:rgba(63,185,80,.15); --red:#f85149; --redsoft:rgba(248,81,73,.15);
+  --amber:#e3a008; --blue:#4a86e8; --bluesoft:rgba(74,134,232,.15);
+  --r:14px; --r2:10px; --shadow:0 10px 34px rgba(0,0,0,.42); --shadow2:0 2px 10px rgba(0,0,0,.3);
+}
+html,body{height:100%}
+body{
+  font-family:"Segoe UI",-apple-system,BlinkMacSystemFont,"Inter",Roboto,Arial,sans-serif;
+  color:var(--text); line-height:1.5;
+  background:
+    radial-gradient(1100px 540px at 82% -8%, rgba(242,121,42,.10), transparent 60%),
+    radial-gradient(900px 500px at 0% 0%, rgba(74,134,232,.10), transparent 55%),
+    linear-gradient(180deg,var(--bg2),var(--bg));
+  background-attachment:fixed; min-height:100vh; -webkit-font-smoothing:antialiased;
+}
+::selection{background:var(--orangesoft)}
+::-webkit-scrollbar{width:11px;height:11px}
+::-webkit-scrollbar-thumb{background:#2a3f56;border-radius:8px;border:2px solid transparent;background-clip:padding-box}
+::-webkit-scrollbar-thumb:hover{background:#37506b}
+::-webkit-scrollbar-track{background:transparent}
+
+/* ---------- Header ---------- */
+header{
+  position:sticky;top:0;z-index:40;display:flex;align-items:center;gap:18px;
+  padding:14px 26px;background:rgba(11,21,33,.82);backdrop-filter:saturate(140%) blur(12px);
+  border-bottom:1px solid var(--line);
+}
+.brand{display:flex;align-items:center;gap:12px}
+.brand .chip{width:42px;height:42px;border-radius:11px;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(0,0,0,.4),0 0 0 1px rgba(255,255,255,.06);flex-shrink:0;overflow:hidden}
+.brand .chip img{width:100%;height:100%;object-fit:contain;padding:4px}
+.logo{font-size:20px;font-weight:800;letter-spacing:.3px;color:var(--orange);display:flex;align-items:center;gap:7px;line-height:1.05}
+.logo span{color:var(--text);font-weight:700}
+.sub{color:var(--muted);font-size:12px;font-weight:500;margin-top:1px}
+.brandtxt{display:flex;flex-direction:column}
+.status{margin-left:auto;display:flex;gap:18px;align-items:center}
+.status .s{display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--muted);font-weight:500}
+.dot{width:9px;height:9px;border-radius:50%;background:#43566b;box-shadow:0 0 0 3px rgba(120,140,160,.08);transition:.25s}
+.dot.up{background:var(--green);box-shadow:0 0 10px rgba(63,185,80,.7),0 0 0 3px var(--greensoft)}
+.dot.down{background:var(--red);box-shadow:0 0 10px rgba(248,81,73,.7),0 0 0 3px var(--redsoft)}
+
+/* ---------- Layout ---------- */
+.container{max-width:1180px;margin:0 auto;padding:22px 26px 60px}
+.howto{
+  background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);
+  border-left:3px solid var(--orange);border-radius:var(--r2);padding:13px 16px;color:#c4d3e0;font-size:13.5px;margin-bottom:18px;box-shadow:var(--shadow2)
+}
+.howto b{color:var(--text)}
+/* ---------- Hero modules strip ---------- */
+.hero{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:18px}
+.hcard{position:relative;background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;overflow:hidden;transition:.2s}
+.hcard:hover{transform:translateY(-2px);border-color:#33506e;box-shadow:var(--shadow2)}
+.hcard::after{content:"";position:absolute;right:-30px;top:-30px;width:90px;height:90px;border-radius:50%;background:var(--orangesoft);filter:blur(8px)}
+.hcard .ic{font-size:22px;margin-bottom:8px}
+.hcard h4{font-size:14.5px;color:var(--text);font-weight:700;margin-bottom:3px}
+.hcard p{font-size:12px;color:var(--muted);line-height:1.45}
+.hcard.h-mkt{border-top:3px solid var(--orange)}
+.hcard.h-vid{border-top:3px solid var(--blue)}
+.hcard.h-aff{border-top:3px solid var(--green)}
+@media(max-width:760px){.hero{grid-template-columns:1fr}}
+
+/* ---------- Tabs ---------- */
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
+.tab{
+  display:flex;align-items:center;gap:8px;cursor:pointer;user-select:none;
+  padding:9px 15px;border-radius:999px;font-size:13.5px;font-weight:600;color:var(--muted);
+  background:var(--panel);border:1px solid var(--line);transition:.18s
+}
+.tab:hover{color:var(--text);border-color:#33506e;transform:translateY(-1px)}
+.tab.active{color:#fff;background:linear-gradient(180deg,var(--orange),#d9641b);border-color:transparent;box-shadow:0 6px 18px rgba(242,121,42,.35)}
+.tab .n{font-size:11.5px;font-weight:700;background:rgba(255,255,255,.12);color:inherit;padding:1px 8px;border-radius:999px;min-width:20px;text-align:center}
+.tab:not(.active) .n{background:#22384e;color:var(--faint)}
+
+/* ---------- Cards grid ---------- */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:18px}
+.card{
+  background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);
+  border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow2);transition:.2s;display:flex;flex-direction:column
+}
+.card:hover{transform:translateY(-3px);border-color:#33506e;box-shadow:var(--shadow)}
+.imgwrap{position:relative;aspect-ratio:16/10;background:#0a1119;overflow:hidden}
+.photo{width:100%;height:100%;object-fit:cover;display:block;transition:.35s}
+.card:hover .photo{transform:scale(1.04)}
+.noimg{width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:var(--faint);font-size:13px;background:repeating-linear-gradient(45deg,#0d1722,#0d1722 12px,#0f1c2b 12px,#0f1c2b 24px)}
+.body{padding:14px 15px 15px;display:flex;flex-direction:column;gap:9px;flex:1}
+.badges{display:flex;flex-wrap:wrap;gap:6px}
+.b{font-size:11px;font-weight:700;letter-spacing:.2px;padding:3px 9px;border-radius:999px;background:#22384e;color:#b9cadb;border:1px solid transparent}
+.b.plat{background:var(--bluesoft);color:#9cc0ff}
+.b.ok{background:var(--greensoft);color:#7ee2a0}
+.b.bad{background:var(--redsoft);color:#ff9b95}
+.b.review{background:rgba(227,160,8,.16);color:#f0c860}
+.b.approved{background:var(--bluesoft);color:#9cc0ff}
+.b.published{background:var(--greensoft);color:#7ee2a0}
+.b.drafts{background:#22384e;color:#aebfd0}
+.b.rejected{background:var(--redsoft);color:#ff9b95}
+.text{font-size:13.5px;color:#d3e0ec;white-space:pre-wrap;word-break:break-word}
+.alt{font-size:11.5px;color:var(--faint);border-top:1px dashed var(--line);padding-top:7px}
+.reasons{font-size:12px;color:#ffc4be;background:var(--redsoft);border:1px solid rgba(248,81,73,.3);border-radius:var(--r2);padding:8px 10px}
+.reasons b{color:#ff9b95}
+.pubinfo{font-size:11.5px;color:#7ee2a0;font-weight:600}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:auto;padding-top:4px}
+
+/* ---------- Buttons ---------- */
+button{font-family:inherit;cursor:pointer;border:none;border-radius:var(--r2);font-size:13px;font-weight:600;padding:9px 14px;transition:.16s;letter-spacing:.2px}
+button:active{transform:translateY(1px)}
+.btn-approve{background:linear-gradient(180deg,var(--green),#2a9b43);color:#04210f}
+.btn-approve:hover{filter:brightness(1.08);box-shadow:0 6px 16px rgba(63,185,80,.32)}
+.btn-publish{background:linear-gradient(180deg,var(--orange),#d9641b);color:#fff}
+.btn-publish:hover{filter:brightness(1.07);box-shadow:0 6px 16px rgba(242,121,42,.4)}
+.btn-sec{background:var(--elev);color:var(--text);border:1px solid var(--line2,#2d4660)}
+.btn-sec:hover{background:#26415a;border-color:#37506b}
+.btn-ghost{background:transparent;color:var(--muted);border:1px solid var(--line)}
+.btn-ghost:hover{color:var(--text);border-color:#37506b;background:rgba(255,255,255,.03)}
+
+/* ---------- Empty state ---------- */
+.empty{text-align:center;color:var(--muted);padding:70px 20px;font-size:14px}
+.empty .big{font-size:40px;margin-bottom:12px;opacity:.7}
+
+/* ---------- Advanced / produce / tools ---------- */
+.adv{margin-top:26px;background:var(--panel);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.adv>summary{cursor:pointer;padding:13px 16px;font-size:13px;font-weight:600;color:var(--muted);list-style:none;user-select:none;transition:.15s}
+.adv>summary:hover{color:var(--text);background:rgba(255,255,255,.02)}
+.adv>summary::-webkit-details-marker{display:none}
+.adv>summary::before{content:"\25B8 ";color:var(--orange)}
+.adv[open]>summary::before{content:"\25BE "}
+.produce,.tools{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end;padding:14px 16px;border-top:1px solid var(--line)}
+.produce label{display:block;font-size:11.5px;color:var(--muted);margin-bottom:5px;font-weight:600}
+.tools{gap:8px}
+input,select,textarea{
+  font-family:inherit;font-size:13px;color:var(--text);background:#0e1a28;border:1px solid var(--line);
+  border-radius:var(--r2);padding:9px 11px;transition:.15s;outline:none
+}
+input:focus,select:focus,textarea:focus{border-color:var(--orange);box-shadow:0 0 0 3px var(--orangesoft)}
+input::placeholder{color:var(--faint)}
+select{cursor:pointer}
+
+/* ---------- Log ---------- */
+#log{
+  margin:0 16px 16px;background:#070d14;border:1px solid var(--line);border-radius:var(--r2);
+  padding:12px 14px;max-height:280px;overflow:auto;font-family:"Cascadia Code","Consolas",monospace;font-size:12px;line-height:1.65
+}
+#log div{display:flex;gap:10px;padding:1px 0;border-bottom:1px solid rgba(255,255,255,.03)}
+.ti{color:var(--faint);flex-shrink:0;min-width:62px}
+.t-out{color:#c4d3e0}.t-err{color:#ff9b95}.t-fix{color:#7ee2a0}.t-info{color:#9cc0ff}.cmd{color:var(--orange2)}
+.spin{display:inline-block;width:13px;height:13px;border:2px solid rgba(255,255,255,.2);border-top-color:var(--orange);border-radius:50%;animation:sp .8s linear infinite;vertical-align:-2px}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+/* ---------- Modals ---------- */
+.overlay{position:fixed;inset:0;z-index:80;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(5,10,16,.66);backdrop-filter:blur(6px)}
+.overlay.show{display:flex;animation:fade .18s ease}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.modal{width:100%;max-width:560px;max-height:88vh;overflow:auto;background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line2,#2d4660);border-radius:var(--r);box-shadow:var(--shadow);animation:pop .2s cubic-bezier(.2,.9,.3,1.2)}
+@keyframes pop{from{transform:translateY(12px) scale(.98);opacity:0}to{transform:none;opacity:1}}
+.mh{padding:16px 20px;font-size:16px;font-weight:700;border-bottom:1px solid var(--line);background:rgba(0,0,0,.15)}
+.mb{padding:18px 20px;display:flex;flex-direction:column;gap:12px}
+.mb img{width:100%;border-radius:var(--r2);border:1px solid var(--line)}
+.mf{padding:14px 20px;display:flex;justify-content:flex-end;gap:10px;border-top:1px solid var(--line);background:rgba(0,0,0,.12)}
+.ptext{font-size:13.5px;color:#d3e0ec;white-space:pre-wrap;background:#0e1a28;border:1px solid var(--line);border-radius:var(--r2);padding:11px 13px}
+.lbl{font-size:11.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px}
+.cc{font-size:11px;color:var(--faint);text-align:right;margin-top:-6px}
+.info{font-size:12px;color:#a9c7df;background:var(--bluesoft);border:1px solid rgba(74,134,232,.28);border-radius:var(--r2);padding:9px 11px}
+.altin{width:100%}
+textarea#ed-text{width:100%;min-height:140px;resize:vertical;line-height:1.55}
+
+/* ---------- Toast ---------- */
+.toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(24px);z-index:120;opacity:0;pointer-events:none;
+  background:#16242f;color:var(--text);border:1px solid var(--line2,#2d4660);border-left:3px solid var(--orange);
+  padding:13px 18px;border-radius:var(--r2);font-size:13.5px;font-weight:500;box-shadow:var(--shadow);transition:.3s;max-width:90vw}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.ok{border-left-color:var(--green)}.toast.err{border-left-color:var(--red)}
+
+/* ---------- Calendar / promos / misc ---------- */
+.calwrap,.rep{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:16px}
+.agrow{display:flex;gap:10px;flex-wrap:wrap;align-items:center;padding:8px 0;border-bottom:1px solid var(--line)}
+.agtools{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+@media(max-width:640px){
+  header{padding:12px 16px;gap:12px}.status{gap:12px}
+  .container{padding:18px 14px 50px}.grid{grid-template-columns:1fr}
+}
+
+/* ---------- Auth gate (Firebase Google) ---------- */
+#auth-gate{position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;
+  background:radial-gradient(900px 500px at 70% -10%,rgba(242,121,42,.14),transparent 60%),linear-gradient(180deg,#0d1b2a,#0b1521)}
+.ag-card{width:100%;max-width:380px;background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line2,#2d4660);
+  border-radius:18px;box-shadow:var(--shadow);padding:34px 30px;text-align:center}
+.ag-logo{font-size:26px;font-weight:800;color:var(--orange)}
+.ag-logo span{color:var(--text)}
+.ag-sub{color:var(--muted);font-size:13px;margin:6px 0 22px}
+.ag-btn{display:inline-flex;align-items:center;gap:10px;cursor:pointer;border:1px solid #2d4660;
+  background:#fff;color:#1f1f1f;font-weight:600;font-size:14px;padding:11px 18px;border-radius:10px;transition:.15s;width:100%;justify-content:center}
+.ag-btn:hover{filter:brightness(.97);box-shadow:0 6px 16px rgba(0,0,0,.3)}
+.ag-btn::before{content:"";width:18px;height:18px;border-radius:50%;
+  background:conic-gradient(#ea4335 0 25%,#fbbc05 0 50%,#34a853 0 75%,#4285f4 0 100%)}
+.ag-err{color:#ff9b95;font-size:12.5px;margin-top:14px;min-height:16px}
+#user-chip{display:none;align-items:center;gap:9px;margin-left:14px;background:var(--panel);border:1px solid var(--line);
+  border-radius:999px;padding:4px 6px 4px 10px}
+#user-chip img{width:24px;height:24px;border-radius:50%;display:none}
+#user-chip .uc-name{font-size:12.5px;color:var(--text);font-weight:600;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#user-chip .uc-out{cursor:pointer;border:none;background:#22384e;color:var(--muted);font-size:11.5px;font-weight:600;padding:5px 10px;border-radius:999px}
+#user-chip .uc-out:hover{color:var(--text);background:#2d4660}
+#cfg-banner{display:none;position:fixed;left:50%;top:10px;transform:translateX(-50%);z-index:9998;
+  background:#16242f;border:1px solid rgba(227,160,8,.4);border-left:3px solid var(--amber);color:#f0c860;
+  font-size:12.5px;padding:9px 14px;border-radius:10px;box-shadow:var(--shadow)}
+
+/* ---------- Affaires module ---------- */
+.af-wrap{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.af-header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 18px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,rgba(0,0,0,.08),transparent)}
+.af-header h3{margin:0;font-size:16px;font-weight:700;display:flex;align-items:center;gap:8px}
+.af-header h3 .af-icon{font-size:20px}
+.af-toolbar{display:flex;gap:8px;flex-wrap:wrap}
+.af-subtabs{display:flex;border-bottom:1px solid var(--line);background:rgba(0,0,0,.06)}
+.af-subtab{cursor:pointer;padding:11px 20px;font-size:13px;font-weight:600;color:var(--muted);border-bottom:2px solid transparent;transition:.15s;user-select:none;display:flex;align-items:center;gap:6px}
+.af-subtab:hover{color:var(--text);background:rgba(255,255,255,.02)}
+.af-subtab.active{color:var(--orange);border-bottom-color:var(--orange)}
+.af-subtab .af-cnt{font-size:10.5px;font-weight:700;background:#22384e;color:var(--faint);padding:1px 7px;border-radius:999px;min-width:18px;text-align:center}
+.af-subtab.active .af-cnt{background:var(--orangesoft);color:var(--orange)}
+.af-body{padding:16px 18px;min-height:200px}
+.af-search{display:flex;gap:10px;margin-bottom:14px}
+.af-search input{flex:1;min-width:120px}
+/* CRM table */
+.crm-tbl{width:100%;border-collapse:separate;border-spacing:0;font-size:13px}
+.crm-tbl th{text-align:left;padding:9px 10px;font-size:11.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--panel)}
+.crm-tbl td{padding:9px 10px;border-bottom:1px solid rgba(255,255,255,.04);vertical-align:top}
+.crm-tbl tr:hover td{background:rgba(255,255,255,.02)}
+.crm-tbl .cli-name{font-weight:600;color:var(--text)}
+.crm-tbl .cli-id{font-size:11px;color:var(--faint);font-family:monospace}
+.cli-status{display:inline-block;font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;letter-spacing:.2px}
+.cli-status.prospect{background:rgba(227,160,8,.16);color:#f0c860}
+.cli-status.actif{background:var(--greensoft);color:#7ee2a0}
+.cli-status.inactif{background:#22384e;color:#aebfd0}
+.cli-status.termine{background:var(--bluesoft);color:#9cc0ff}
+.cli-actions{display:flex;gap:6px}
+.cli-actions button{padding:5px 10px;font-size:11.5px}
+/* Doc cards */
+.doc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
+.doc-card{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:var(--r2);padding:14px 16px;transition:.18s;display:flex;flex-direction:column;gap:8px}
+.doc-card:hover{border-color:#33506e;transform:translateY(-2px);box-shadow:var(--shadow2)}
+.doc-card .doc-num{font-weight:700;font-size:14px;color:var(--text);display:flex;align-items:center;gap:8px}
+.doc-card .doc-num .doc-type{font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px}
+.doc-type.soum{background:var(--bluesoft);color:#9cc0ff}
+.doc-type.fact{background:var(--greensoft);color:#7ee2a0}
+.doc-card .doc-client{font-size:12.5px;color:var(--muted)}
+.doc-card .doc-meta{font-size:12px;color:var(--faint);display:flex;gap:12px;flex-wrap:wrap}
+.doc-card .doc-total{font-size:15px;font-weight:700;color:var(--green)}
+.doc-card .doc-actions{display:flex;gap:8px;margin-top:auto}
+.doc-card .doc-actions button{font-size:12px;padding:6px 12px}
+/* Modal form fields */
+.mf-group{display:flex;flex-direction:column;gap:4px}
+.mf-group label{font-size:11.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.3px}
+.mf-row{display:flex;gap:12px}
+.mf-row > *{flex:1}
+.mf-divider{border:none;border-top:1px solid var(--line);margin:4px 0}
+/* Ligne items (soumission modal) */
+.ligne-list{display:flex;flex-direction:column;gap:8px}
+.ligne-item{display:flex;gap:8px;align-items:flex-end;padding:8px 10px;background:rgba(0,0,0,.12);border:1px solid var(--line);border-radius:var(--r2)}
+.ligne-item input{font-size:12px;padding:7px 8px}
+.ligne-item .li-desc{flex:3}
+.ligne-item .li-qty,.ligne-item .li-unit,.ligne-item .li-prix{flex:1;min-width:60px}
+.ligne-item .li-del{cursor:pointer;background:transparent;border:1px solid var(--line);color:var(--red);font-size:15px;padding:5px 8px;border-radius:var(--r2);flex:none}
+.ligne-item .li-del:hover{background:var(--redsoft)}
+.af-stats{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:14px}
+.af-stat{display:flex;flex-direction:column;align-items:center;padding:12px 18px;background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:var(--r2);min-width:100px}
+.af-stat .af-stat-val{font-size:22px;font-weight:800;color:var(--text)}
+.af-stat .af-stat-lbl{font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.3px}
+.af-stat.green .af-stat-val{color:var(--green)}
+.af-stat.blue .af-stat-val{color:var(--blue)}
+.af-stat.orange .af-stat-val{color:var(--orange)}
+@media(max-width:640px){.af-subtabs{overflow-x:auto}.doc-grid{grid-template-columns:1fr}.mf-row{flex-direction:column}.ligne-item{flex-wrap:wrap}}
+</style></head>
+<body>
+<div id="auth-gate">
+  <div class="ag-card">
+    <div class="ag-logo">CDB <span>Studio</span></div>
+    <div class="ag-sub">Espace de production &mdash; acc&egrave;s r&eacute;serv&eacute;</div>
+    <button class="ag-btn" onclick="window.__cdbSignIn&&window.__cdbSignIn()">Se connecter avec Google</button>
+    <div id="auth-err" class="ag-err"></div>
+  </div>
+</div>
+<div id="cfg-banner">Connexion Google non configur&eacute;e &mdash; bloc CONFIG dans index.html.</div>
+
+<header>
+  <div class="brand">
+    <div class="chip"><img src="/api/brand-logo" alt="CDB" onerror="this.style.display='none'"></div>
+    <div class="brandtxt">
+      <div class="logo">CDB <span>Studio</span></div>
+      <div class="sub">Marketing · Vidéo Veo 3 · Affaires</div>
+    </div>
+  </div>
+  <div class="status">
+    <span class="s"><span id="d-gemini" class="dot"></span>Vision</span>
+    <span class="s"><span id="d-claude" class="dot"></span>Rédaction</span>
+    <span class="s"><span id="d-ollama" class="dot"></span>Local</span>
+  </div>
+  <a href="/leads" style="align-self:center;margin-left:16px;background:#f5a623;color:#10202c;padding:6px 12px;border-radius:8px;font-weight:700;font-size:12px;letter-spacing:.02em;text-decoration:none;white-space:nowrap" title="Leads et integrations">Leads &amp; Int&eacute;grations</a>
+  <div id="user-chip"><img alt=""><span class="uc-name"></span><button class="uc-out" onclick="window.__cdbSignOut&&window.__cdbSignOut()">Déconnexion</button></div>
+</header>
+<div class="container">
+  <div class="hero">
+    <div class="hcard h-mkt"><div class="ic">📣</div><h4>Marketing</h4><p>Produire, vérifier et publier (Bluesky · Facebook) avec verrou humain.</p></div>
+    <div class="hcard h-vid"><div class="ic">🎬</div><h4>Vidéo Veo 3</h4><p>Scènes cinématiques 8 s → prompt + requête Gemini / Vertex.</p></div>
+    <div class="hcard h-aff"><div class="ic">📋</div><h4>Affaires</h4><p>Soumissions, factures et CRM avec calcul TPS / TVQ.</p></div>
+  </div>
+  <div class="howto"><b>Comment ça marche :</b> 1) Les posts à valider sont dans <b>À réviser</b>. 2) Clique <b>Approuver</b> — le texte et l'image sont revérifiés automatiquement (anti-incohérence, anti-tiret). 3) Une fois approuvé, clique <b>Publier</b> et suis l'étape pour le mettre en ligne.</div>
+  <div class="tabs" id="tabs"></div>
+  <div id="cards" class="grid"></div>
+  <details class="adv">
+    <summary>Outils avancés — produire, vérifier, diagnostics, journal</summary>
+    <div class="produce">
+      <div><label>Plateforme</label><select id="platform"><option>bluesky</option><option>instagram</option><option>facebook</option><option>linkedin</option><option>x</option></select></div>
+      <div style="flex:1;min-width:200px"><label>Concept du post (optionnel)</label><input id="concept" placeholder="ex: rénovation de sous-sol, avant/après"></div>
+      <button class="btn-sec" id="btn-produce">+ Produire un post</button>
+    </div>
+    <div class="tools">
+      <button class="btn-sec" id="btn-verifyall">Vérifier tous les brouillons</button>
+      <button class="btn-ghost" data-act="api" data-url="/api/produce-plan">Produire le plan</button>
+      <button class="btn-ghost" data-act="api" data-url="/api/plan">Plan</button>
+      <button class="btn-ghost" data-act="api" data-url="/api/lint-all">Lint tout</button>
+      <button class="btn-ghost" data-act="api" data-url="/api/selftest">Selftest</button>
+      <button class="btn-ghost" data-act="api" data-url="/api/engines">Moteurs</button>
+      <button class="btn-ghost" data-act="api" data-url="/api/diagnose">Diagnostic</button>
+    </div>
+    <div id="log"></div>
+  </details>
+</div>
+<div class="overlay" id="ov-approve"><div class="modal"><div class="mh">Approuver ce post ?</div><div class="mb" id="ap-body"></div><div class="mf"><button class="btn-ghost" id="ap-cancel">Annuler</button><button class="btn-approve" id="ap-confirm">✓ Oui, approuver</button></div></div></div>
+<div class="overlay" id="ov-publish"><div class="modal"><div class="mh">Publier sur Bluesky</div><div class="mb" id="pub-body"></div><div class="mf"><button class="btn-sec" id="pub-close">Fermer</button></div></div></div>
+<div class="overlay" id="ov-edit"><div class="modal"><div class="mh">Éditer le post</div><div class="mb"><div class="lbl">Texte du post</div><textarea id="ed-text"></textarea><div class="cc" id="ed-cc">0 car.</div><div class="lbl">Texte alternatif de l'image (alt)</div><input class="altin" id="ed-alt"><div class="info">Après modification, le post repart dans <b>Brouillons</b> pour être re-vérifié (texte + image) avant une nouvelle approbation.</div></div><div class="mf"><button class="btn-ghost" id="ed-cancel">Annuler</button><button class="btn-approve" id="ed-save">Enregistrer</button></div></div></div>
+<div class="overlay" id="ov-new-cli"><div class="modal"><div class="mh">👥 Ajouter un Client CRM</div><div class="mb" id="mb-new-cli">
+  <div class="mf-group"><label>Nom complet *</label><input id="cli-nom" placeholder="Jean Tremblay"></div>
+  <div class="mf-row">
+    <div class="mf-group"><label>Téléphone</label><input id="cli-tel" placeholder="514-555-1234"></div>
+    <div class="mf-group"><label>Courriel</label><input id="cli-courriel" placeholder="jean@exemple.ca"></div>
+  </div>
+  <div class="mf-group"><label>Adresse</label><input id="cli-adresse" placeholder="123 rue des Érables, Longueuil, QC"></div>
+  <div class="mf-row">
+    <div class="mf-group"><label>Source</label><select id="cli-source"><option value="Web">Web</option><option value="Référence">Référence</option><option value="Facebook">Facebook</option><option value="Kijiji">Kijiji</option><option value="Slack">Slack</option><option value="Autre">Autre</option></select></div>
+    <div class="mf-group"><label>Notes</label><input id="cli-notes" placeholder="Notes initiales..."></div>
+  </div>
+</div><div class="mf"><button class="btn-ghost" onclick="closeModal('ov-new-cli')">Annuler</button><button class="btn-approve" id="btn-save-cli" onclick="saveNewClient()">Enregistrer</button></div></div></div>
+<div class="overlay" id="ov-new-fact"><div class="modal"><div class="mh">🧾 Générer une Facture</div><div class="mb" id="mb-new-fact">
+  <div class="mf-group"><label>Soumission source *</label><select id="fact-soum"><option value="">— Choisir une soumission —</option></select></div>
+  <div id="fact-detail" style="display:none">
+    <div class="info" style="margin-bottom:10px" id="fact-info"></div>
+    <div class="mf-row">
+      <div class="mf-group"><label>Type de facture</label><select id="fact-type"><option value="finale">Finale</option><option value="depot">Acompte / Dépôt</option><option value="progression">Progression</option></select></div>
+      <div class="mf-group"><label>Pourcentage (dépôt/prog.)</label><input id="fact-pct" type="number" min="1" max="100" value="30" placeholder="30"></div>
+    </div>
+    <div class="mf-row">
+      <div class="mf-group"><label>Acomptes déjà versés ($)</label><input id="fact-acomptes" type="number" min="0" step="0.01" value="0" placeholder="0.00"></div>
+      <div class="mf-group"><label>Notes</label><input id="fact-notes" placeholder="Notes pour la facture..."></div>
+    </div>
+  </div>
+</div><div class="mf"><button class="btn-ghost" onclick="closeModal('ov-new-fact')">Annuler</button><button class="btn-approve" id="btn-save-fact" onclick="saveNewFacture()">Générer la Facture</button></div></div></div>
+<div class="overlay" id="ov-new-soum"><div class="modal" style="max-width:720px"><div class="mh">📄 Générer une Soumission</div><div class="mb" id="mb-new-soum">
+  <div style="font-size:12px;color:var(--muted);margin-bottom:6px">Choisissez un client existant ou remplissez les champs manuellement.</div>
+  <div class="mf-group"><label>Client existant</label><select id="soum-cli-select"><option value="">— Saisie manuelle —</option></select></div>
+  <hr class="mf-divider">
+  <div class="mf-row">
+    <div class="mf-group"><label>Nom du client *</label><input id="soum-cli-nom" placeholder="Jean Tremblay"></div>
+    <div class="mf-group"><label>Téléphone</label><input id="soum-cli-tel" placeholder="514-555-1234"></div>
+  </div>
+  <div class="mf-row">
+    <div class="mf-group"><label>Courriel</label><input id="soum-cli-courriel" placeholder="jean@exemple.ca"></div>
+    <div class="mf-group"><label>Adresse</label><input id="soum-cli-adresse" placeholder="123 rue des Érables"></div>
+  </div>
+  <hr class="mf-divider">
+  <div class="mf-row">
+    <div class="mf-group"><label>Titre du projet *</label><input id="soum-projet" placeholder="Rénovation salle de bain"></div>
+    <div class="mf-group"><label>Adresse des travaux</label><input id="soum-adresse" placeholder="(même que client si vide)"></div>
+  </div>
+  <div class="mf-group"><label>Description du projet</label><input id="soum-desc" placeholder="Démolition, pose de céramique, peinture..."></div>
+  <hr class="mf-divider">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><label style="font-size:11.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.3px">Lignes de travaux</label><button class="btn-ghost" style="font-size:11px;padding:5px 10px" onclick="addSoumLigne()">+ Ajouter une ligne</button></div>
+  <div class="ligne-list" id="soum-lignes"></div>
+  <hr class="mf-divider">
+  <div class="mf-row">
+    <div class="mf-group"><label>Rabais ($)</label><input id="soum-rabais" type="number" min="0" step="0.01" value="0"></div>
+    <div class="mf-group"><label>Notes</label><input id="soum-notes" placeholder="Délai estimé, conditions..."></div>
+  </div>
+</div><div class="mf"><button class="btn-ghost" onclick="closeModal('ov-new-soum')">Annuler</button><button class="btn-approve" id="btn-save-soum" onclick="saveNewSoumission()">Générer la Soumission</button></div></div></div>
+<div class="overlay" id="ov-new-proj"><div class="modal"><div class="mh">🏗 Créer un Projet (Chantier)</div><div class="mb" id="mb-new-proj">
+  <div class="mf-group"><label>Titre du Projet *</label><input id="proj-titre" placeholder="Salle de bain Tremblay" style="width:100%"></div>
+  <div class="mf-row">
+    <div class="mf-group"><label>Client associé</label><select id="proj-cli-select" style="width:100%"><option value="">— Aucun / Manuel —</option></select></div>
+    <div class="mf-group"><label>Soumission de référence</label><select id="proj-soum-select" style="width:100%"><option value="">— Aucune —</option></select></div>
+  </div>
+</div><div class="mf"><button class="btn-ghost" onclick="closeModal('ov-new-proj')">Annuler</button><button class="btn-approve" id="btn-save-proj" onclick="saveNewProject()">Créer le Projet</button></div></div></div>
+<div class="toast" id="toast"></div>
+<script>
+var STAGES=[["review","📝 À réviser"],["approved","✓ Approuvés"],["published","🚀 Publiés"],["drafts","✎ Brouillons"],["rejected","✕ Rejetés"],["visuels","🖼 Visuels"],["video","🎬 Vidéo Veo 3"],["affaires","📋 Affaires"],["calendar","📅 Calendrier"]];
+var STAGEMAP={review:"À réviser",approved:"Approuvé ✓",published:"Publié ✓",drafts:"Brouillon",rejected:"Rejeté"};
+var current="review", ITEMS=[], lastCounts={}, CAL_COUNT=0, SCHED=[], PMREPORT="", PROMOS=[], PROMO_COUNT=0;
+function esc(s){return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function imgUrl(file){return "/api/image?file="+encodeURIComponent(file);}
+var logEl=document.getElementById("log");
+function addLog(o){var d=document.createElement("div");d.innerHTML="<span class='ti'>"+esc(o.t||"")+"</span><span class='t-"+(o.type||"out")+"'>"+esc(o.msg||"")+"</span>";logEl.appendChild(d);logEl.scrollTop=logEl.scrollHeight;while(logEl.childNodes.length>500)logEl.removeChild(logEl.firstChild);}
+function connect(){try{var es=new EventSource("/events");es.onmessage=function(e){try{addLog(JSON.parse(e.data));}catch(x){}};}catch(x){}}
+var toastEl=document.getElementById("toast"),toastT=null;
+function toast(m,k){toastEl.textContent=m;toastEl.className="toast show"+(k?(" "+k):"");clearTimeout(toastT);toastT=setTimeout(function(){toastEl.className="toast";},4200);}
+function setDot(id,v){var el=document.getElementById(id);if(el)el.className="dot"+(v==="up"?" up":(v==="down"?" down":""));}
+function post(p,b){return fetch(p,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(b||{})});}
+function loadState(){fetch("/api/state").then(function(r){return r.json();}).then(function(s){var h=s.health||{};setDot("d-ollama",h.ollama);setDot("d-gemini",h.gemini);setDot("d-claude",h.claude);lastCounts=s.counts||{};renderTabs();}).catch(function(){});}
+function renderTabs(){var el=document.getElementById("tabs");el.innerHTML=STAGES.map(function(st){var k=st[0],n=(k==="calendar"?CAL_COUNT:(k==="visuels"?PROMO_COUNT:(lastCounts[k]||0)));return "<div class='tab"+(k===current?" active":"")+"' data-stage='"+k+"'>"+st[1]+" <span class='n'>"+n+"</span></div>";}).join("");}
+function loadItems(){fetch("/api/items").then(function(r){return r.json();}).then(function(d){ITEMS=d.items||[];renderCards();}).catch(function(){});}
+function findItem(f){for(var i=0;i<ITEMS.length;i++){if(ITEMS[i].file===f)return ITEMS[i];}return {};}
+function actionsHtml(it){var f=it.folder;var fl=it.file;
+  var ed="<button class='btn-sec' data-act='edit' data-file='"+fl+"'>✎ Éditer</button>";
+  var disc="<button class='btn-ghost' data-act='discard' data-file='"+fl+"'>✕ Écarter</button>";
+  if(f==="drafts")return "<button class='btn-approve' data-act='verify' data-file='"+fl+"'>Vérifier ce post</button>"+ed+disc;
+  if(f==="review")return "<button class='btn-approve' data-act='approve' data-file='"+fl+"'>✓ Approuver</button><button class='btn-sec' data-act='dryrun' data-file='"+fl+"'>Aperçu</button>"+ed+disc;
+  if(f==="approved")return "<button class='btn-publish' data-act='publish' data-file='"+fl+"'>📤 Publier</button>"+ed;
+  if(f==="rejected")return ed;
+  return "";}
+function renderCards(){var el=document.getElementById("cards");if(current==="calendar"){renderCalendar();return;}if(current==="visuels"){renderPromos();return;}if(current==="video"){renderVideo();return;}if(current==="affaires"){renderAffaires();return;}var list=ITEMS.filter(function(it){return it.folder===current;});
+  if(!list.length){el.className="";el.innerHTML="<div class='empty'><div class='big'>📭</div>Aucun post ici pour le moment.</div>";return;}
+  el.className="grid";
+  el.innerHTML=list.map(function(it){
+    var img=it.hasImage?("<div class='imgwrap'><img class='photo' loading='lazy' src='"+imgUrl(it.file)+"' alt=''></div>"):"<div class='imgwrap'><div class='noimg'>Aucune image</div></div>";
+    var lintB=it.lint===true?"<span class='b ok'>texte OK</span>":(it.lint===false?"<span class='b bad'>texte à corriger</span>":"");
+    var alt=it.alt?("<div class='alt'>Alt : "+esc(it.alt)+"</div>"):"";
+    var reasonTxt=(it.folder==="rejected"&&it.rejectReason)?it.rejectReason:((it.lintErrors&&it.lintErrors.length)?it.lintErrors.join(" · "):"");
+    var reasons=reasonTxt?("<div class='reasons'><b>À corriger :</b> "+esc(reasonTxt)+"</div>"):"";
+    var pubinfo=(it.folder==="published"&&it.publishedAt)?("<div class='pubinfo'>Publié le "+esc((it.publishedAt||"").slice(0,16).replace("T"," "))+"</div>"):"";
+    return "<div class='card'>"+img+"<div class='body'><div class='badges'><span class='b "+it.folder+"'>"+(STAGEMAP[it.folder]||it.folder)+"</span><span class='b plat'>"+esc(it.platform)+"</span><span class='b plat'>"+it.chars+" car.</span>"+lintB+"</div><div class='text'>"+esc(it.text||it.preview)+"</div>"+alt+reasons+pubinfo+"<div class='actions'>"+actionsHtml(it)+"</div></div></div>";
+  }).join("");
+}
+function openModal(id){document.getElementById(id).classList.add("show");}
+function closeModal(id){document.getElementById(id).classList.remove("show");}
+function openApprove(file){var it=findItem(file);var b=document.getElementById("ap-body");
+  b.innerHTML=(it.hasImage?("<img src='"+imgUrl(file)+"' alt=''>"):"")+"<div class='ptext'>"+esc(it.text||it.preview)+"</div><div class='info'>En approuvant, ce post passe en file de publication. Le <b>texte</b> et l'<b>image</b> sont revérifiés automatiquement (anti-incohérence). Compte environ 20 à 40 secondes.</div>";
+  var btn=document.getElementById("ap-confirm");btn.disabled=false;btn.innerHTML="✓ Oui, approuver";
+  btn.onclick=function(){btn.disabled=true;btn.innerHTML="<span class='spin'></span>Vérification…";
+    post("/api/approve",{file:file,confirm:"APPROUVER"}).then(function(r){return r.json();}).then(function(d){
+      if(d&&d.ok){closeModal("ov-approve");toast("Post approuvé — prêt à publier","ok");setTimeout(refresh,500);}
+      else{btn.disabled=false;btn.innerHTML="✓ Oui, approuver";var w=document.createElement("div");w.className="info bad";w.innerHTML="Refusé : "+esc((d&&d.error)||"erreur");b.appendChild(w);}
+    }).catch(function(){btn.disabled=false;btn.innerHTML="✓ Oui, approuver";toast("Erreur réseau","err");});
+  };
+  openModal("ov-approve");}
+var PUBCMD="";
+function openPublish(file){var it=findItem(file);
+  PUBCMD='cd "C:\\Users\\Admin\\Desktop\\Server\\cdb-studio"\nnode pipeline\\bluesky.mjs publish "'+file+'"';
+  var b=document.getElementById("pub-body");
+  b.innerHTML=(it.hasImage?("<img src='"+imgUrl(file)+"' alt=''>"):"")
+    +"<div class='info'>Publication sur <b>Bluesky</b>. Le texte et l'image sont revérifiés (anti-incohérence, anti-tiret) juste avant l'envoi.</div>"
+    +"<button class='btn-publish' id='pub-now' style='width:100%;margin:6px 0 2px;padding:12px;font-weight:800'>Publier maintenant sur Bluesky</button>"
+    +"<button class='btn-publish' id='pub-now-fb' style='width:100%;margin:2px 0 6px;padding:12px;font-weight:800;background:#1877F2;color:#fff'>Publier sur Facebook</button>"
+    +(it.hasImage?"<button class='btn-publish' id='pub-now-ig' style='width:100%;margin:2px 0 6px;padding:12px;font-weight:800;background:linear-gradient(90deg,#feda75,#d62976,#4f5bd5);color:#fff'>Publier sur Instagram</button>":"")
+    +"<details style='margin-top:10px'><summary style='cursor:pointer;color:#64748b'>Ou publier en ligne de commande</summary>"
+    +"<div style='margin-top:8px'>Double-clique <b>PUBLIER-CE-POST.cmd</b> sur le bureau (tape PUBLIER), ou colle ceci dans PowerShell :</div>"
+    +"<div class='cmd'>"+esc(PUBCMD)+"</div>"
+    +"<button class='btn-sec' id='pub-copy'>Copier la commande</button></details>";
+  var cp=document.getElementById("pub-copy");if(cp)cp.onclick=function(){if(navigator.clipboard){navigator.clipboard.writeText(PUBCMD).then(function(){toast("Commande copiée","ok");},function(){toast("Copie impossible","err");});}};
+  var pn=document.getElementById("pub-now");
+  if(pn)pn.onclick=function(){
+    if(!window.confirm("Publier ce post sur Bluesky maintenant ? Il sera visible publiquement."))return;
+    var btn=this;btn.disabled=true;btn.textContent="Publication...";
+    fetch("/api/pubtoken").then(function(r){return r.json();}).then(function(tk){
+      return fetch("/api/publish",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({file:file,token:(tk&&tk.token)||""})});
+    }).then(function(r){return r.json();}).then(function(d){
+      if(d&&d.ok){closeModal("ov-publish");toast("Publié sur Bluesky"+(d.uri?" ✓":""),"ok");setTimeout(refresh,600);}
+      else{btn.disabled=false;btn.textContent="Publier maintenant sur Bluesky";toast("Échec : "+((d&&d.error)||"?"),"err");}
+    }).catch(function(){btn.disabled=false;btn.textContent="Publier maintenant sur Bluesky";toast("Erreur réseau","err");});
+  };
+  var pf=document.getElementById("pub-now-fb");
+  if(pf)pf.onclick=function(){
+    if(!window.confirm("Publier ce post sur la Page Facebook maintenant ? Il sera visible publiquement."))return;
+    var btn=this;btn.disabled=true;btn.textContent="Publication...";
+    fetch("/api/pubtoken").then(function(r){return r.json();}).then(function(tk){
+      return fetch("/api/publish-fb",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({file:file,token:(tk&&tk.token)||""})});
+    }).then(function(r){return r.json();}).then(function(d){
+      if(d&&d.ok){closeModal("ov-publish");toast("Publie sur Facebook","ok");setTimeout(refresh,600);}
+      else{btn.disabled=false;btn.textContent="Publier sur Facebook";toast("Echec : "+((d&&d.error)||"?"),"err");}
+    }).catch(function(){btn.disabled=false;btn.textContent="Publier sur Facebook";toast("Erreur reseau","err");});
+  };
+  var pg=document.getElementById("pub-now-ig");
+  if(pg)pg.onclick=function(){
+    if(!window.confirm("Publier ce post sur Instagram maintenant ? Il sera visible publiquement (hebergement via Canva, ~30-60s)."))return;
+    var btn=this;btn.disabled=true;btn.textContent="Publication... (~30-60s)";
+    fetch("/api/pubtoken").then(function(r){return r.json();}).then(function(tk){
+      return fetch("/api/publish-ig",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({file:file,token:(tk&&tk.token)||""})});
+    }).then(function(r){return r.json();}).then(function(d){
+      if(d&&d.ok){closeModal("ov-publish");toast("Publie sur Instagram"+(d.permalink?" \u2713":""),"ok");setTimeout(refresh,600);}
+      else{btn.disabled=false;btn.textContent="Publier sur Instagram";toast("Echec : "+((d&&d.error)||"?"),"err");}
+    }).catch(function(){btn.disabled=false;btn.textContent="Publier sur Instagram";toast("Erreur reseau","err");});
+  };
+  openModal("ov-publish");}
+function doVerify(f){toast("Vérification (texte + image)…");post("/api/verify-item",{file:f,engine:"gemini"}).then(function(){setTimeout(refresh,3000);});}
+function doDryrun(f){toast("Aperçu généré — voir le journal (Outils avancés)");post("/api/dryrun",{file:f});}
+var EDFILE="";
+function openEdit(file){var it=findItem(file);EDFILE=file;var ta=document.getElementById("ed-text");var al=document.getElementById("ed-alt");ta.value=it.text||"";al.value=it.alt||"";document.getElementById("ed-cc").textContent=ta.value.length+" car.";ta.oninput=function(){document.getElementById("ed-cc").textContent=ta.value.length+" car.";};openModal("ov-edit");}
+function doDiscard(file){if(!window.confirm("Écarter ce post ? Il ira dans Rejetés (récupérable)."))return;post("/api/discard",{file:file}).then(function(r){return r.json();}).then(function(d){if(d&&d.ok){toast("Post écarté","ok");setTimeout(refresh,400);}else{toast("Erreur : "+((d&&d.error)||"?"),"err");}});}
+function loadSchedule(){
+  fetch("/api/schedule").then(function(r){return r.json();}).then(function(d){SCHED=d.entries||[];CAL_COUNT=SCHED.filter(function(e){return !e.published;}).length;renderTabs();if(current==="calendar")renderCalendar();}).catch(function(){});
+  fetch("/api/pm-report").then(function(r){return r.json();}).then(function(d){PMREPORT=d.md||"";if(current==="calendar")renderCalendar();}).catch(function(){});
+}
+function promoById(id){for(var i=0;i<PROMOS.length;i++){if(PROMOS[i].id===id)return PROMOS[i];}return {};}
+function copyText(t,okmsg){if(navigator.clipboard){navigator.clipboard.writeText(t).then(function(){toast(okmsg,"ok");},function(){toast("Copie impossible","err");});}else{toast("Copie non supportée","err");}}
+function loadPromos(){fetch("/api/promos").then(function(r){return r.json();}).then(function(d){PROMOS=d.promos||[];PROMO_COUNT=PROMOS.length;renderTabs();if(current==="visuels")renderPromos();}).catch(function(){});}
+function renderPromos(){var el=document.getElementById("cards");el.className="";
+  if(!PROMOS.length){el.innerHTML="<div class='empty'>Aucun visuel pour le moment. Lance la génération des visuels (build-promos).</div>";return;}
+  var info="<div class='howto' style='margin-bottom:16px'><b>Visuels prêts à partager</b> (stories 9:16). Télécharge l'image et copie la légende, puis publie sur Instagram, Facebook ou TikTok. Le texte de chaque visuel est défini d'après ce que la vision (Gemini) voit réellement sur la photo.</div>";
+  var cards=PROMOS.map(function(p){
+    var st=p.state==="FINI"?"<span class='b ok'>Fini</span>":(p.state==="CHANTIER"?"<span class='b review'>Chantier</span>":"<span class='b plat'>Autre</span>");
+    var url="/api/promo-image?id="+encodeURIComponent(p.id);
+    return "<div class='card'><div class='imgwrap'><img class='photo' loading='lazy' src='"+url+"' alt=''></div><div class='body'><div class='badges'>"+st+"<span class='b plat'>"+esc(p.type||"")+"</span><span class='b plat'>"+esc(p.lieu||"")+"</span></div><div class='text'>"+esc(p.caption||"")+"</div>"+(p.alt?"<div class='alt'>Alt : "+esc(p.alt)+"</div>":"")+"<div class='actions'><a class='btn-publish' style='flex:1;text-align:center;text-decoration:none' href='"+url+"' download='"+esc(p.id)+".png'>Télécharger l'image</a><button class='btn-sec' data-act='promocap' data-id='"+esc(p.id)+"'>Copier la légende</button><button class='btn-ghost' data-act='promoalt' data-id='"+esc(p.id)+"'>Copier le ALT</button></div></div></div>";
+  }).join("");
+  el.innerHTML=info+"<div class='grid'>"+cards+"</div>";
+}
+function renderCalendar(){
+  var el=document.getElementById("cards");el.className="";
+  var tools="<div class='agtools'><button class='btn-approve' data-act='pmdaily'>▶ Lancer le cycle du jour</button><button class='btn-sec' data-act='schedplan'>📅 Replanifier les dates</button></div>";
+  var info="<div class='info'>Ceci est un <b>rappel de dates</b>. La publication reste ton geste, jamais un envoi automatique.</div>";
+  var rows;
+  if(!SCHED.length){rows="<div class='empty'><div class='big'>📅</div>Aucune date planifiée. Approuve des posts, puis clique « Replanifier les dates ».</div>";}
+  else{rows="<div class='calwrap'>"+SCHED.map(function(e){
+    var badge=e.published?"<span class='b published'>publié ✓</span>":(e.overdue?"<span class='b bad'>en retard</span>":(e.today?"<span class='b review'>aujourd'hui</span>":"<span class='b approved'>planifié</span>"));
+    return "<div class='card agrow'><div class='body'><div class='badges'><span class='b plat'>"+esc(e.date)+" "+esc(e.time||"")+"</span><span class='b plat'>"+esc(e.platform||"")+"</span>"+badge+"</div><div class='text'>"+esc(e.file)+"</div></div></div>";
+  }).join("")+"</div>";}
+  var rep=PMREPORT?("<details class='rep'><summary>Rapport du chef de projet</summary><pre>"+esc(PMREPORT)+"</pre></details>"):"";
+  el.innerHTML=tools+info+rows+rep;
+}
+function doSchedPlan(){toast("Planification des dates…");post("/api/schedule-plan",{}).then(function(){setTimeout(loadSchedule,1500);});}
+function doPmDaily(){toast("Cycle du jour lancé (production et vérification, jamais de publication)…");post("/api/pm-daily",{}).then(function(){setTimeout(refresh,4000);});}
+function handleAct(act,file){if(act==="approve")openApprove(file);else if(act==="verify")doVerify(file);else if(act==="publish")openPublish(file);else if(act==="dryrun")doDryrun(file);else if(act==="edit")openEdit(file);else if(act==="discard")doDiscard(file);else if(act==="schedplan")doSchedPlan();else if(act==="pmdaily")doPmDaily();else if(act==="promocap"){copyText((promoById(file).caption)||"","Légende copiée");}else if(act==="promoalt"){copyText((promoById(file).alt)||"","ALT copié");}}
+function refresh(){loadState();loadItems();loadSchedule();loadPromos();}
+// ─── VIDÉO VEO 3 ───────────────────────────────────────────────────────────
+var VIDEO_PRESETS=[], LAST_SCENE=null;
+function loadVideoPresets(){fetch("/api/video/presets").then(function(r){return r.json();}).then(function(d){VIDEO_PRESETS=d.presets||[];if(current==="video")renderVideo();}).catch(function(){});}
+function renderVideo(){var el=document.getElementById("cards");el.className="";
+  var opts=VIDEO_PRESETS.map(function(p){return "<option value='"+p.key+"'>"+esc(p.label)+"</option>";}).join("");
+  var sceneTxt=LAST_SCENE?("<pre style='white-space:pre-wrap;font-size:12px;background:var(--bg2);padding:12px;border:1px solid var(--line);border-radius:8px;max-height:340px;overflow:auto'>"+esc(JSON.stringify(LAST_SCENE,null,2))+"</pre>"):"<div class='empty'><div class='big'>🎬</div>Choisis un préréglage ou décris un concept, puis « Construire la scène ».</div>";
+  el.innerHTML="<div class='calwrap'><h3 style='margin:0 0 10px'>🎬 Vidéo Veo 3 — scène cinématique 8 s</h3>"+
+    "<div style='display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:10px'>"+
+    "<select id='vd-preset' class='btn-sec' style='min-width:240px'>"+opts+"</select>"+
+    "<select id='vd-aspect' class='btn-sec'><option value='16:9'>16:9 (paysage)</option><option value='9:16'>9:16 (story)</option></select>"+
+    "<button class='btn-approve' id='vd-build-preset'>Construire (préréglage)</button></div>"+
+    "<div style='display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:12px'>"+
+    "<input id='vd-concept' class='btn-sec' style='flex:1;min-width:280px' placeholder='…ou un concept libre (ex: cuisine moderne îlot quartz)'>"+
+    "<button class='btn-sec' id='vd-build-concept'>Construire (concept · Ollama)</button></div>"+
+    "<div style='display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px'>"+
+    "<button class='btn-sec' id='vd-compile' "+(LAST_SCENE?"":"disabled")+">Compiler (prompt + requêtes)</button>"+
+    "<button class='btn-publish' id='vd-render' "+(LAST_SCENE?"":"disabled")+">🎬 Générer la vidéo (API)</button></div>"+
+    sceneTxt+"<div id='vd-out'></div></div>";
+  document.getElementById("vd-build-preset").onclick=function(){toast("Construction de la scène…");post("/api/video/build",{preset:document.getElementById("vd-preset").value,aspect:document.getElementById("vd-aspect").value}).then(function(r){return r.json();}).then(function(d){if(d&&d.scene){LAST_SCENE={scene:d.scene};toast(d.ok?"Scène valide ("+d.source+")":"Scène construite (à vérifier)",d.ok?"ok":"err");renderVideo();}else toast("Erreur : "+((d&&d.error)||"?"),"err");});};
+  document.getElementById("vd-build-concept").onclick=function(){var c=document.getElementById("vd-concept").value;if(!c){toast("Saisis un concept.","err");return;}toast("Génération via Ollama…");post("/api/video/build",{concept:c,aspect:document.getElementById("vd-aspect").value}).then(function(r){return r.json();}).then(function(d){if(d&&d.scene){LAST_SCENE={scene:d.scene};toast("Scène ("+d.source+")",d.ok?"ok":"err");renderVideo();}else toast("Erreur : "+((d&&d.error)||"?"),"err");});};
+  document.getElementById("vd-compile").onclick=function(){if(!LAST_SCENE)return;post("/api/video/compile",{scene:LAST_SCENE}).then(function(r){return r.json();}).then(function(d){if(d&&d.ok){document.getElementById("vd-out").innerHTML="<h4 style='margin:14px 0 6px'>Prompt Veo 3</h4><pre style='white-space:pre-wrap;font-size:12px;background:var(--bg2);padding:12px;border:1px solid var(--line);border-radius:8px'>"+esc(d.prompt)+"</pre><h4 style='margin:14px 0 6px'>Requête Gemini ("+esc(d.gemini.model)+")</h4><pre style='white-space:pre-wrap;font-size:11px;background:var(--bg2);padding:12px;border:1px solid var(--line);border-radius:8px;max-height:240px;overflow:auto'>"+esc(JSON.stringify(d.gemini.body,null,2))+"</pre><h4 style='margin:14px 0 6px'>Requête Vertex ("+esc(d.vertex.model)+")</h4><pre style='white-space:pre-wrap;font-size:11px;background:var(--bg2);padding:12px;border:1px solid var(--line);border-radius:8px;max-height:240px;overflow:auto'>"+esc(JSON.stringify(d.vertex.body,null,2))+"</pre>";toast("Compilé","ok");}else toast("Erreur : "+((d&&d.error)||"?"),"err");});};
+  document.getElementById("vd-render").onclick=function(){if(!LAST_SCENE)return;if(!window.confirm("Générer la vidéo via l'API Veo 3 (service payant) ? La scène doit d'abord être enregistrée."))return;toast("Génération réelle nécessite une scène enregistrée et une clé API — voir le journal.");fetch("/api/pubtoken").then(function(r){return r.json();}).then(function(tk){return post("/api/video/render",{file:LAST_SCENE._file||"",token:(tk&&tk.token)||"",provider:"gemini"});}).then(function(r){return r.json();}).then(function(d){if(d&&d.error)toast("Note : "+d.error,"err");});};
+}
+// ─── AFFAIRES (soumissions / factures / CRM) ───────────────────────────────
+var AF_TAB="crm", AF_CLIENTS=[], AF_SOUMISSIONS=[], AF_FACTURES=[], AF_SOUM_ITEMS=[], AF_FACT_ITEMS=[], AF_PROJETS=[];
+function renderAffaires(){
+  var el=document.getElementById("cards");el.className="";
+  el.innerHTML="<div class='af-wrap'>"+
+    "<div class='af-header'><h3><span class='af-icon'>📋</span> Affaires</h3>"+
+    "<div class='af-toolbar'>"+
+    "<button class='btn-approve' onclick='openNewSoum()'>📄 Soumission</button>"+
+    "<button class='btn-sec' onclick='openNewFact()'>🧾 Facture</button>"+
+    "<button class='btn-ghost' onclick='openNewProj()'>🏗 Projet</button>"+
+    "<button class='btn-ghost' onclick='openNewCli()'>👥 Client</button>"+
+    "</div></div>"+
+    "<div class='af-subtabs' id='af-subtabs'>"+
+    "<div class='af-subtab"+(AF_TAB==="crm"?" active":"")+"' data-af='crm'>👥 CRM <span class='af-cnt' id='af-cnt-crm'>0</span></div>"+
+    "<div class='af-subtab"+(AF_TAB==="soumissions"?" active":"")+"' data-af='soumissions'>📄 Soumissions <span class='af-cnt' id='af-cnt-soum'>0</span></div>"+
+    "<div class='af-subtab"+(AF_TAB==="factures"?" active":"")+"' data-af='factures'>🧾 Factures <span class='af-cnt' id='af-cnt-fact'>0</span></div>"+
+    "<div class='af-subtab"+(AF_TAB==="projets"?" active":"")+"' data-af='projets'>🏗 Projets <span class='af-cnt' id='af-cnt-proj'>0</span></div>"+
+    "</div>"+
+    "<div class='af-body' id='af-body'>Chargement…</div></div>";
+  document.getElementById("af-subtabs").addEventListener("click",function(e){
+    var t=e.target.closest(".af-subtab");if(!t)return;
+    AF_TAB=t.dataset.af;renderAffaires();loadAffaires();
+  });
+  loadAffaires();
+}
+function openNewCli(){
+  document.getElementById("cli-nom").value="";
+  document.getElementById("cli-tel").value="";
+  document.getElementById("cli-courriel").value="";
+  document.getElementById("cli-adresse").value="";
+  document.getElementById("cli-source").value="Web";
+  document.getElementById("cli-notes").value="";
+  openModal("ov-new-cli");
+}
+function openNewSoum(){
+  document.getElementById("soum-cli-nom").value="";
+  document.getElementById("soum-cli-tel").value="";
+  document.getElementById("soum-cli-courriel").value="";
+  document.getElementById("soum-cli-adresse").value="";
+  document.getElementById("soum-projet").value="";
+  document.getElementById("soum-adresse").value="";
+  document.getElementById("soum-desc").value="";
+  document.getElementById("soum-rabais").value="0";
+  document.getElementById("soum-notes").value="";
+  // Populate client dropdown
+  var sel=document.getElementById("soum-cli-select");
+  sel.innerHTML="<option value=''>— Saisie manuelle —</option>";
+  AF_CLIENTS.forEach(function(c){
+    sel.innerHTML+="<option value='"+esc(c.id)+"'>"+esc(c.nom)+" ("+esc(c.id)+")</option>";
+  });
+  sel.onchange=function(){
+    var cid=sel.value;if(!cid)return;
+    var cli=AF_CLIENTS.find(function(c){return c.id===cid;});
+    if(cli){
+      document.getElementById("soum-cli-nom").value=cli.nom||"";
+      document.getElementById("soum-cli-tel").value=cli.telephone||"";
+      document.getElementById("soum-cli-courriel").value=cli.courriel||"";
+      document.getElementById("soum-cli-adresse").value=cli.adresse||"";
+    }
+  };
+  // Reset lignes with one empty row
+  document.getElementById("soum-lignes").innerHTML="";
+  addSoumLigne();addSoumLigne();
+  openModal("ov-new-soum");
+}
+function addSoumLigne(){
+  var wrap=document.getElementById("soum-lignes");
+  var div=document.createElement("div");div.className="ligne-item";
+  div.innerHTML="<input class='li-desc' placeholder='Description du travail'>"+
+    "<input class='li-qty' type='number' min='0' step='0.01' value='1' placeholder='Qté'>"+
+    "<input class='li-unit' placeholder='unité' value='forfait'>"+
+    "<input class='li-prix' type='number' min='0' step='0.01' value='0' placeholder='Prix $'>"+
+    "<button class='li-del' title='Supprimer' onclick='this.parentElement.remove()'>✕</button>";
+  wrap.appendChild(div);
+}
+function openNewFact(){
+  // Populate soumission dropdown
+  var sel=document.getElementById("fact-soum");
+  sel.innerHTML="<option value=''>— Choisir une soumission —</option>";
+  AF_SOUM_ITEMS.forEach(function(s){
+    var label=esc(s.numero||"?")+ " — " +esc((s.client||{}).nom||"?");
+    sel.innerHTML+="<option value='"+esc(s.numero||"")+"'>"+label+"</option>";
+  });
+  document.getElementById("fact-detail").style.display="none";
+  document.getElementById("fact-type").value="finale";
+  document.getElementById("fact-pct").value="30";
+  document.getElementById("fact-acomptes").value="0";
+  document.getElementById("fact-notes").value="";
+  sel.onchange=function(){
+    var num=sel.value;
+    if(!num){document.getElementById("fact-detail").style.display="none";return;}
+    fetch("/api/ops/soumission/detail?num="+encodeURIComponent(num)).then(function(r){return r.json();}).then(function(d){
+      if(d.ok===false)return;
+      document.getElementById("fact-detail").style.display="block";
+      var cl=d.client||{};var pr=d.projet||{};
+      document.getElementById("fact-info").innerHTML="<b>"+esc(d.numero||"")+"</b> — "+esc(cl.nom||"")+"<br>"+
+        "Projet : "+esc(pr.titre||"")+"<br>"+
+        "Total soumission : <b>"+esc(formatMoney(d.total||d.sous_total||0))+"</b>";
+    });
+  };
+  openModal("ov-new-fact");
+}
+function formatMoney(v){try{v=parseFloat(v);}catch(e){v=0;}return v.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g," ").replace(".",",")+" $";}
+function saveNewClient(){
+  var nom=document.getElementById("cli-nom").value.trim();
+  if(!nom){toast("Le nom est requis","err");return;}
+  var btn=document.getElementById("btn-save-cli");btn.disabled=true;btn.innerHTML="<span class='spin'></span> Ajout…";
+  post("/api/ops/clients/ajouter",{
+    nom:nom,
+    tel:document.getElementById("cli-tel").value.trim(),
+    courriel:document.getElementById("cli-courriel").value.trim(),
+    adresse:document.getElementById("cli-adresse").value.trim(),
+    source:document.getElementById("cli-source").value,
+    notes:document.getElementById("cli-notes").value.trim()
+  }).then(function(){btn.disabled=false;btn.textContent="Enregistrer";closeModal("ov-new-cli");toast("Client ajouté ✓","ok");setTimeout(function(){AF_TAB="crm";renderAffaires();},800);}).catch(function(){btn.disabled=false;btn.textContent="Enregistrer";toast("Erreur réseau","err");});
+}
+function saveNewSoumission(){
+  var nom=document.getElementById("soum-cli-nom").value.trim();
+  var projet=document.getElementById("soum-projet").value.trim();
+  if(!nom||!projet){toast("Nom du client et titre du projet requis","err");return;}
+  var lignes=[];var rows=document.querySelectorAll("#soum-lignes .ligne-item");
+  rows.forEach(function(r){
+    var inputs=r.querySelectorAll("input");
+    var desc=(inputs[0]||{}).value||""; var q=parseFloat((inputs[1]||{}).value)||1;
+    var u=(inputs[2]||{}).value||"forfait"; var p=parseFloat((inputs[3]||{}).value)||0;
+    if(desc.trim())lignes.push({description:desc,quantite:q,unite:u,prix:p});
+  });
+  if(!lignes.length){toast("Au moins une ligne de travail requise","err");return;}
+  var btn=document.getElementById("btn-save-soum");btn.disabled=true;btn.innerHTML="<span class='spin'></span> Génération…";
+  post("/api/ops/soumission/generer",{
+    client:{nom:nom,telephone:document.getElementById("soum-cli-tel").value.trim(),courriel:document.getElementById("soum-cli-courriel").value.trim(),adresse:document.getElementById("soum-cli-adresse").value.trim()},
+    projet:{titre:projet,adresse_travaux:document.getElementById("soum-adresse").value.trim(),description:document.getElementById("soum-desc").value.trim()},
+    lignes:lignes,
+    rabais:parseFloat(document.getElementById("soum-rabais").value)||0,
+    notes:document.getElementById("soum-notes").value.trim()
+  }).then(function(){btn.disabled=false;btn.textContent="Générer la Soumission";closeModal("ov-new-soum");toast("Soumission en cours de génération…","ok");setTimeout(function(){AF_TAB="soumissions";renderAffaires();},2500);}).catch(function(){btn.disabled=false;btn.textContent="Générer la Soumission";toast("Erreur réseau","err");});
+}
+function saveNewFacture(){
+  var soumNum=document.getElementById("fact-soum").value;
+  if(!soumNum){toast("Choisissez une soumission source","err");return;}
+  var btn=document.getElementById("btn-save-fact");btn.disabled=true;btn.innerHTML="<span class='spin'></span> Génération…";
+  post("/api/ops/facture/generer",{
+    soumission_num:soumNum,
+    type:document.getElementById("fact-type").value,
+    pourcentage:parseFloat(document.getElementById("fact-pct").value)||30,
+    acomptes:parseFloat(document.getElementById("fact-acomptes").value)||0,
+    notes:document.getElementById("fact-notes").value.trim()
+  }).then(function(){btn.disabled=false;btn.textContent="Générer la Facture";closeModal("ov-new-fact");toast("Facture en cours de génération…","ok");setTimeout(function(){AF_TAB="factures";renderAffaires();},2500);}).catch(function(){btn.disabled=false;btn.textContent="Générer la Facture";toast("Erreur réseau","err");});
+}
+function loadAffaires(){
+  // Load all data in parallel
+  Promise.all([
+    fetch("/api/ops/clients").then(function(r){return r.json();}).catch(function(){return {clients:[]};}),
+    fetch("/api/ops/list?kind=soumissions").then(function(r){return r.json();}).catch(function(){return {items:[],pdfs:[]};}),
+    fetch("/api/ops/list?kind=factures").then(function(r){return r.json();}).catch(function(){return {items:[],pdfs:[]};}),
+    fetch("/api/ops/projets").then(function(r){return r.json();}).catch(function(){return {projets:[]};})
+  ]).then(function(all){
+    AF_CLIENTS=all[0].clients||[];
+    AF_SOUM_ITEMS=all[1].items||[];
+    AF_FACT_ITEMS=all[2].items||[];
+    AF_PROJETS=all[3].projets||[];
+    AF_SOUMISSIONS=all[1];AF_FACTURES=all[2];
+    // Update counts
+    var cc=document.getElementById("af-cnt-crm");if(cc)cc.textContent=AF_CLIENTS.length;
+    var cs=document.getElementById("af-cnt-soum");if(cs)cs.textContent=AF_SOUM_ITEMS.length;
+    var cf=document.getElementById("af-cnt-fact");if(cf)cf.textContent=AF_FACT_ITEMS.length;
+    var cp=document.getElementById("af-cnt-proj");if(cp)cp.textContent=AF_PROJETS.length;
+    var bdy=document.getElementById("af-body");if(!bdy)return;
+    if(AF_TAB==="crm")renderCRM(bdy);
+    else if(AF_TAB==="soumissions")renderDocList(bdy,AF_SOUM_ITEMS,AF_SOUMISSIONS.pdfs||[],"soumissions","soum");
+    else if(AF_TAB==="factures")renderDocList(bdy,AF_FACT_ITEMS,AF_FACTURES.pdfs||[],"factures","fact");
+    else if(AF_TAB==="projets")renderProjets(bdy);
+  });
+}
+function renderCRM(el){
+  var html="<div class='af-stats'>";
+  var nTotal=AF_CLIENTS.length;
+  var nActif=AF_CLIENTS.filter(function(c){return c.statut==="actif";}).length;
+  var nProsp=AF_CLIENTS.filter(function(c){return c.statut==="prospect";}).length;
+  html+="<div class='af-stat'><div class='af-stat-val'>"+nTotal+"</div><div class='af-stat-lbl'>Total</div></div>";
+  html+="<div class='af-stat orange'><div class='af-stat-val'>"+nProsp+"</div><div class='af-stat-lbl'>Prospects</div></div>";
+  html+="<div class='af-stat green'><div class='af-stat-val'>"+nActif+"</div><div class='af-stat-lbl'>Actifs</div></div>";
+  html+="<div class='af-stat blue'><div class='af-stat-val'>"+AF_SOUM_ITEMS.length+"</div><div class='af-stat-lbl'>Soumissions</div></div>";
+  html+="</div>";
+  html+="<div class='af-search'><input id='crm-search' placeholder='🔍 Rechercher un client…' oninput='filterCRM()'><button class='btn-ghost' onclick='openNewCli()'>+ Ajouter</button></div>";
+  if(!AF_CLIENTS.length){
+    html+="<div class='empty'><div class='big'>👥</div>Aucun client. Ajoutez votre premier client !</div>";
+  }else{
+    html+="<div style='overflow-x:auto;max-height:440px;overflow-y:auto'><table class='crm-tbl' id='crm-table'><thead><tr><th>ID</th><th>Nom</th><th>Téléphone</th><th>Courriel</th><th>Statut</th><th>Source</th><th>Actions</th></tr></thead><tbody>";
+    AF_CLIENTS.forEach(function(c){
+      html+="<tr data-cli='"+esc(c.id)+"' data-search='"+esc(((c.nom||"")+" "+(c.telephone||"")+" "+(c.courriel||"")+" "+(c.adresse||"")).toLowerCase())+"'>";
+      html+="<td><span class='cli-id'>"+esc(c.id)+"</span></td>";
+      html+="<td><span class='cli-name'>"+esc(c.nom)+"</span>";
+      if(c.adresse)html+="<br><span style='font-size:11px;color:var(--faint)'>"+esc(c.adresse)+"</span>";
+      html+="</td>";
+      html+="<td>"+esc(c.telephone||"—")+"</td>";
+      html+="<td>"+esc(c.courriel||"—")+"</td>";
+      html+="<td><span class='cli-status "+(c.statut||"prospect")+"'>"+esc(c.statut||"prospect")+"</span></td>";
+      html+="<td style='font-size:12px;color:var(--faint)'>"+esc(c.source||"—")+"</td>";
+      html+="<td><div class='cli-actions'>";
+      html+="<button class='btn-ghost' onclick='changeCliStatus(\"" +c.id+"\")'>Statut</button>";
+      html+="<button class='btn-ghost' style='color:var(--red)' onclick='deleteCli(\"" +c.id+"\",\"" +esc(c.nom)+"\")'>✕</button>";
+      html+="</div></td></tr>";
+    });
+    html+="</tbody></table></div>";
+  }
+  el.innerHTML=html;
+}
+function filterCRM(){
+  var q=(document.getElementById("crm-search")||{}).value||"";q=q.toLowerCase();
+  var rows=document.querySelectorAll("#crm-table tbody tr");
+  rows.forEach(function(r){r.style.display=(r.dataset.search||"" ).includes(q)?"":"none";});
+}
+function changeCliStatus(id){
+  var opts=["prospect","actif","inactif","termine"];
+  var cli=AF_CLIENTS.find(function(c){return c.id===id;});
+  var cur=cli?cli.statut:"prospect";
+  var next=opts[(opts.indexOf(cur)+1)%opts.length];
+  if(!confirm("Changer le statut de "+id+" à '"+next+"' ?"))return;
+  post("/api/ops/clients/modifier",{id:id,statut:next}).then(function(r){return r.json();}).then(function(d){
+    if(d.ok){toast("Statut → "+next,"ok");loadAffaires();}else{toast(d.error||"Erreur","err");}
+  });
+}
+function deleteCli(id,nom){
+  if(!confirm("Supprimer le client "+nom+" ("+id+") ? Cette action est irréversible."))return;
+  post("/api/ops/clients/supprimer",{id:id}).then(function(r){return r.json();}).then(function(d){
+    if(d.ok){toast("Client supprimé","ok");loadAffaires();}else{toast(d.error||"Erreur","err");}
+  });
+}
+function renderDocList(el,items,pdfs,kind,typeClass){
+  if(!items.length){
+    el.innerHTML="<div class='empty'><div class='big'>"+(kind==="soumissions"?"📄":"🧾")+"</div>Aucun document. Générez votre "+(kind==="soumissions"?"première soumission":"première facture")+" !</div>";
+    return;
+  }
+  var html="<div class='doc-grid'>";
+  items.forEach(function(it){
+    var num=it.numero||"?";
+    var cli=it.client||{};
+    var pr=it.projet||{};
+    var hasPdf=pdfs.indexOf(num)>=0;
+    html+="<div class='doc-card'>";
+    html+="<div class='doc-num'>"+esc(num)+" <span class='doc-type "+typeClass+"'>"+(kind==="soumissions"?"Soumission":((it.type||"finale").charAt(0).toUpperCase()+(it.type||"finale").slice(1)))+"</span></div>";
+    html+="<div class='doc-client'>👤 "+esc(cli.nom||"Client inconnu");
+    if(pr.titre)html+=" — "+esc(pr.titre);
+    html+="</div>";
+    html+="<div class='doc-meta'>";
+    if(it.date)html+="<span>📅 "+esc(it.date)+"</span>";
+    if(it.ref_soumission)html+="<span>📄 Réf: "+esc(it.ref_soumission)+"</span>";
+    html+="</div>";
+    if(it.total!==undefined)html+="<div class='doc-total'>"+formatMoney(it.total)+"</div>";
+    html+="<div class='doc-actions'>";
+    if(hasPdf)html+="<a href='/api/ops/doc?kind="+kind+"&file="+encodeURIComponent(num+".pdf")+"' target='_blank'><button class='btn-approve' style='font-size:12px;padding:6px 12px'>📥 PDF</button></a>";
+    html+="<a href='/api/ops/doc?kind="+kind+"&file="+encodeURIComponent(num+".html")+"' target='_blank'><button class='btn-sec' style='font-size:12px;padding:6px 12px'>🔍 HTML</button></a>";
+    if(kind==="soumissions") {
+      var prTitle = pr.titre || "";
+      var prCliId = cli.id || "";
+      html+="<button class='btn-publish' style='font-size:12px;padding:6px 12px' onclick='openNewProj(\""+esc(prTitle)+"\",\""+esc(prCliId)+"\",\""+esc(num)+"\")'>🚀 Projet</button>";
+    }
+    html+="</div></div>";
+  });
+  html+="</div>";
+  el.innerHTML=html;
+}
+document.getElementById("tabs").addEventListener("click",function(e){var t=e.target.closest(".tab");if(t&&t.dataset.stage){current=t.dataset.stage;renderTabs();renderCards();if(current==="video"&&!VIDEO_PRESETS.length)loadVideoPresets();if(current==="affaires")loadAffaires();}});
+document.getElementById("cards").addEventListener("click",function(e){var btn=e.target.closest("button[data-act]");if(btn)handleAct(btn.dataset.act,btn.dataset.file||btn.dataset.id);});
+document.querySelector(".adv .tools").addEventListener("click",function(e){var btn=e.target.closest("button[data-act='api']");if(btn){post(btn.dataset.url,{}).then(function(){toast("Lancé — voir le journal");setTimeout(refresh,1500);});}});
+document.getElementById("btn-produce").onclick=function(){toast("Production en cours…");post("/api/produce",{platform:document.getElementById("platform").value,concept:document.getElementById("concept").value}).then(function(){setTimeout(refresh,2500);});};
+document.getElementById("btn-verifyall").onclick=function(){toast("Vérification en cours…");post("/api/verify",{engine:"gemini"}).then(function(){setTimeout(refresh,3000);});};
+document.getElementById("ap-cancel").onclick=function(){closeModal("ov-approve");};
+document.getElementById("pub-close").onclick=function(){closeModal("ov-publish");};
+document.getElementById("ed-cancel").onclick=function(){closeModal("ov-edit");};
+document.getElementById("ed-save").onclick=function(){var btn=this;btn.disabled=true;var text=document.getElementById("ed-text").value;var altv=document.getElementById("ed-alt").value;post("/api/edit",{file:EDFILE,text:text,alt:altv}).then(function(r){return r.json();}).then(function(d){btn.disabled=false;if(d&&d.ok){closeModal("ov-edit");toast(d.requeued?"Enregistré — remis en brouillon à re-vérifier":"Enregistré","ok");setTimeout(refresh,400);}else{toast("Erreur : "+((d&&d.error)||"?"),"err");}}).catch(function(){btn.disabled=false;toast("Erreur réseau","err");});};
+function renderProjets(el){
+  var html="<div class='af-stats'>";
+  var nTotal=AF_PROJETS.length;
+  var nPlan=AF_PROJETS.filter(function(p){return p.statut==="planifie";}).length;
+  var nCours=AF_PROJETS.filter(function(p){return p.statut==="en cours";}).length;
+  var nTerm=AF_PROJETS.filter(function(p){return p.statut==="termine";}).length;
+  
+  html+="<div class='af-stat'><div class='af-stat-val'>"+nTotal+"</div><div class='af-stat-lbl'>Projets</div></div>";
+  html+="<div class='af-stat orange'><div class='af-stat-val'>"+nPlan+"</div><div class='af-stat-lbl'>Planifiés</div></div>";
+  html+="<div class='af-stat green'><div class='af-stat-val'>"+nCours+"</div><div class='af-stat-lbl'>En Cours</div></div>";
+  html+="<div class='af-stat blue'><div class='af-stat-val'>"+nTerm+"</div><div class='af-stat-lbl'>Terminés</div></div>";
+  html+="</div>";
+  
+  html+="<div class='af-search'><input id='proj-search' placeholder='🔍 Rechercher un projet ou client…' oninput='filterProjets()'><button class='btn-ghost' onclick='openNewProj()'>+ Créer Projet</button></div>";
+  
+  if(!AF_PROJETS.length){
+    html+="<div class='empty'><div class='big'>🏗</div>Aucun chantier planifié. Créez votre premier projet depuis une soumission !</div>";
+  } else {
+    html+="<div class='doc-grid' id='proj-cards-grid'>";
+    AF_PROJETS.forEach(function(p){
+      var cli = AF_CLIENTS.find(function(c){return c.id===p.client_id;}) || {};
+      var cliName = cli.nom || "Client inconnu";
+      var searchStr = ((p.titre||"")+" "+(p.id||"")+" "+cliName+" "+(p.soumission||"")).toLowerCase();
+      var pct = p.avancement !== undefined ? parseInt(p.avancement) : 0;
+      
+      var stClass = p.statut === "en cours" ? "actif" : (p.statut === "termine" ? "termine" : "prospect");
+      var stLabel = p.statut === "planifie" ? "Planifié" : (p.statut === "en cours" ? "En cours" : (p.statut === "termine" ? "Terminé" : p.statut));
+      
+      html+="<div class='doc-card' data-search='"+esc(searchStr)+"' style='gap:10px'>";
+      html+="<div class='doc-num'>"+esc(p.id)+" <span class='cli-status "+stClass+"'>"+esc(stLabel)+"</span></div>";
+      html+="<div style='font-size:15px;font-weight:700;color:var(--text)'>"+esc(p.titre)+"</div>";
+      html+="<div style='font-size:12.5px;color:var(--muted)'>👤 <b>"+esc(cliName)+"</b> ("+esc(p.client_id||"sans client")+")</div>";
+      
+      if(p.soumission) {
+        html+="<div style='font-size:12px;color:var(--faint)'>📄 Soumission : <a href='/api/ops/doc?kind=soumissions&file="+encodeURIComponent(p.soumission+".html")+"' target='_blank' style='color:var(--orange2);text-decoration:none;font-weight:600'>"+esc(p.soumission)+"</a></div>";
+      }
+      
+      html+="<div style='margin:4px 0'>";
+      html+="<div style='display:flex;justify-content:space-between;font-size:11.5px;color:var(--muted);margin-bottom:3px'><span>Avancement</span><b>"+pct+"%</b></div>";
+      html+="<div style='width:100%;height:8px;background:#1e2d3e;border-radius:4px;overflow:hidden'>";
+      html+="<div style='width:"+pct+"%;height:100%;background:linear-gradient(90deg,var(--orange),var(--orange2));border-radius:4px;transition:width 0.4s ease'></div>";
+      html+="</div></div>";
+      
+      if (p.etapes && p.etapes.length) {
+        var completed = p.etapes.filter(function(x){return x.fait;}).length;
+        html+="<details style='margin:2px 0'><summary style='cursor:pointer;font-size:12px;color:var(--muted)'>📋 Étapes ("+completed+"/"+p.etapes.length+")</summary>";
+        html+="<div style='display:flex;flex-direction:column;gap:5px;margin-top:6px;background:rgba(0,0,0,0.15);padding:8px;border-radius:6px;border:1px solid var(--line)'>";
+        p.etapes.forEach(function(et, idx){
+          var isFait = et.fait ? "checked" : "";
+          var labelStyle = et.fait ? "text-decoration:line-through;color:var(--faint)" : "color:var(--text)";
+          html+="<label style='display:flex;align-items:center;gap:8px;font-size:12px;cursor:pointer;"+labelStyle+"'>";
+          html+="<input type='checkbox' "+isFait+" onchange='toggleProjStep(\""+p.id+"\","+idx+",this.checked)'> "+esc(et.nom);
+          html+="</label>";
+        });
+        html+="</div></details>";
+      }
+      
+      html+="<div style='font-size:11px;color:var(--faint);display:flex;justify-content:space-between'><span>📅 Début: "+esc(p.date_debut||"—")+"</span>"+(p.date_fin ? "<span>🏁 Fin: "+esc(p.date_fin)+"</span>" : "")+"</div>";
+      
+      html+="<hr class='mf-divider' style='margin:4px 0'>";
+      html+="<div style='display:flex;gap:8px;align-items:center;justify-content:space-between'>";
+      html+="<select style='font-size:11.5px;padding:4px 6px;flex:1' onchange='changeProjStatut(\""+p.id+"\",this.value)'><option value='planifie' "+(p.statut==="planifie"?"selected":"")+">Planifié</option><option value='en cours' "+(p.statut==="en cours"?"selected":"")+">En cours</option><option value='suspendu' "+(p.statut==="suspendu"?"selected":"")+">Suspendu</option><option value='termine' "+(p.statut==="termine"?"selected":"")+">Terminé</option></select>";
+      html+="<div style='display:flex;gap:4px'><button class='btn-ghost' style='padding:4px 8px;font-size:12px' onclick='adjustProjProgress(\""+p.id+"\","+(pct-10)+")'>-10%</button>";
+      html+="<button class='btn-ghost' style='padding:4px 8px;font-size:12px' onclick='adjustProjProgress(\""+p.id+"\","+(pct+10)+")'>+10%</button></div>";
+      html+="</div>";
+      
+      html+="</div>";
+    });
+    html+="</div>";
+  }
+  el.innerHTML=html;
+}
+function filterProjets(){
+  var q=(document.getElementById("proj-search")||{}).value||"";q=q.toLowerCase();
+  var cards=document.querySelectorAll("#proj-cards-grid .doc-card");
+  cards.forEach(function(c){c.style.display=(c.dataset.search||"" ).includes(q)?"":"none";});
+}
+function changeProjStatut(id, statut){
+  post("/api/ops/projets/modifier",{id:id,statut:statut}).then(function(r){return r.json();}).then(function(d){
+    toast("Statut du projet mis à jour ✓","ok");loadAffaires();
+  }).catch(function(){toast("Erreur réseau","err");});
+}
+function adjustProjProgress(id, progress){
+  if(progress<0)progress=0;
+  if(progress>100)progress=100;
+  post("/api/ops/projets/modifier",{id:id,avancement:progress}).then(function(r){return r.json();}).then(function(d){
+    toast("Avancement du projet mis à jour ("+progress+"%) ✓","ok");loadAffaires();
+  }).catch(function(){toast("Erreur réseau","err");});
+}
+function toggleProjStep(id, stepIdx, checked){
+  var proj = AF_PROJETS.find(function(x){return x.id===id;});
+  if(!proj)return;
+  var etapes = JSON.parse(JSON.stringify(proj.etapes));
+  if(etapes[stepIdx]){
+    etapes[stepIdx].fait = checked;
+  }
+  post("/api/ops/projets/modifier",{id:id,etapes:etapes}).then(function(r){return r.json();}).then(function(d){
+    toast("Étape mise à jour ✓","ok");loadAffaires();
+  }).catch(function(){toast("Erreur réseau","err");});
+}
+function openNewProj(prefillTitle, prefillClientId, prefillSoum) {
+  document.getElementById("proj-titre").value = prefillTitle || "";
+  
+  var cliSel = document.getElementById("proj-cli-select");
+  cliSel.innerHTML = "<option value=''>— Aucun / Manuel —</option>";
+  AF_CLIENTS.forEach(function(c){
+    var selected = c.id === prefillClientId ? "selected" : "";
+    cliSel.innerHTML += "<option value='"+esc(c.id)+"' "+selected+">"+esc(c.nom)+" ("+esc(c.id)+")</option>";
+  });
+  
+  var soumSel = document.getElementById("proj-soum-select");
+  soumSel.innerHTML = "<option value=''>— Aucune —</option>";
+  AF_SOUM_ITEMS.forEach(function(s){
+    var selected = s.numero === prefillSoum ? "selected" : "";
+    var label = esc(s.numero) + " — " + esc((s.client||{}).nom || "?");
+    soumSel.innerHTML += "<option value='"+esc(s.numero)+"' "+selected+">"+label+"</option>";
+  });
+  
+  openModal("ov-new-proj");
+}
+function saveNewProject() {
+  var titre = document.getElementById("proj-titre").value.trim();
+  if(!titre){toast("Le titre du projet est requis","err");return;}
+  var btn = document.getElementById("btn-save-proj");btn.disabled=true;btn.innerHTML="<span class='spin'></span> Création…";
+  
+  post("/api/ops/projets/creer",{
+    titre: titre,
+    client_id: document.getElementById("proj-cli-select").value,
+    soumission: document.getElementById("proj-soum-select").value
+  }).then(function(){
+    btn.disabled=false;btn.textContent="Créer le Projet";
+    closeModal("ov-new-proj");
+    toast("Projet en cours de création…","ok");
+    setTimeout(function(){AF_TAB="projets";renderAffaires();},2500);
+  }).catch(function(){
+    btn.disabled=false;btn.textContent="Créer le Projet";
+    toast("Erreur réseau","err");
+  });
+}
+
+[].forEach.call(document.querySelectorAll(".overlay"),function(ov){ov.addEventListener("click",function(e){if(e.target===ov)closeModal(ov.id);});});
+connect();refresh();setInterval(refresh,12000);
+</script>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+/* ===================== CONFIG FIREBASE A REMPLIR =====================
+   Console Firebase > Parametres du projet > Vos applications (Web) > Config SDK.
+   Collez vos valeurs ci-dessous. Tant que apiKey vaut "A_REMPLIR", la
+   connexion est desactivee et le tableau de bord reste accessible (mode dev). */
+const firebaseConfig = {
+  apiKey: "A_REMPLIR",
+  authDomain: "A_REMPLIR.firebaseapp.com",
+  projectId: "A_REMPLIR",
+  appId: "A_REMPLIR"
+};
+/* Liste blanche d'emails (vide = tout compte Google accepte) */
+const ALLOWED_EMAILS = ["info@cliniquedubatiment.ca"];
+/* ==================================================================== */
+
+const gate = document.getElementById("auth-gate");
+const chip = document.getElementById("user-chip");
+const errEl = document.getElementById("auth-err");
+const banner = document.getElementById("cfg-banner");
+const hide = (el)=>{ if(el) el.style.display="none"; };
+
+if (!firebaseConfig.apiKey || firebaseConfig.apiKey === "A_REMPLIR") {
+  hide(gate); if(banner){ banner.style.display="block"; setTimeout(()=>hide(banner), 9000); }
+} else {
+  gate.style.display="flex";
+  try {
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    setPersistence(auth, browserLocalPersistence).catch(()=>{});
+    onAuthStateChanged(auth, (user)=>{
+      const ok = user && (ALLOWED_EMAILS.length===0 || ALLOWED_EMAILS.includes((user.email||"").toLowerCase()));
+      if (ok) {
+        hide(gate); chip.style.display="flex";
+        chip.querySelector(".uc-name").textContent = user.displayName || user.email || "Connecte";
+        const img = chip.querySelector("img");
+        if (user.photoURL){ img.src=user.photoURL; img.style.display="block"; } else { img.style.display="none"; }
+      } else {
+        if (user){ errEl.textContent = "Acces refuse pour " + user.email + "."; signOut(auth); }
+        hide(chip); gate.style.display="flex";
+      }
+    });
+    window.__cdbSignIn = async function(){
+      errEl.textContent="";
+      try {
+        const provider = new GoogleAuthProvider();
+        provider.setCustomParameters({ prompt: "select_account" });
+        await signInWithPopup(auth, provider);
+      } catch(e){ errEl.textContent = "Echec de connexion : " + ((e&&e.code)||e); }
+    };
+    window.__cdbSignOut = function(){ signOut(auth); };
+  } catch(e){
+    errEl.textContent = "Config Firebase invalide. Voir le bloc CONFIG.";
+  }
+}
+</script>
+<!-- CDB: Pre-vol reseaux (pastilles d'etat) -->
+<div id="cdb-preflight" style="position:fixed;left:16px;bottom:16px;z-index:9990;width:316px;background:#0c2238;border:1px solid #1d3b5a;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.45);font-family:'Segoe UI',system-ui,sans-serif;color:#e6edf3;overflow:hidden">
+  <div id="cdb-pf-head" style="display:flex;align-items:center;gap:8px;padding:9px 12px;background:#15324f;cursor:pointer;user-select:none">
+    <span style="width:9px;height:9px;border-radius:50%;background:#e8730f;display:inline-block;flex:none"></span>
+    <strong style="font-size:12.5px;letter-spacing:.3px;flex:1">Pre-vol reseaux</strong>
+    <span id="cdb-pf-refresh" title="Reverifier" style="font-size:14px;color:#ffb780;padding:0 4px;cursor:pointer">&#10227;</span>
+    <span id="cdb-pf-toggle" style="font-size:12px;color:#9fb2cc">&#9662;</span>
+  </div>
+  <div id="cdb-pf-body" style="padding:10px 12px;display:flex;flex-direction:column;gap:7px">
+    <div style="font-size:11px;color:#8aa0bb">Chargement...</div>
+  </div>
+</div>
+<script>
+(function(){
+  var ORDER=[["bluesky","Bluesky"],["facebook","Facebook"],["instagram","Instagram"],["tiktok","TikTok"]];
+  var body=document.getElementById("cdb-pf-body");
+  var head=document.getElementById("cdb-pf-head");
+  var toggle=document.getElementById("cdb-pf-toggle");
+  var refresh=document.getElementById("cdb-pf-refresh");
+  var open=true;
+  function color(s){ s=(s||"").toUpperCase(); if(s==="GO")return["#16351f","#3fb950","GO"]; if(s==="BLOCKED")return["#3a1d16","#f0883e","BLOQUE"]; return["#2a2f37","#8a9ba8","?"]; }
+  function pill(label,info){
+    var c=color(info&&info.status);
+    var row=document.createElement("div"); row.style.cssText="display:flex;align-items:center;gap:8px";
+    var dot=document.createElement("span"); dot.style.cssText="width:9px;height:9px;border-radius:50%;flex:none;background:"+c[1];
+    var name=document.createElement("span"); name.textContent=label; name.style.cssText="font-size:12px;width:70px;flex:none;color:#cdd9e8";
+    var badge=document.createElement("span"); badge.textContent=c[2]; badge.style.cssText="font-size:10px;font-weight:700;color:"+c[1]+";background:"+c[0]+";border-radius:6px;padding:2px 7px;flex:none";
+    var det=document.createElement("span"); det.textContent=(info&&info.detail)||""; det.title=(info&&info.detail)||""; det.style.cssText="font-size:10.5px;color:#8aa0bb;white-space:nowrap;overflow:hidden;text-overflow:ellipsis";
+    row.appendChild(dot); row.appendChild(name); row.appendChild(badge); row.appendChild(det); return row;
+  }
+  function render(rep){ body.innerHTML=""; var pf=(rep&&rep.platforms)||{}; ORDER.forEach(function(k){ body.appendChild(pill(k[1], pf[k[0]])); }); }
+  function load(){ body.innerHTML='<div style="font-size:11px;color:#8aa0bb">Verification...</div>'; fetch("/api/preflight").then(function(r){return r.json();}).then(render).catch(function(){ body.innerHTML='<div style="font-size:11px;color:#f0883e">Pre-vol indisponible</div>'; }); }
+  head.addEventListener("click",function(e){ if(e.target===refresh)return; open=!open; body.style.display=open?"flex":"none"; toggle.innerHTML=open?"&#9662;":"&#9656;"; });
+  refresh.addEventListener("click",function(e){ e.stopPropagation(); load(); });
+  load();
+})();
+</script>
+</body></html>

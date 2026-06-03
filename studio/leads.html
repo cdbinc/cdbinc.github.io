@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CDB Studio — Leads & Intégrations</title>
+<style>
+  :root { --bg:#0e1116; --panel:#171c24; --border:#232a35; --txt:#e6edf3; --muted:#8b95a5; --accent:#f5a623; --green:#3fb950; --red:#f85149; --blue:#58a6ff; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--txt); font:14px/1.5 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif; }
+  header { padding:18px 22px; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:12px; }
+  header h1 { font-size:17px; margin:0; font-weight:600; }
+  header .sp { flex:1; }
+  a.btn, button.btn { background:var(--panel); color:var(--txt); border:1px solid var(--border); border-radius:8px; padding:7px 13px; font-size:13px; cursor:pointer; text-decoration:none; }
+  a.btn:hover, button.btn:hover { border-color:var(--accent); }
+  button.btn:disabled { opacity:.6; cursor:default; }
+  main { max-width:1040px; margin:0 auto; padding:22px; }
+  h2 { font-size:12px; text-transform:uppercase; letter-spacing:.07em; color:var(--muted); margin:26px 0 12px; }
+  .cards { display:flex; gap:12px; flex-wrap:wrap; }
+  .card { background:var(--panel); border:1px solid var(--border); border-radius:10px; padding:14px 16px; min-width:210px; flex:1; }
+  .card .name { font-weight:600; text-transform:capitalize; margin-bottom:8px; }
+  .badge { display:inline-block; padding:2px 9px; border-radius:999px; font-size:11px; font-weight:700; letter-spacing:.03em; }
+  .badge.on { background:rgba(63,185,80,.15); color:var(--green); }
+  .badge.off { background:rgba(248,81,73,.12); color:var(--red); }
+  .card small { color:var(--muted); display:block; margin-top:8px; word-break:break-all; line-height:1.7; }
+  table { width:100%; border-collapse:collapse; margin-top:4px; }
+  th, td { text-align:left; padding:9px 10px; border-bottom:1px solid var(--border); font-size:13px; vertical-align:top; }
+  th { color:var(--muted); font-weight:600; font-size:11px; text-transform:uppercase; letter-spacing:.05em; }
+  tr:hover td { background:rgba(255,255,255,.02); }
+  .pill { font-size:11px; padding:1px 8px; border-radius:6px; border:1px solid var(--border); white-space:nowrap; }
+  .pill.ent { color:var(--blue); border-color:#1f6feb; }
+  .pill.sor { color:var(--accent); border-color:#7a5a14; }
+  .prio-haute { color:var(--red); font-weight:700; }
+  .prio-moyenne { color:var(--accent); }
+  .dot { color:var(--green); } .dot.no { color:#586069; }
+  .empty { color:var(--muted); padding:18px 2px; }
+  .err { color:var(--red); padding:10px 2px; }
+  footer { max-width:1040px; margin:10px auto 30px; padding:0 22px; color:var(--muted); font-size:12px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>CDB Studio — Leads &amp; Intégrations</h1>
+  <span class="sp"></span>
+  <button class="btn" id="doctorBtn">Tester en direct</button>
+  <button class="btn" id="reloadBtn">Rafraîchir</button>
+  <a class="btn" href="/">← Tableau de bord</a>
+</header>
+<main>
+  <h2>Intégrations</h2>
+  <div class="cards" id="integrations"><div class="empty">Chargement…</div></div>
+  <h2>Leads <span id="leadCount" style="color:var(--muted)"></span></h2>
+  <div id="leads"><div class="empty">Chargement…</div></div>
+</main>
+<footer>cliniquedubatiment.ca — pipeline Gmail → qualification → Drive + Agenda</footer>
+<script>
+  const $ = s => document.querySelector(s);
+  function esc(s){ return (s==null?"":String(s)).replace(/[&<>]/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;"}[m])); }
+  function svcBadge(v){
+    const on = v.configured || v.ok;
+    const label = v.ok ? "EN LIGNE" : (v.configured ? "CONFIGURÉ" : (v.skipped ? "NON CONFIGURÉ" : "HORS LIGNE"));
+    let extra = "";
+    if (v.email) extra = esc(v.email);
+    else if (v.error) extra = esc(v.error);
+    else if (Array.isArray(v.keys)) extra = v.keys.map(k => (k.present?"✓":"✗")+" "+esc(k.k)).join("<br>");
+    else if (v.note) extra = esc(v.note);
+    return '<span class="badge '+(on?"on":"off")+'">'+label+'</span><small>'+extra+'</small>';
+  }
+  function renderIntegrations(data){
+    const el = $("#integrations"); el.innerHTML = "";
+    if (!data || data.error){ el.innerHTML = '<div class="err">Erreur: '+esc(data&&data.error||"reponse vide")+'</div>'; return; }
+    for (const [name, v] of Object.entries(data)){
+      const c = document.createElement("div"); c.className = "card";
+      c.innerHTML = '<div class="name">'+esc(name)+'</div>'+svcBadge(v);
+      el.appendChild(c);
+    }
+  }
+  function renderLeads(leads){
+    const el = $("#leads"); $("#leadCount").textContent = "("+leads.length+")";
+    if (!leads.length){ el.innerHTML = '<div class="empty">Aucun lead enregistré pour le moment.</div>'; return; }
+    const order = { haute:0, moyenne:1, normale:2 };
+    leads.sort((a,b)=> ((order[a.priority]??9)-(order[b.priority]??9)) || (String(b.createdAt||"").localeCompare(String(a.createdAt||""))));
+    let rows = "";
+    for (const l of leads){
+      const dir = l.direction || "?";
+      rows += '<tr>'
+        + '<td class="prio-'+esc(l.priority||"")+'">'+esc(l.priority||"?")+'</td>'
+        + '<td><span class="pill '+(dir==="entrant"?"ent":"sor")+'">'+esc(dir)+'</span></td>'
+        + '<td>'+esc(l.projectType||"Autre")+'</td>'
+        + '<td>'+esc(l.estimatedValue||"—")+'</td>'
+        + '<td>'+esc(l.contact||l.from||"?")+'</td>'
+        + '<td>'+esc((l.subject||"").slice(0,72))+'</td>'
+        + '<td><span class="dot'+(l.driveFolderId?"":" no")+'" title="Drive">●</span> '
+        + '<span class="dot'+(l.eventId?"":" no")+'" title="Agenda">●</span></td>'
+        + '</tr>';
+    }
+    el.innerHTML = '<table><thead><tr><th>Priorité</th><th>Sens</th><th>Type</th><th>Valeur</th><th>Contact</th><th>Sujet</th><th>Drive / Agenda</th></tr></thead><tbody>'+rows+'</tbody></table>';
+  }
+  async function loadIntegrations(live){
+    const url = live ? "/api/integrations?live=1" : "/api/integrations";
+    try { renderIntegrations(await fetch(url).then(r=>r.json())); }
+    catch(e){ $("#integrations").innerHTML = '<div class="err">'+esc(e.message)+'</div>'; }
+  }
+  async function loadLeads(){
+    try { const d = await fetch("/api/leads").then(r=>r.json()); renderLeads(d.leads||[]); }
+    catch(e){ $("#leads").innerHTML = '<div class="err">'+esc(e.message)+'</div>'; }
+  }
+  $("#doctorBtn").onclick = async ()=>{
+    const b=$("#doctorBtn"); b.textContent="Test en cours…"; b.disabled=true;
+    await loadIntegrations(true);
+    b.textContent="Tester en direct"; b.disabled=false;
+  };
+  $("#reloadBtn").onclick = ()=>{ loadIntegrations(false); loadLeads(); };
+  loadIntegrations(false); loadLeads();
+</script>
+</body>
+</html>
