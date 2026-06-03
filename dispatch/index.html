@@ -87,6 +87,8 @@
 (function(){
   // ---- email destination for approvals (same as the public contact form) ----
   var TO = "info@cliniquedubatiment.ca";
+  // ---- local relay (Slack + auto-envoi). URL published by dispatch_relay.py ----
+  var RELAY_TOKEN = "jJaSZrugRk5HE1Q0dDWywH5ZHk2IWeag";
 
   function b64urlDecode(s){
     s = s.replace(/-/g,'+').replace(/_/g,'/');
@@ -159,43 +161,68 @@
     '</div>'+
     '<div class="state" id="state"></div>';
 
+  // Voie courriel (repli) — toujours disponible, aucune infra requise
+  function emailFallback(decision, cb){
+    var label = decision==='approuvé' ? 'APPROUVÉ' : 'REFUSÉ';
+    var note = (document.getElementById('note')||{}).value || '';
+    var payload = {
+      _subject: '['+label+'] '+kind+(data.id?' '+data.id:'')+' — '+(data.title||''),
+      decision: label, type: kind, reference: data.id || '—', titre: data.title || '—',
+      client: data.client || '—', montant: data.amount || '—', note: note || '—',
+      horodatage: new Date().toLocaleString('fr-CA'), _template: 'table'
+    };
+    fetch('https://formsubmit.co/ajax/'+encodeURIComponent(to), {
+      method:'POST', headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body: JSON.stringify(payload)
+    }).then(function(r){ return r.json(); })
+      .then(function(){ cb(true); }).catch(function(){ cb(false); });
+  }
+
+  // Voie relais (Slack + auto-envoi) — via le tunnel local
+  function sendRelay(decision, relayUrl, cb){
+    var note = (document.getElementById('note')||{}).value || '';
+    fetch(relayUrl.replace(/\/+$/,'')+'/approve', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        token: RELAY_TOKEN, decision: decision, type: data.t || 'task',
+        id: data.id||'', title: data.title||'', client: data.client||'',
+        amount: data.amount||'', note: note
+      })
+    }).then(function(r){ if(!r.ok) throw 0; return r.json(); })
+      .then(function(j){ cb(!!(j && j.ok)); }).catch(function(){ cb(false); });
+  }
+
   function send(decision){
     var btnY = document.getElementById('btnYes');
     var btnN = document.getElementById('btnNo');
-    var note = (document.getElementById('note')||{}).value || '';
     btnY.disabled = btnN.disabled = true;
     (decision==='approuvé'?btnY:btnN).innerHTML = '<span class="spin"></span>';
 
-    var label = decision==='approuvé' ? 'APPROUVÉ' : 'REFUSÉ';
-    var payload = {
-      _subject: '['+label+'] '+kind+(data.id?' '+data.id:'')+' — '+(data.title||''),
-      decision: label,
-      type: kind,
-      reference: data.id || '—',
-      titre: data.title || '—',
-      client: data.client || '—',
-      montant: data.amount || '—',
-      note: note || '—',
-      horodatage: new Date().toLocaleString('fr-CA'),
-      _template: 'table'
-    };
-
-    fetch('https://formsubmit.co/ajax/'+encodeURIComponent(to), {
-      method:'POST',
-      headers:{'Content-Type':'application/json','Accept':'application/json'},
-      body: JSON.stringify(payload)
-    }).then(function(r){ return r.json(); })
-      .then(function(){ done(decision); })
-      .catch(function(){ fail(decision); });
+    // 1) relais local (Slack + auto-envoi) si disponible ; 2) sinon courriel
+    fetch('relay.json?_='+Date.now(), {cache:'no-store'})
+      .then(function(r){ return r.json(); }).catch(function(){ return {}; })
+      .then(function(cfg){
+        if(cfg && cfg.url){
+          sendRelay(decision, cfg.url, function(ok){
+            if(ok) done(decision, 'slack');
+            else emailFallback(decision, function(ok2){ ok2 ? done(decision,'mail') : fail(decision); });
+          });
+        } else {
+          emailFallback(decision, function(ok){ ok ? done(decision,'mail') : fail(decision); });
+        }
+      });
   }
 
-  function done(decision){
+  function done(decision, via){
     var card = document.getElementById('card'); card.style.display='none';
     var s = document.getElementById('state'); s.style.display='block';
     var ok = decision==='approuvé';
+    var chan = via==='slack'
+      ? (ok ? 'l\'équipe est notifiée sur Slack et l\'action est lancée.' : 'l\'équipe est notifiée sur Slack.')
+      : 'l\'équipe a été notifiée par courriel.';
     s.innerHTML = '<div class="big">'+(ok?'✅':'🚫')+'</div>'+
       '<h2>'+(ok?'Approuvé':'Refusé')+'</h2>'+
-      '<p>'+(data.id?esc(data.id)+' — ':'')+'l\'équipe a été notifiée par courriel.</p>';
+      '<p>'+(data.id?esc(data.id)+' — ':'')+chan+'</p>';
   }
   function fail(decision){
     var btnY = document.getElementById('btnYes');
