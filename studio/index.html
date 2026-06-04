@@ -510,6 +510,7 @@ function actionsHtml(it){var f=it.folder;var fl=it.file;
   if(f==="drafts")return "<button class='btn-approve' data-act='verify' data-file='"+fl+"'>Vérifier ce post</button>"+ed+disc;
   if(f==="review")return "<button class='btn-approve' data-act='approve' data-file='"+fl+"'>✓ Approuver</button><button class='btn-sec' data-act='dryrun' data-file='"+fl+"'>Aperçu</button>"+ed+disc;
   if(f==="approved")return "<button class='btn-publish' data-act='publish' data-file='"+fl+"'>📤 Publier</button>"+ed;
+  if(f==="published")return "<button class='btn-publish' data-act='republish' data-file='"+fl+"'>🔄 Re-publier partout</button>"+ed;
   if(f==="rejected")return ed;
   return "";}
 function renderCards(){var el=document.getElementById("cards");if(current==="calendar"){renderCalendar();return;}if(current==="visuels"){renderPromos();return;}if(current==="video"){renderVideo();return;}if(current==="affaires"){renderAffaires();return;}var list=ITEMS.filter(function(it){return it.folder===current;});
@@ -639,7 +640,7 @@ function renderCalendar(){
 }
 function doSchedPlan(){toast("Planification des dates…");post("/api/schedule-plan",{}).then(function(){setTimeout(loadSchedule,1500);});}
 function doPmDaily(){toast("Cycle du jour lancé (production et vérification, jamais de publication)…");post("/api/pm-daily",{}).then(function(){setTimeout(refresh,4000);});}
-function handleAct(act,file){if(act==="approve")openApprove(file);else if(act==="verify")doVerify(file);else if(act==="publish")openPublish(file);else if(act==="dryrun")doDryrun(file);else if(act==="edit")openEdit(file);else if(act==="discard")doDiscard(file);else if(act==="schedplan")doSchedPlan();else if(act==="pmdaily")doPmDaily();else if(act==="promocap"){copyText((promoById(file).caption)||"","Légende copiée");}else if(act==="promoalt"){copyText((promoById(file).alt)||"","ALT copié");}}
+function handleAct(act,file){if(act==="approve")openApprove(file);else if(act==="verify")doVerify(file);else if(act==="publish"||act==="republish")openPublish(file);else if(act==="dryrun")doDryrun(file);else if(act==="edit")openEdit(file);else if(act==="discard")doDiscard(file);else if(act==="schedplan")doSchedPlan();else if(act==="pmdaily")doPmDaily();else if(act==="promocap"){copyText((promoById(file).caption)||"","Légende copiée");}else if(act==="promoalt"){copyText((promoById(file).alt)||"","ALT copié");}}
 function refresh(){loadState();loadItems();loadSchedule();loadPromos();}
 // ─── VIDÉO VEO 3 ───────────────────────────────────────────────────────────
 var VIDEO_PRESETS=[], LAST_SCENE=null;
