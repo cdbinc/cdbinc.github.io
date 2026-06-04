@@ -1,6 +1,37 @@
 <!DOCTYPE html>
 <html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>CDB Studio — Marketing · Vidéo · Affaires</title>
+<script>
+/* ── Pont API CDB : relie ce site (GitHub Pages) au backend Python local ──────
+   En local (localhost) : les appels /api/* vont directement au serveur GUI (8787).
+   En ligne (cliniquedubatiment.ca) : ils sont relayés via le tunnel Cloudflare
+   publié dans /dispatch/relay.json, authentifiés par un jeton API dédié.
+   Si le relais/backend est hors ligne : réponse 503 « offline » (l'app dégrade). */
+(function () {
+  var isLocal = ["localhost", "127.0.0.1"].indexOf(location.hostname) !== -1;
+  if (isLocal) return;                       // appels relatifs directs au GUI local
+  var API_TOKEN = "kPIdcmKI5jrEWw0dVo54428hNoLnPNqm";
+  var relayReady = fetch("/dispatch/relay.json", { cache: "no-store" })
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (j) { return (j && j.url) ? String(j.url).replace(/\/+$/, "") : null; })
+    .catch(function () { return null; });
+  var orig = window.fetch.bind(window);
+  window.fetch = function (input, init) {
+    var url = (typeof input === "string") ? input : (input && input.url) || "";
+    if (url.indexOf("/api/") !== 0) return orig(input, init);
+    return relayReady.then(function (base) {
+      if (!base) {
+        return new Response(
+          JSON.stringify({ ok: false, offline: true, error: "Relais CDB hors ligne — backend local injoignable." }),
+          { status: 503, headers: { "Content-Type": "application/json" } });
+      }
+      init = init || {};
+      init.headers = Object.assign({}, init.headers, { "X-CDB-Token": API_TOKEN });
+      return orig(base + url, init);
+    });
+  };
+})();
+</script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
