@@ -1,19 +1,13 @@
 <!DOCTYPE html>
-<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex,nofollow">
 <title>CDB Studio — Marketing · Vidéo · Affaires</title>
 <script>
-/* ── Pont API CDB : relie ce site (GitHub Pages) au backend Python local ──────
-   En local (localhost) : les appels /api/* vont directement au serveur GUI (8787).
-   En ligne (cliniquedubatiment.ca) : ils sont relayés via le tunnel Cloudflare
-   publié dans /dispatch/relay.json, authentifiés par un jeton API dédié.
-   Si le relais/backend est hors ligne : réponse 503 « offline » (l'app dégrade). */
+/* PONT API CDB — publie par scripts/publier_studio_web.py. NE PAS editer ici (regenere). */
 (function () {
   var isLocal = ["localhost", "127.0.0.1"].indexOf(location.hostname) !== -1;
-  if (isLocal) return;                       // appels relatifs directs au GUI local
+  if (isLocal) return;
   var API_TOKEN = "kPIdcmKI5jrEWw0dVo54428hNoLnPNqm";
   var orig = window.fetch.bind(window);
-
-  // fetch avec délai d'expiration (évite de bloquer si le tunnel pend).
   function fetchT(url, opts, ms) {
     opts = opts || {};
     if (typeof AbortController === "function") {
@@ -23,36 +17,25 @@
     }
     return orig(url, opts);
   }
-
-  // Résout l'URL du relais ; ne met en cache QUE les succès (auto-réparation si
-  // le relais revient en ligne plus tard, sans recharger la page).
   var cachedBase = null;
   function resolveBase() {
     if (cachedBase) return Promise.resolve(cachedBase);
     return fetchT("/dispatch/relay.json?_=" + Date.now(), { cache: "no-store" }, 6000)
       .then(function (r) { return r.ok ? r.json() : null; })
-      .then(function (j) {
-        cachedBase = (j && j.url) ? String(j.url).replace(/\/+$/, "") : null;
-        return cachedBase;
-      })
+      .then(function (j) { cachedBase = (j && j.url) ? String(j.url).replace(/\/+$/, "") : null; return cachedBase; })
       .catch(function () { return null; });
   }
-
   window.fetch = function (input, init) {
     var url = (typeof input === "string") ? input : (input && input.url) || "";
     if (url.indexOf("/api/") !== 0) return orig(input, init);
     return resolveBase().then(function (base) {
-      if (!base) {
-        return new Response(
-          JSON.stringify({ ok: false, offline: true, error: "Relais CDB hors ligne — backend local injoignable." }),
-          { status: 503, headers: { "Content-Type": "application/json" } });
-      }
+      if (!base) return new Response(JSON.stringify({ ok: false, offline: true, error: "Relais CDB hors ligne." }),
+        { status: 503, headers: { "Content-Type": "application/json" } });
       init = init || {};
       init.headers = Object.assign({}, init.headers, { "X-CDB-Token": API_TOKEN });
       return fetchT(base + url, init, 30000).catch(function () {
-        cachedBase = null;   // tunnel mort → on re-résoudra au prochain appel
-        return new Response(
-          JSON.stringify({ ok: false, offline: true, error: "Relais injoignable (tunnel)." }),
+        cachedBase = null;
+        return new Response(JSON.stringify({ ok: false, offline: true, error: "Relais injoignable." }),
           { status: 503, headers: { "Content-Type": "application/json" } });
       });
     });
@@ -508,14 +491,31 @@ function openPublish(file){var it=findItem(file);
   var b=document.getElementById("pub-body");
   b.innerHTML=(it.hasImage?("<img src='"+imgUrl(file)+"' alt=''>"):"")
     +"<div class='info'>Publication sur <b>Bluesky</b>. Le texte et l'image sont revérifiés (anti-incohérence, anti-tiret) juste avant l'envoi.</div>"
+    +"<button class='btn-publish' id='pub-now-all' style='width:100%;margin:6px 0 8px;padding:14px;font-weight:900;font-size:15px;background:linear-gradient(90deg,#e8680a,#1b2d6b);color:#fff;letter-spacing:.5px;text-transform:uppercase'>🚀 PUBLIER PARTOUT (toutes les plateformes)</button>"
     +"<button class='btn-publish' id='pub-now' style='width:100%;margin:6px 0 2px;padding:12px;font-weight:800'>Publier maintenant sur Bluesky</button>"
     +"<button class='btn-publish' id='pub-now-fb' style='width:100%;margin:2px 0 6px;padding:12px;font-weight:800;background:#1877F2;color:#fff'>Publier sur Facebook</button>"
-    +(it.hasImage?"<button class='btn-publish' id='pub-now-ig' style='width:100%;margin:2px 0 6px;padding:12px;font-weight:800;background:linear-gradient(90deg,#feda75,#d62976,#4f5bd5);color:#fff'>Publier sur Instagram</button>":"")
-    +"<details style='margin-top:10px'><summary style='cursor:pointer;color:#64748b'>Ou publier en ligne de commande</summary>"
-    +"<div style='margin-top:8px'>Double-clique <b>PUBLIER-CE-POST.cmd</b> sur le bureau (tape PUBLIER), ou colle ceci dans PowerShell :</div>"
-    +"<div class='cmd'>"+esc(PUBCMD)+"</div>"
-    +"<button class='btn-sec' id='pub-copy'>Copier la commande</button></details>";
-  var cp=document.getElementById("pub-copy");if(cp)cp.onclick=function(){if(navigator.clipboard){navigator.clipboard.writeText(PUBCMD).then(function(){toast("Commande copiée","ok");},function(){toast("Copie impossible","err");});}};
+    +(it.hasImage?"<button class='btn-publish' id='pub-now-ig' style='width:100%;margin:2px 0 6px;padding:12px;font-weight:800;background:linear-gradient(90deg,#feda75,#d62976,#4f5bd5);color:#fff'>Publier sur Instagram</button>":"");
+  // (bloc legacy "PUBLIER-CE-POST.cmd" retire : tout passe par les boutons + clic Bobby)
+  // PUBLIER PARTOUT — fan-out instantane, AUCUN check apres le clic
+  var pa=document.getElementById("pub-now-all");
+  if(pa)pa.onclick=function(){
+    var btn=this;btn.disabled=true;btn.textContent="Publication PARTOUT en cours…";
+    fetch("/api/pubtoken").then(function(r){return r.json();}).then(function(tk){
+      return fetch("/api/publish-all",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({file:file,token:(tk&&tk.token)||""})});
+    }).then(function(r){return r.json();}).then(function(d){
+      if(d&&d.ok){
+        var ok=0,tot=0,details=[];
+        Object.keys(d.results||{}).forEach(function(k){tot++;if(d.results[k].ok){ok++;details.push("✓ "+k);}else{details.push("✗ "+k+" — "+(d.results[k].error||"?"));}});
+        closeModal("ov-publish");
+        toast("PARTOUT : "+ok+"/"+tot+" plateformes OK","ok");
+        setTimeout(refresh,800);
+      } else {
+        btn.disabled=false;btn.textContent="🚀 PUBLIER PARTOUT (toutes les plateformes)";
+        toast("Echec global : "+((d&&d.error)||"?"),"err");
+      }
+    }).catch(function(){btn.disabled=false;btn.textContent="🚀 PUBLIER PARTOUT (toutes les plateformes)";toast("Erreur reseau","err");});
+  };
+
   var pn=document.getElementById("pub-now");
   if(pn)pn.onclick=function(){
     if(!window.confirm("Publier ce post sur Bluesky maintenant ? Il sera visible publiquement."))return;
