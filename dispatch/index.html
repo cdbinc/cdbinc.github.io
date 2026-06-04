@@ -154,6 +154,11 @@
         '<div class="note"><label for="note">Note (optionnel)</label>'+
         '<textarea id="note" placeholder="Commentaire pour l\'équipe…"></textarea></div>'+
       '</div>'+
+      '<button id="btnAll" style="display:block;width:100%;margin:0 0 12px;padding:18px;'+
+        'border:0;border-radius:14px;cursor:pointer;font-size:17px;font-weight:900;'+
+        'letter-spacing:.6px;text-transform:uppercase;color:#fff;'+
+        'background:linear-gradient(90deg,#e8680a,#1b2d6b);'+
+        'box-shadow:0 6px 18px rgba(232,104,10,.4);">🚀 PUBLIER PARTOUT</button>'+
       '<div class="actions">'+
         '<button class="reject" id="btnNo">✕ Refuser</button>'+
         '<button class="approve" id="btnYes">✓ Approuver</button>'+
@@ -233,8 +238,45 @@
     s.innerHTML = '<p class="err">Échec de l\'envoi. Vérifie la connexion et réessaie.</p>';
   }
 
+  // 🚀 PUBLIER PARTOUT — fan-out sur TOUTES les plateformes, zéro check après le clic.
+  function sendAll(){
+    var btnA=document.getElementById('btnAll');
+    var btnY=document.getElementById('btnYes');
+    var btnN=document.getElementById('btnNo');
+    btnA.disabled=btnY.disabled=btnN.disabled=true;
+    btnA.textContent='Publication PARTOUT…';
+    fetch('relay.json?_='+Date.now(), {cache:'no-store'})
+      .then(function(r){ return r.json(); }).catch(function(){ return {}; })
+      .then(function(cfg){
+        if(cfg && cfg.url){
+          // decision 'approved-all' -> le relais lance publish-all.mjs (fan-out)
+          sendRelay('approved-all', cfg.url, function(ok){
+            if(ok) doneAll('slack');
+            else emailFallback('approuvé', function(ok2){ ok2 ? doneAll('mail') : failAll(); });
+          });
+        } else {
+          emailFallback('approuvé', function(ok){ ok ? doneAll('mail') : failAll(); });
+        }
+      });
+  }
+  function doneAll(via){
+    document.getElementById('card').style.display='none';
+    var s=document.getElementById('state'); s.style.display='block';
+    var chan = via==='slack' ? 'publication lancée sur toutes les plateformes connectées.'
+                             : 'demande envoyée par courriel (repli).';
+    s.innerHTML='<div class="big">🚀</div><h2>Publié partout</h2>'+
+      '<p>'+(data.id?esc(data.id)+' — ':'')+chan+'</p>';
+  }
+  function failAll(){
+    document.getElementById('btnYes').disabled=document.getElementById('btnNo').disabled=false;
+    var btnA=document.getElementById('btnAll'); btnA.disabled=false; btnA.textContent='🚀 PUBLIER PARTOUT';
+    var s=document.getElementById('state'); s.style.display='block';
+    s.innerHTML='<p class="err">Réseau indisponible. Réessaie — le repli courriel prend le relais.</p>';
+  }
+
   document.getElementById('btnYes').addEventListener('click', function(){ send('approuvé'); });
   document.getElementById('btnNo').addEventListener('click', function(){ send('refusé'); });
+  document.getElementById('btnAll').addEventListener('click', sendAll);
 })();
 </script>
 </body>
