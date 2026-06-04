@@ -70,6 +70,7 @@
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%230a2a43'/><stop offset='1' stop-color='%23e8680a'/></linearGradient></defs><rect width='64' height='64' rx='15' fill='url(%23g)'/><text x='32' y='43' font-family='Segoe UI,Arial' font-size='25' font-weight='800' fill='%23fff' text-anchor='middle'>CDB</text></svg>">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -444,6 +445,57 @@ input:focus,select:focus,textarea:focus{border-color:var(--orange);box-shadow:0 
 /* Auth gate premium */
 .ag-card{background:linear-gradient(180deg,rgba(19,40,60,.96),rgba(10,23,36,.98));border:1px solid var(--glassline);backdrop-filter:blur(16px)}
 .ag-logo{font-family:var(--display)}
+
+/* Bouton bascule clair/sombre */
+.theme-toggle{margin-left:14px;align-self:center;cursor:pointer;width:38px;height:38px;border-radius:11px;
+  background:var(--glass);border:1px solid var(--glassline);color:var(--orange2);font-size:16px;line-height:1;
+  display:flex;align-items:center;justify-content:center;transition:.18s;backdrop-filter:blur(6px);flex:none}
+.theme-toggle:hover{border-color:rgba(255,122,26,.45);transform:translateY(-1px)}
+
+/* ============================================================================
+   ☀ THÈME CLAIR (bascule) — surcharge des tokens + textes codés en dur.
+   Le hero, le journal et le widget pré-vol restent volontairement sombres (accents).
+   ============================================================================ */
+html[data-theme="light"]{
+  --bg:#eef2f7; --bg2:#e6ecf3; --panel:#ffffff; --panel2:#f5f8fc; --elev:#eaf0f6;
+  --line:#d3deea; --line2:#c2d2e3;
+  --text:#0c2236; --muted:#566f85; --faint:#8094a7;
+  --glass:rgba(10,42,67,.035); --glassline:rgba(10,42,67,.11);
+  --orangesoft:rgba(255,122,26,.14);
+  --shadow:0 18px 50px rgba(20,50,80,.16); --shadow2:0 6px 20px rgba(20,50,80,.12);
+}
+html[data-theme="light"] body{
+  background:
+    radial-gradient(1200px 620px at 86% -12%, rgba(255,122,26,.10), transparent 60%),
+    radial-gradient(1000px 560px at -6% 4%, rgba(36,98,160,.10), transparent 55%),
+    linear-gradient(180deg,#eef2f7,#e3e9f1);}
+html[data-theme="light"] body::before{opacity:.55}
+html[data-theme="light"] header{background:rgba(255,255,255,.72);border-bottom:1px solid var(--glassline)}
+html[data-theme="light"] .logo span{color:#0c2236;-webkit-text-fill-color:#0c2236}
+html[data-theme="light"] .howto,
+html[data-theme="light"] .text,
+html[data-theme="light"] .ptext{color:#21384e}
+html[data-theme="light"] .info{color:#1c4a78}
+html[data-theme="light"] .card,
+html[data-theme="light"] .hcard,
+html[data-theme="light"] .doc-card,
+html[data-theme="light"] .af-wrap,
+html[data-theme="light"] .calwrap,
+html[data-theme="light"] .rep,
+html[data-theme="light"] .af-stat{background:linear-gradient(180deg,#ffffff,#f5f8fc);border:1px solid var(--glassline);box-shadow:var(--shadow2)}
+html[data-theme="light"] .tab{background:#ffffff;border:1px solid var(--glassline);color:#566f85}
+html[data-theme="light"] .tab.active{color:#fff}
+html[data-theme="light"] .modal{background:linear-gradient(180deg,#ffffff,#f5f8fc);color:#0c2236}
+html[data-theme="light"] .overlay{background:rgba(30,50,75,.42)}
+html[data-theme="light"] input,
+html[data-theme="light"] select,
+html[data-theme="light"] textarea{background:#ffffff;color:#0c2236;border:1px solid var(--glassline)}
+html[data-theme="light"] .toast{background:#ffffff;color:#0c2236;border:1px solid var(--glassline)}
+html[data-theme="light"] .b{background:#e7eef6;color:#3a5570}
+html[data-theme="light"] .btn-sec{background:#eef3f9;color:#1c3a57}
+html[data-theme="light"] .btn-ghost{color:#566f85;border:1px solid var(--glassline)}
+html[data-theme="light"] .crm-tbl th{background:#f5f8fc;color:#566f85}
+html[data-theme="light"] .ag-card{background:#ffffff;color:#0c2236}
 </style><meta name="theme-color" content="#1b2d6b">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -496,6 +548,7 @@ button,a.btn,.btn-publish{-webkit-tap-highlight-color:rgba(232,104,10,.2)}
     <span class="s"><span id="d-ollama" class="dot"></span>Local</span>
   </div>
   <a href="/leads" style="align-self:center;margin-left:16px;background:#f5a623;color:#10202c;padding:6px 12px;border-radius:8px;font-weight:700;font-size:12px;letter-spacing:.02em;text-decoration:none;white-space:nowrap" title="Leads et integrations">Leads &amp; Int&eacute;grations</a>
+  <button id="theme-toggle" class="theme-toggle" title="Basculer clair / sombre" onclick="window.__cdbToggleTheme&&window.__cdbToggleTheme()">☀</button>
   <div id="user-chip"><img alt=""><span class="uc-name"></span><button class="uc-out" onclick="window.__cdbSignOut&&window.__cdbSignOut()">Déconnexion</button></div>
 </header>
 <div class="container">
@@ -1189,6 +1242,12 @@ function saveNewProject() {
 }
 
 [].forEach.call(document.querySelectorAll(".overlay"),function(ov){ov.addEventListener("click",function(e){if(e.target===ov)closeModal(ov.id);});});
+// ─── Bascule thème clair/sombre (persistée) ───────────────────────────────
+(function(){var KEY="cdb-theme";
+  function apply(t){document.documentElement.setAttribute("data-theme",t);var b=document.getElementById("theme-toggle");if(b)b.textContent=(t==="light"?"☾":"☀");}
+  apply(localStorage.getItem(KEY)||"dark");
+  window.__cdbToggleTheme=function(){var cur=document.documentElement.getAttribute("data-theme")==="light"?"light":"dark";var n=cur==="light"?"dark":"light";try{localStorage.setItem(KEY,n);}catch(e){}apply(n);};
+})();
 connect();refresh();setInterval(refresh,12000);
 </script>
 
