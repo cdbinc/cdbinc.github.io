@@ -40,6 +40,32 @@
       });
     });
   };
+
+  /* Images : <img src="/api/..."> ne passe PAS par fetch -> on les reecrit vers le
+     tunnel avec le jeton en query (?t=), car une balise img ne peut pas envoyer d'en-tete. */
+  function fixImg(img) {
+    var s = img.getAttribute("src") || "";
+    if (s.indexOf("/api/") !== 0 || img.getAttribute("data-cdb") === "1") return;
+    resolveBase().then(function (base) {
+      if (!base) return;
+      img.setAttribute("data-cdb", "1");
+      img.src = base + s + (s.indexOf("?") >= 0 ? "&" : "?") + "t=" + API_TOKEN;
+    });
+  }
+  function scanImgs(root) {
+    try { (root.querySelectorAll ? root.querySelectorAll('img[src^="/api/"]') : []).forEach(fixImg); } catch (e) {}
+  }
+  if (document.readyState !== "loading") scanImgs(document);
+  else document.addEventListener("DOMContentLoaded", function () { scanImgs(document); });
+  try {
+    new MutationObserver(function (muts) {
+      muts.forEach(function (m) {
+        (m.addedNodes || []).forEach(function (n) {
+          if (n.nodeType === 1) { if (n.tagName === "IMG") fixImg(n); scanImgs(n); }
+        });
+      });
+    }).observe(document.documentElement, { childList: true, subtree: true });
+  } catch (e) {}
 })();
 </script>
 <style>
@@ -315,7 +341,33 @@ textarea#ed-text{width:100%;min-height:140px;resize:vertical;line-height:1.55}
 .af-stat.blue .af-stat-val{color:var(--blue)}
 .af-stat.orange .af-stat-val{color:var(--orange)}
 @media(max-width:640px){.af-subtabs{overflow-x:auto}.doc-grid{grid-template-columns:1fr}.mf-row{flex-direction:column}.ligne-item{flex-wrap:wrap}}
-</style></head>
+</style><meta name="theme-color" content="#1b2d6b">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="CDB Studio">
+<style id="cdb-mobile">
+/* Super user-friendly sur cellulaire (injecte par publier_studio_web.py) */
+@media (max-width: 720px){
+  html,body{max-width:100%;overflow-x:hidden}
+  body{font-size:15px;-webkit-text-size-adjust:100%;padding-left:10px;padding-right:10px}
+  header,.brand,.produce,.tools,.actions,.row{flex-wrap:wrap}
+  .tabs{display:flex;overflow-x:auto;-webkit-overflow-scrolling:touch;white-space:nowrap;gap:6px;padding-bottom:6px}
+  .tabs > *{flex:0 0 auto}
+  .grid{display:block !important}
+  .grid > *,.card{width:100% !important;max-width:100% !important;margin:0 0 12px !important;box-sizing:border-box}
+  button,.btn,.btn-sec,.btn-ghost,.btn-publish,summary{min-height:46px;font-size:15px}
+  button,.btn-sec,.btn-ghost,.btn-publish{width:100%;margin:4px 0}
+  .produce,.tools,.actions{flex-direction:column !important;align-items:stretch !important}
+  .produce > *,.tools > *{width:100% !important;min-width:0 !important;margin:3px 0}
+  input,select,textarea{font-size:16px !important;width:100% !important;box-sizing:border-box}
+  img{max-width:100% !important;height:auto}
+  pre,.cmd,.log,code{overflow-x:auto;font-size:12px;white-space:pre-wrap;word-break:break-word}
+  details,.adv{width:100%}
+  table{display:block;overflow-x:auto}
+}
+button,a.btn,.btn-publish{-webkit-tap-highlight-color:rgba(232,104,10,.2)}
+</style>
+</head>
 <body>
 <div id="auth-gate">
   <div class="ag-card">
