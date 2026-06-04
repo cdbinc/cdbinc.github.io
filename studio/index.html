@@ -623,6 +623,16 @@ button,a.btn,.btn-publish{-webkit-tap-highlight-color:rgba(232,104,10,.2)}
       <button class="btn-ghost" data-act="api" data-url="/api/engines">Moteurs</button>
       <button class="btn-ghost" data-act="api" data-url="/api/diagnose">Diagnostic</button>
     </div>
+    <div class="tools" id="maint-tools" style="margin-top:6px">
+      <span style="font-size:11.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.3px;align-self:center;margin-right:4px">Maintenance</span>
+      <button class="btn-ghost" data-mact="backup">💾 Sauvegarde</button>
+      <button class="btn-ghost" data-mact="sante">🩺 Santé complète</button>
+      <button class="btn-ghost" data-mact="ystatus">▶️ Statut YouTube</button>
+      <button class="btn-ghost" data-mact="tstatus">🎵 Statut TikTok</button>
+      <button class="btn-ghost" data-mact="ollama">🧠 Modèles Ollama</button>
+      <input id="ollama-model" placeholder="qwen2.5:14b" style="padding:7px 9px;border-radius:8px;border:1px solid var(--line);background:var(--panel2,#13283c);color:var(--text,#e8eef4);font-size:12px;width:140px">
+      <button class="btn-ghost" data-mact="ollamapull">⬇️ Télécharger le modèle</button>
+    </div>
     <div id="log"></div>
   </details>
 </div>
@@ -753,7 +763,10 @@ function openPublish(file){var it=findItem(file);
     +"<button class='btn-publish' id='pub-now-all' style='width:100%;margin:6px 0 8px;padding:14px;font-weight:900;font-size:15px;background:linear-gradient(90deg,#e8680a,#1b2d6b);color:#fff;letter-spacing:.5px;text-transform:uppercase'>🚀 PUBLIER PARTOUT (toutes les plateformes)</button>"
     +"<button class='btn-publish' id='pub-now' style='width:100%;margin:6px 0 2px;padding:12px;font-weight:800'>Publier maintenant sur Bluesky</button>"
     +"<button class='btn-publish' id='pub-now-fb' style='width:100%;margin:2px 0 6px;padding:12px;font-weight:800;background:#1877F2;color:#fff'>Publier sur Facebook</button>"
-    +(it.hasImage?"<button class='btn-publish' id='pub-now-ig' style='width:100%;margin:2px 0 6px;padding:12px;font-weight:800;background:linear-gradient(90deg,#feda75,#d62976,#4f5bd5);color:#fff'>Publier sur Instagram</button>":"");
+    +(it.hasImage?"<button class='btn-publish' id='pub-now-ig' style='width:100%;margin:2px 0 6px;padding:12px;font-weight:800;background:linear-gradient(90deg,#feda75,#d62976,#4f5bd5);color:#fff'>Publier sur Instagram</button>":"")
+    +(it.hasVideo?"<button class='btn-publish' id='pub-now-yt' style='width:100%;margin:2px 0 6px;padding:12px;font-weight:800;background:#FF0000;color:#fff'>▶️ Publier sur YouTube</button>":"")
+    +(it.hasVideo?"<button class='btn-publish' id='pub-now-tk' style='width:100%;margin:2px 0 6px;padding:12px;font-weight:800;background:#000;color:#fff'>🎵 Publier sur TikTok</button>":"")
+    +(!it.hasVideo?"<div class='info' style='margin-top:6px'>YouTube et TikTok exigent une <b>vidéo</b> (champ <code>video</code> = .mp4). Boutons masqués pour ce post image.</div>":"");
   // (bloc legacy "PUBLIER-CE-POST.cmd" retire : tout passe par les boutons + clic Bobby)
   // PUBLIER PARTOUT — fan-out instantane, AUCUN check apres le clic
   var pa=document.getElementById("pub-now-all");
@@ -808,6 +821,21 @@ function openPublish(file){var it=findItem(file);
       else{btn.disabled=false;btn.textContent="Publier sur Instagram";toast("Echec : "+((d&&d.error)||"?"),"err");}
     }).catch(function(){btn.disabled=false;btn.textContent="Publier sur Instagram";toast("Erreur reseau","err");});
   };
+  function wireVideoPub(id,url,label,confirmMsg){
+    var b=document.getElementById(id);if(!b)return;
+    b.onclick=function(){
+      if(!window.confirm(confirmMsg))return;
+      var btn=this;btn.disabled=true;btn.textContent="Publication\u2026";
+      fetch("/api/pubtoken").then(function(r){return r.json();}).then(function(tk){
+        return fetch(url,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({file:file,token:(tk&&tk.token)||""})});
+      }).then(function(r){return r.json();}).then(function(d){
+        if(d&&d.ok){closeModal("ov-publish");toast("Publi\u00e9 sur "+label+(d.id?" \u2713":""),"ok");setTimeout(refresh,600);}
+        else{btn.disabled=false;btn.textContent="Publier sur "+label;toast("\u00c9chec : "+((d&&d.error)||"?"),"err");}
+      }).catch(function(){btn.disabled=false;btn.textContent="Publier sur "+label;toast("Erreur r\u00e9seau","err");});
+    };
+  }
+  wireVideoPub("pub-now-yt","/api/publish-youtube","YouTube","Publier cette vid\u00e9o sur YouTube maintenant ? (confidentialit\u00e9 \u00ab private \u00bb par d\u00e9faut)");
+  wireVideoPub("pub-now-tk","/api/publish-tiktok","TikTok","Publier cette vid\u00e9o sur TikTok maintenant ?");
   openModal("ov-publish");}
 function doVerify(f){toast("Vérification (texte + image)…");post("/api/verify-item",{file:f,engine:"gemini"}).then(function(){setTimeout(refresh,3000);});}
 function doDryrun(f){toast("Aperçu généré — voir le journal (Outils avancés)");post("/api/dryrun",{file:f});}
@@ -1231,6 +1259,18 @@ function renderStatut(){
 document.getElementById("tabs").addEventListener("click",function(e){var t=e.target.closest(".tab");if(t&&t.dataset.stage){current=t.dataset.stage;renderTabs();renderCards();if(current==="video"&&!VIDEO_PRESETS.length)loadVideoPresets();if(current==="affaires")loadAffaires();if(current==="voix")loadVoiceTemplates();if(current==="statut")loadStatus();}});
 document.getElementById("cards").addEventListener("click",function(e){var btn=e.target.closest("button[data-act]");if(btn)handleAct(btn.dataset.act,btn.dataset.file||btn.dataset.id);});
 document.querySelector(".adv .tools").addEventListener("click",function(e){var btn=e.target.closest("button[data-act='api']");if(btn){post(btn.dataset.url,{}).then(function(){toast("Lancé — voir le journal");setTimeout(refresh,1500);});}});
+document.getElementById("maint-tools").addEventListener("click",function(e){
+  var btn=e.target.closest("button[data-mact]");if(!btn)return;var a=btn.dataset.mact;
+  if(a==="backup"){post("/api/ops/backup",{}).then(function(){toast("Sauvegarde lancée — voir le journal","ok");});}
+  else if(a==="sante"){post("/api/ops/sante",{}).then(function(){toast("Santé complète lancée — voir le journal","ok");});}
+  else if(a==="ystatus"){fetch("/api/ops/youtube-status").then(function(r){return r.json();}).then(function(d){addLog({t:"",type:"ok",msg:"Statut YouTube : "+(d&&d.output?d.output:(d&&d.ok?"OK":"voir journal"))});toast("Statut YouTube","ok");}).catch(function(){toast("Erreur réseau","err");});}
+  else if(a==="tstatus"){fetch("/api/ops/tiktok-status").then(function(r){return r.json();}).then(function(d){addLog({t:"",type:"ok",msg:"Statut TikTok : "+(d&&d.output?d.output:(d&&d.ok?"OK":"voir journal"))});toast("Statut TikTok","ok");}).catch(function(){toast("Erreur réseau","err");});}
+  else if(a==="ollama"){fetch("/api/ops/ollama-models").then(function(r){return r.json();}).then(function(d){
+    if(d&&d.ok){var names=(d.models||[]).map(function(m){return m.name;});addLog({t:"",type:"ok",msg:"Modèles Ollama ("+names.length+") : "+(names.join(", ")||"aucun")});toast(names.length+" modèle(s) Ollama","ok");}
+    else{toast("Ollama indisponible","err");}
+  }).catch(function(){toast("Erreur réseau","err");});}
+  else if(a==="ollamapull"){var m=(document.getElementById("ollama-model").value||"").trim();if(!m){toast("Entre un nom de modèle (ex: qwen2.5:14b)","err");return;}post("/api/ops/ollama-pull",{model:m}).then(function(){toast("Téléchargement de "+m+" lancé — voir le journal","ok");});}
+});
 document.getElementById("btn-produce").onclick=function(){toast("Production en cours…");post("/api/produce",{platform:document.getElementById("platform").value,concept:document.getElementById("concept").value}).then(function(){setTimeout(refresh,2500);});};
 document.getElementById("btn-verifyall").onclick=function(){toast("Vérification en cours…");post("/api/verify",{engine:"gemini"}).then(function(){setTimeout(refresh,3000);});};
 document.getElementById("ap-cancel").onclick=function(){closeModal("ov-approve");};
