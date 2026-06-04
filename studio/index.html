@@ -11,15 +11,37 @@
   var isLocal = ["localhost", "127.0.0.1"].indexOf(location.hostname) !== -1;
   if (isLocal) return;                       // appels relatifs directs au GUI local
   var API_TOKEN = "kPIdcmKI5jrEWw0dVo54428hNoLnPNqm";
-  var relayReady = fetch("/dispatch/relay.json", { cache: "no-store" })
-    .then(function (r) { return r.ok ? r.json() : null; })
-    .then(function (j) { return (j && j.url) ? String(j.url).replace(/\/+$/, "") : null; })
-    .catch(function () { return null; });
   var orig = window.fetch.bind(window);
+
+  // fetch avec délai d'expiration (évite de bloquer si le tunnel pend).
+  function fetchT(url, opts, ms) {
+    opts = opts || {};
+    if (typeof AbortController === "function") {
+      var ac = new AbortController(); opts.signal = ac.signal;
+      var t = setTimeout(function () { ac.abort(); }, ms || 8000);
+      return orig(url, opts).finally(function () { clearTimeout(t); });
+    }
+    return orig(url, opts);
+  }
+
+  // Résout l'URL du relais ; ne met en cache QUE les succès (auto-réparation si
+  // le relais revient en ligne plus tard, sans recharger la page).
+  var cachedBase = null;
+  function resolveBase() {
+    if (cachedBase) return Promise.resolve(cachedBase);
+    return fetchT("/dispatch/relay.json?_=" + Date.now(), { cache: "no-store" }, 6000)
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (j) {
+        cachedBase = (j && j.url) ? String(j.url).replace(/\/+$/, "") : null;
+        return cachedBase;
+      })
+      .catch(function () { return null; });
+  }
+
   window.fetch = function (input, init) {
     var url = (typeof input === "string") ? input : (input && input.url) || "";
     if (url.indexOf("/api/") !== 0) return orig(input, init);
-    return relayReady.then(function (base) {
+    return resolveBase().then(function (base) {
       if (!base) {
         return new Response(
           JSON.stringify({ ok: false, offline: true, error: "Relais CDB hors ligne — backend local injoignable." }),
@@ -27,7 +49,12 @@
       }
       init = init || {};
       init.headers = Object.assign({}, init.headers, { "X-CDB-Token": API_TOKEN });
-      return orig(base + url, init);
+      return fetchT(base + url, init, 30000).catch(function () {
+        cachedBase = null;   // tunnel mort → on re-résoudra au prochain appel
+        return new Response(
+          JSON.stringify({ ok: false, offline: true, error: "Relais injoignable (tunnel)." }),
+          { status: 503, headers: { "Content-Type": "application/json" } });
+      });
     });
   };
 })();

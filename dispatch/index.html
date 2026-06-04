@@ -90,6 +90,17 @@
   // ---- local relay (Slack + auto-envoi). URL published by dispatch_relay.py ----
   var RELAY_TOKEN = "jJaSZrugRk5HE1Q0dDWywH5ZHk2IWeag";
 
+  // fetch avec délai d'expiration : un tunnel qui pend bascule sur le repli courriel.
+  function fetchT(url, opts, ms){
+    opts = opts || {};
+    if (typeof AbortController === 'function'){
+      var ac = new AbortController(); opts.signal = ac.signal;
+      var t = setTimeout(function(){ ac.abort(); }, ms || 8000);
+      return fetch(url, opts).finally(function(){ clearTimeout(t); });
+    }
+    return fetch(url, opts);
+  }
+
   function b64urlDecode(s){
     s = s.replace(/-/g,'+').replace(/_/g,'/');
     while (s.length % 4) s += '=';
@@ -186,14 +197,14 @@
   // Voie relais (Slack + auto-envoi) — via le tunnel local
   function sendRelay(decision, relayUrl, cb){
     var note = (document.getElementById('note')||{}).value || '';
-    fetch(relayUrl.replace(/\/+$/,'')+'/approve', {
+    fetchT(relayUrl.replace(/\/+$/,'')+'/approve', {
       method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({
         token: RELAY_TOKEN, decision: decision, type: data.t || 'task',
         id: data.id||'', title: data.title||'', client: data.client||'',
         amount: data.amount||'', note: note
       })
-    }).then(function(r){ if(!r.ok) throw 0; return r.json(); })
+    }, 12000).then(function(r){ if(!r.ok) throw 0; return r.json(); })
       .then(function(j){ cb(!!(j && j.ok)); }).catch(function(){ cb(false); });
   }
 
@@ -204,7 +215,7 @@
     (decision==='approuvé'?btnY:btnN).innerHTML = '<span class="spin"></span>';
 
     // 1) relais local (Slack + auto-envoi) si disponible ; 2) sinon courriel
-    fetch('relay.json?_='+Date.now(), {cache:'no-store'})
+    fetchT('relay.json?_='+Date.now(), {cache:'no-store'}, 6000)
       .then(function(r){ return r.json(); }).catch(function(){ return {}; })
       .then(function(cfg){
         if(cfg && cfg.url){
@@ -245,7 +256,7 @@
     var btnN=document.getElementById('btnNo');
     btnA.disabled=btnY.disabled=btnN.disabled=true;
     btnA.textContent='Publication PARTOUT…';
-    fetch('relay.json?_='+Date.now(), {cache:'no-store'})
+    fetchT('relay.json?_='+Date.now(), {cache:'no-store'}, 6000)
       .then(function(r){ return r.json(); }).catch(function(){ return {}; })
       .then(function(cfg){
         if(cfg && cfg.url){
