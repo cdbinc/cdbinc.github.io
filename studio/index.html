@@ -611,9 +611,10 @@ button,a.btn,.btn-publish{-webkit-tap-highlight-color:rgba(232,104,10,.2)}
   <div id="fact-detail" style="display:none">
     <div class="info" style="margin-bottom:10px" id="fact-info"></div>
     <div class="mf-row">
-      <div class="mf-group"><label>Type de facture</label><select id="fact-type"><option value="finale">Finale</option><option value="depot">Acompte / Dépôt</option><option value="progression">Progression</option></select></div>
-      <div class="mf-group"><label>Pourcentage (dépôt/prog.)</label><input id="fact-pct" type="number" min="1" max="100" value="30" placeholder="30"></div>
+      <div class="mf-group"><label>Type de facture</label><select id="fact-type" onchange="factTypeChanged()"><option value="finale">Finale (solde complet)</option><option value="depot">Acompte / Dépôt</option><option value="progression">Progression</option></select></div>
+      <div class="mf-group" id="fact-pct-group"><label>Pourcentage à facturer (%)</label><input id="fact-pct" type="number" min="1" max="100" value="30" placeholder="30"></div>
     </div>
+    <div class="info" id="fact-type-hint" style="margin-top:-2px"></div>
     <div class="mf-row">
       <div class="mf-group"><label>Acomptes déjà versés ($)</label><input id="fact-acomptes" type="number" min="0" step="0.01" value="0" placeholder="0.00"></div>
       <div class="mf-group"><label>Notes</label><input id="fact-notes" placeholder="Notes pour la facture..."></div>
@@ -923,6 +924,7 @@ function openNewFact(){
   document.getElementById("fact-pct").value="30";
   document.getElementById("fact-acomptes").value="0";
   document.getElementById("fact-notes").value="";
+  factTypeChanged();
   sel.onchange=function(){
     var num=sel.value;
     if(!num){document.getElementById("fact-detail").style.display="none";return;}
@@ -936,6 +938,19 @@ function openNewFact(){
     });
   };
   openModal("ov-new-fact");
+}
+function factTypeChanged(){
+  var t=(document.getElementById("fact-type")||{}).value||"finale";
+  var pg=document.getElementById("fact-pct-group");
+  var hint=document.getElementById("fact-type-hint");
+  var showPct=(t==="depot"||t==="progression");
+  if(pg)pg.style.display=showPct?"":"none";
+  var msg=t==="finale"
+    ? "<b>Finale</b> : facture le <b>solde complet</b> (100 % moins les acomptes déjà versés ci-dessous). Aucun pourcentage à saisir."
+    : t==="depot"
+    ? "<b>Acompte / Dépôt</b> : facture un <b>pourcentage du total</b> (ex. 30 %), typiquement à la signature."
+    : "<b>Progression</b> : facture un <b>pourcentage</b> selon l'avancement des travaux.";
+  if(hint)hint.innerHTML=msg;
 }
 function formatMoney(v){try{v=parseFloat(v);}catch(e){v=0;}return v.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g," ").replace(".",",")+" $";}
 function saveNewClient(){
