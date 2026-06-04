@@ -68,6 +68,8 @@
   } catch (e) {}
 })();
 </script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@700;800&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -341,6 +343,107 @@ textarea#ed-text{width:100%;min-height:140px;resize:vertical;line-height:1.55}
 .af-stat.blue .af-stat-val{color:var(--blue)}
 .af-stat.orange .af-stat-val{color:var(--orange)}
 @media(max-width:640px){.af-subtabs{overflow-x:auto}.doc-grid{grid-template-columns:1fr}.mf-row{flex-direction:column}.ligne-item{flex-wrap:wrap}}
+
+/* ============================================================================
+   ★ PREMIUM BRANDED — surcouche visuelle « vitrine » (n'altère AUCUN hook JS :
+   aucune classe/ID renommée, uniquement des overrides de cascade). CDB navy→orange.
+   ============================================================================ */
+:root{
+  --bg:#070f1a; --bg2:#0a1726; --panel:#0f1f30; --panel2:#13283c; --elev:#1b314a;
+  --line:#1d3a57; --line2:#2a4a6e;
+  --navy:#0a2a43; --navy2:#143a5c; --orange:#ff7a1a; --orange2:#ff9a45; --orangesoft:rgba(255,122,26,.16);
+  --r:16px; --r2:11px;
+  --glass:rgba(255,255,255,.045); --glassline:rgba(255,255,255,.085);
+  --grad-brand:linear-gradient(105deg,#08233a 0%,#143a5c 40%,#e8680a 100%);
+  --grad-orange:linear-gradient(120deg,#ff8a30,#e8680a);
+  --glow-orange:0 0 0 1px rgba(255,122,26,.22),0 14px 44px rgba(255,122,26,.20);
+  --shadow:0 22px 60px rgba(0,0,0,.55); --shadow2:0 6px 22px rgba(0,0,0,.4);
+  --font:"Manrope","Segoe UI",-apple-system,BlinkMacSystemFont,"Inter",Roboto,Arial,sans-serif;
+  --display:"Sora","Manrope","Segoe UI",sans-serif;
+}
+body{font-family:var(--font);
+  background:
+    radial-gradient(1200px 620px at 86% -12%, rgba(255,122,26,.13), transparent 60%),
+    radial-gradient(1000px 560px at -6% 4%, rgba(36,98,160,.16), transparent 55%),
+    linear-gradient(180deg,#0a1726,#070f1a);}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:radial-gradient(620px 400px at 22% 2%, rgba(255,122,26,.06), transparent 62%);
+  animation:cdb-aurora 20s ease-in-out infinite alternate}
+@keyframes cdb-aurora{to{transform:translate3d(0,34px,0) scale(1.1)}}
+
+/* Header */
+header{background:rgba(7,15,26,.68);border-bottom:1px solid var(--glassline);backdrop-filter:saturate(160%) blur(16px)}
+.brand .chip{border-radius:13px;box-shadow:0 6px 18px rgba(0,0,0,.45),0 0 0 1px rgba(255,255,255,.08)}
+.logo{font-family:var(--display);background:linear-gradient(92deg,#ff9a45,#ff7a1a);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:.4px}
+.logo span{-webkit-text-fill-color:var(--text);color:var(--text)}
+
+/* ★ Hero banner animé (navy → orange) */
+.hero-banner{position:relative;overflow:hidden;border-radius:22px;margin-bottom:18px;
+  background:var(--grad-brand);background-size:220% 220%;animation:cdb-shift 16s ease infinite;
+  border:1px solid rgba(255,255,255,.10);box-shadow:0 24px 70px rgba(0,0,0,.55)}
+@keyframes cdb-shift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+.hero-banner .hb-content{position:relative;z-index:3;padding:32px 32px 30px}
+.hb-kicker{font-size:11.5px;font-weight:800;letter-spacing:3.2px;color:rgba(255,255,255,.82);text-transform:uppercase}
+.hb-title{font-family:var(--display);font-size:40px;font-weight:800;letter-spacing:.4px;color:#fff;line-height:1;margin:8px 0 4px;text-shadow:0 4px 24px rgba(0,0,0,.35)}
+.hb-title span{color:#ffdcb8}
+.hb-slogan{font-size:14.5px;color:rgba(255,255,255,.92);font-weight:500}
+.hb-glow{position:absolute;right:-70px;top:-90px;width:340px;height:340px;border-radius:50%;z-index:1;
+  background:radial-gradient(circle,rgba(255,186,110,.55),transparent 62%);filter:blur(34px)}
+.hero-banner::after{content:"";position:absolute;inset:0;z-index:2;opacity:.45;
+  background:repeating-linear-gradient(118deg,rgba(255,255,255,.045) 0 2px,transparent 2px 24px)}
+@media(max-width:640px){.hb-title{font-size:27px}.hero-banner .hb-content{padding:22px 20px}}
+
+/* Module cards (glass) */
+.hcard{background:linear-gradient(180deg,var(--glass),rgba(255,255,255,.012));border:1px solid var(--glassline);backdrop-filter:blur(8px)}
+.hcard:hover{border-color:rgba(255,122,26,.42);box-shadow:var(--glow-orange);transform:translateY(-3px)}
+.hcard .ic{font-size:26px;filter:drop-shadow(0 3px 9px rgba(0,0,0,.45))}
+.howto{background:linear-gradient(180deg,var(--glass),rgba(255,255,255,.012));border:1px solid var(--glassline);border-left:3px solid var(--orange);backdrop-filter:blur(6px)}
+
+/* Tabs */
+.tab{background:var(--glass);border:1px solid var(--glassline);backdrop-filter:blur(6px)}
+.tab:hover{border-color:rgba(255,122,26,.3)}
+.tab.active{background:var(--grad-orange);border-color:transparent;color:#fff;box-shadow:0 8px 26px rgba(255,122,26,.45)}
+
+/* Content cards */
+.card{background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.012));border:1px solid var(--glassline);backdrop-filter:blur(8px);position:relative}
+.card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;z-index:4;opacity:0;transition:.25s;
+  background:linear-gradient(90deg,transparent,rgba(255,122,26,.85),transparent)}
+.card:hover::before{opacity:1}
+.card:hover{border-color:rgba(255,122,26,.34);box-shadow:0 20px 54px rgba(0,0,0,.5),var(--glow-orange)}
+@keyframes cdb-rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.grid>.card{animation:cdb-rise .36s cubic-bezier(.2,.8,.3,1) both}
+
+/* Buttons premium */
+.btn-approve{background:linear-gradient(180deg,#46c95a,#27a043);color:#042510;font-weight:800;box-shadow:0 6px 18px rgba(63,185,80,.3)}
+.btn-publish{background:var(--grad-orange);color:#fff;font-weight:800;box-shadow:0 7px 22px rgba(232,104,10,.42)}
+.btn-approve:hover,.btn-publish:hover{filter:brightness(1.07);transform:translateY(-1px)}
+.btn-sec{background:var(--glass);border:1px solid var(--glassline);backdrop-filter:blur(6px)}
+.btn-sec:hover{background:rgba(255,255,255,.08);border-color:rgba(255,122,26,.3)}
+
+/* Modals (glass) */
+.modal{background:linear-gradient(180deg,rgba(19,40,60,.97),rgba(10,23,36,.985));border:1px solid var(--glassline);backdrop-filter:blur(20px)}
+.mh{font-family:var(--display);background:linear-gradient(100deg,rgba(232,104,10,.18),transparent)}
+.overlay{background:rgba(4,9,15,.72);backdrop-filter:blur(8px)}
+
+/* Affaires : stats + wrap */
+.af-wrap,.calwrap,.rep{background:linear-gradient(180deg,var(--glass),rgba(255,255,255,.012));border:1px solid var(--glassline);backdrop-filter:blur(8px)}
+.af-stat{background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.014));border:1px solid var(--glassline)}
+.af-stat:hover{border-color:rgba(255,122,26,.3);transform:translateY(-2px);transition:.18s}
+.af-subtab.active{color:var(--orange);border-bottom-color:var(--orange)}
+.doc-card{background:linear-gradient(180deg,var(--glass),rgba(255,255,255,.012));border:1px solid var(--glassline)}
+.doc-card:hover{border-color:rgba(255,122,26,.32);box-shadow:var(--glow-orange)}
+
+/* Toast + preflight widget */
+.toast{background:rgba(16,30,44,.92);border:1px solid var(--glassline);border-left:3px solid var(--orange);backdrop-filter:blur(12px);box-shadow:0 16px 44px rgba(0,0,0,.5)}
+#cdb-preflight{background:rgba(10,23,36,.84)!important;border:1px solid var(--glassline)!important;backdrop-filter:blur(14px);border-radius:14px!important}
+
+/* Inputs */
+input,select,textarea{background:rgba(7,15,26,.6);border:1px solid var(--glassline)}
+input:focus,select:focus,textarea:focus{border-color:var(--orange);box-shadow:0 0 0 3px var(--orangesoft)}
+
+/* Auth gate premium */
+.ag-card{background:linear-gradient(180deg,rgba(19,40,60,.96),rgba(10,23,36,.98));border:1px solid var(--glassline);backdrop-filter:blur(16px)}
+.ag-logo{font-family:var(--display)}
 </style><meta name="theme-color" content="#1b2d6b">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -396,6 +499,14 @@ button,a.btn,.btn-publish{-webkit-tap-highlight-color:rgba(232,104,10,.2)}
   <div id="user-chip"><img alt=""><span class="uc-name"></span><button class="uc-out" onclick="window.__cdbSignOut&&window.__cdbSignOut()">Déconnexion</button></div>
 </header>
 <div class="container">
+  <div class="hero-banner">
+    <div class="hb-glow"></div>
+    <div class="hb-content">
+      <div class="hb-kicker">◤ Clinique du Bâtiment CDB ◢</div>
+      <div class="hb-title">CDB <span>Studio</span></div>
+      <div class="hb-slogan">Le souci du détail — Marketing · Vidéo Veo 3 · Affaires</div>
+    </div>
+  </div>
   <div class="hero">
     <div class="hcard h-mkt"><div class="ic">📣</div><h4>Marketing</h4><p>Produire, vérifier et publier (Bluesky · Facebook) avec verrou humain.</p></div>
     <div class="hcard h-vid"><div class="ic">🎬</div><h4>Vidéo Veo 3</h4><p>Scènes cinématiques 8 s → prompt + requête Gemini / Vertex.</p></div>
