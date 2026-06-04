@@ -125,8 +125,12 @@
   var data = getPayload();
 
   if(!data){
-    app.innerHTML = '<div class="card"><div class="body"><p class="err" style="text-align:center;margin:8px 0">'+
-      'Lien invalide ou expiré.<br>Demande un nouveau lien via Claude.</p></div></div>';
+    app.innerHTML = '<div class="card"><div class="body" style="text-align:center">'+
+      '<div style="font-size:42px;line-height:1">✅</div>'+
+      '<h2 style="margin:10px 0 4px">Aucune pièce à approuver</h2>'+
+      '<p style="color:#5b6680;margin:0 0 16px">Tu recevras un lien (SMS + Slack) dès qu\'une publication, soumission ou facture attend ton OK.</p>'+
+      '<a href="https://cliniquedubatiment.ca/studio/" style="display:block;text-decoration:none;background:linear-gradient(90deg,#e8680a,#1b2d6b);color:#fff;font-weight:800;padding:14px;border-radius:12px">🖥️ Ouvrir la plateforme CDB Studio</a>'+
+      '</div></div>';
     return;
   }
 
