@@ -500,6 +500,15 @@ html[data-theme="light"] .btn-sec{background:#eef3f9;color:#1c3a57}
 html[data-theme="light"] .btn-ghost{color:#566f85;border:1px solid var(--glassline)}
 html[data-theme="light"] .crm-tbl th{background:#f5f8fc;color:#566f85}
 html[data-theme="light"] .ag-card{background:#ffffff;color:#0c2236}
+
+/* Connexion courriel/mot de passe (porte d'accès) */
+.ag-or{color:var(--faint);font-size:11.5px;margin:14px 0 10px;text-transform:uppercase;letter-spacing:1px}
+.ag-input{width:100%;margin-bottom:9px;background:rgba(7,15,26,.55);border:1px solid var(--glassline);color:var(--text);border-radius:10px;padding:11px 13px;font-size:14px}
+.ag-input:focus{border-color:var(--orange);box-shadow:0 0 0 3px var(--orangesoft);outline:none}
+html[data-theme="light"] .ag-input{background:#f5f8fc;color:#0c2236}
+.ag-btn-email{background:var(--grad-orange);color:#fff;border:none;font-weight:700}
+.ag-btn-email::before{display:none}
+.ag-btn-email:hover{filter:brightness(1.07);box-shadow:0 6px 16px rgba(232,104,10,.4)}
 </style><meta name="theme-color" content="#1b2d6b">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -533,6 +542,10 @@ button,a.btn,.btn-publish{-webkit-tap-highlight-color:rgba(232,104,10,.2)}
     <div class="ag-logo">CDB <span>Studio</span></div>
     <div class="ag-sub">Espace de production &mdash; acc&egrave;s r&eacute;serv&eacute;</div>
     <button class="ag-btn" onclick="window.__cdbSignIn&&window.__cdbSignIn()">Se connecter avec Google</button>
+    <div class="ag-or">ou</div>
+    <input id="ag-email" class="ag-input" type="email" placeholder="Courriel" autocomplete="username">
+    <input id="ag-pass" class="ag-input" type="password" placeholder="Mot de passe" autocomplete="current-password" onkeydown="if(event.key==='Enter'){window.__cdbSignInEmail&&window.__cdbSignInEmail();}">
+    <button class="ag-btn ag-btn-email" onclick="window.__cdbSignInEmail&&window.__cdbSignInEmail()">Se connecter par courriel</button>
     <div id="auth-err" class="ag-err"></div>
   </div>
 </div>
@@ -1284,7 +1297,7 @@ connect();refresh();setInterval(refresh,12000);
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword, signOut, onAuthStateChanged, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 /* ===================== CONFIG FIREBASE A REMPLIR =====================
    Console Firebase > Parametres du projet > Vos applications (Web) > Config SDK.
@@ -1297,7 +1310,7 @@ const firebaseConfig = {
   appId: "A_REMPLIR"
 };
 /* Liste blanche d'emails (vide = tout compte Google accepte) */
-const ALLOWED_EMAILS = ["info@cliniquedubatiment.ca"];
+const ALLOWED_EMAILS = ["info@cliniquedubatiment.ca","crimaud34@gmail.com","itechinfomtl@gmail.com"];
 /* ==================================================================== */
 
 const gate = document.getElementById("auth-gate");
@@ -1333,6 +1346,18 @@ if (!firebaseConfig.apiKey || firebaseConfig.apiKey === "A_REMPLIR") {
         provider.setCustomParameters({ prompt: "select_account" });
         await signInWithPopup(auth, provider);
       } catch(e){ errEl.textContent = "Echec de connexion : " + ((e&&e.code)||e); }
+    };
+    window.__cdbSignInEmail = async function(){
+      errEl.textContent="";
+      const em = ((document.getElementById("ag-email")||{}).value||"").trim();
+      const pw = (document.getElementById("ag-pass")||{}).value||"";
+      if(!em || !pw){ errEl.textContent = "Entre ton courriel et ton mot de passe."; return; }
+      try { await signInWithEmailAndPassword(auth, em, pw); }
+      catch(e){
+        const c=(e&&e.code)||"";
+        errEl.textContent = (c.indexOf("wrong-password")>=0||c.indexOf("user-not-found")>=0||c.indexOf("invalid-credential")>=0)
+          ? "Courriel ou mot de passe invalide." : ("Echec : " + (c||e));
+      }
     };
     window.__cdbSignOut = function(){ signOut(auth); };
   } catch(e){
