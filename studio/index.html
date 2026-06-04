@@ -330,6 +330,10 @@ textarea#ed-text{width:100%;min-height:140px;resize:vertical;line-height:1.55}
 .mf-divider{border:none;border-top:1px solid var(--line);margin:4px 0}
 /* Ligne items (soumission modal) */
 .ligne-list{display:flex;flex-direction:column;gap:8px}
+.ligne-head{display:flex;gap:8px;padding:2px 12px 0;font-size:10px;font-weight:800;color:var(--faint);text-transform:uppercase;letter-spacing:.4px}
+.ligne-head .lh-desc{flex:3}
+.ligne-head .lh-qty,.ligne-head .lh-unit,.ligne-head .lh-prix{flex:1;min-width:60px}
+.ligne-head .lh-del{flex:none;width:30px}
 .ligne-item{display:flex;gap:8px;align-items:flex-end;padding:8px 10px;background:rgba(0,0,0,.12);border:1px solid var(--line);border-radius:var(--r2)}
 .ligne-item input{font-size:12px;padding:7px 8px}
 .ligne-item .li-desc{flex:3}
@@ -635,7 +639,9 @@ button,a.btn,.btn-publish{-webkit-tap-highlight-color:rgba(232,104,10,.2)}
   </div>
   <div class="mf-group"><label>Description du projet</label><input id="soum-desc" placeholder="Démolition, pose de céramique, peinture..."></div>
   <hr class="mf-divider">
-  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><label style="font-size:11.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.3px">Lignes de travaux</label><button class="btn-ghost" style="font-size:11px;padding:5px 10px" onclick="addSoumLigne()">+ Ajouter une ligne</button></div>
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><label style="font-size:11.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.3px">Lignes de travaux *</label><button class="btn-ghost" style="font-size:11px;padding:5px 10px" onclick="addSoumLigne()">+ Ajouter une ligne</button></div>
+  <div class="info" style="margin-bottom:8px">Chaque ligne = un travail à chiffrer. La <b>description est obligatoire</b> (ex. « Pose de céramique au sol »). Une ligne sans description est ignorée.</div>
+  <div class="ligne-head"><span class="lh-desc">Description du travail *</span><span class="lh-qty">Qté</span><span class="lh-unit">Unité</span><span class="lh-prix">Prix $</span><span class="lh-del"></span></div>
   <div class="ligne-list" id="soum-lignes"></div>
   <hr class="mf-divider">
   <div class="mf-row">
@@ -897,7 +903,7 @@ function openNewSoum(){
 function addSoumLigne(){
   var wrap=document.getElementById("soum-lignes");
   var div=document.createElement("div");div.className="ligne-item";
-  div.innerHTML="<input class='li-desc' placeholder='Description du travail'>"+
+  div.innerHTML="<input class='li-desc' placeholder='Ex: Pose de céramique au sol (OBLIGATOIRE)'>"+
     "<input class='li-qty' type='number' min='0' step='0.01' value='1' placeholder='Qté'>"+
     "<input class='li-unit' placeholder='unité' value='forfait'>"+
     "<input class='li-prix' type='number' min='0' step='0.01' value='0' placeholder='Prix $'>"+
@@ -950,13 +956,23 @@ function saveNewSoumission(){
   var projet=document.getElementById("soum-projet").value.trim();
   if(!nom||!projet){toast("Nom du client et titre du projet requis","err");return;}
   var lignes=[];var rows=document.querySelectorAll("#soum-lignes .ligne-item");
+  var prixSansDesc=0;
   rows.forEach(function(r){
     var inputs=r.querySelectorAll("input");
-    var desc=(inputs[0]||{}).value||""; var q=parseFloat((inputs[1]||{}).value)||1;
+    var desc=((inputs[0]||{}).value||"").trim(); var q=parseFloat((inputs[1]||{}).value)||1;
     var u=(inputs[2]||{}).value||"forfait"; var p=parseFloat((inputs[3]||{}).value)||0;
-    if(desc.trim())lignes.push({description:desc,quantite:q,unite:u,prix:p});
+    if(inputs[0])inputs[0].style.borderColor="";   // reset surlignage
+    if(desc){lignes.push({description:desc,quantite:q,unite:u,prix:p});}
+    else if(p>0){prixSansDesc++;if(inputs[0])inputs[0].style.borderColor="var(--red)";}  // prix mais pas de description
   });
-  if(!lignes.length){toast("Au moins une ligne de travail requise","err");return;}
+  if(!lignes.length){
+    var msg=prixSansDesc>0
+      ? "Il manque la DESCRIPTION (champ de gauche, surligné en rouge). Tape ce que tu fais, ex. « Pose de céramique »."
+      : "Ajoute au moins une ligne de travail AVEC une description. Ex. « Démolition salle de bain » dans le champ de gauche.";
+    toast(msg,"err");
+    var first=document.querySelector("#soum-lignes .li-desc");if(first)first.focus();
+    return;
+  }
   var btn=document.getElementById("btn-save-soum");btn.disabled=true;btn.innerHTML="<span class='spin'></span> Génération…";
   post("/api/ops/soumission/generer",{
     client:{nom:nom,telephone:document.getElementById("soum-cli-tel").value.trim(),courriel:document.getElementById("soum-cli-courriel").value.trim(),adresse:document.getElementById("soum-cli-adresse").value.trim()},
