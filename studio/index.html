@@ -509,6 +509,28 @@ html[data-theme="light"] .ag-input{background:#f5f8fc;color:#0c2236}
 .ag-btn-email{background:var(--grad-orange);color:#fff;border:none;font-weight:700}
 .ag-btn-email::before{display:none}
 .ag-btn-email:hover{filter:brightness(1.07);box-shadow:0 6px 16px rgba(232,104,10,.4)}
+/* ── Voix + Statut (panneaux ajoutes) ── */
+.vx-wrap{display:grid;gap:16px;grid-template-columns:1fr 1fr;max-width:980px;margin:0 auto}
+.vx-out{grid-column:1/-1}
+@media(max-width:760px){.vx-wrap{grid-template-columns:1fr}}
+.vx-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:18px}
+.vx-card h3{margin:0 0 4px}
+.vx-sub{color:var(--muted);font-size:13px;margin:4px 0 12px}
+.vx-card label{display:block;font-size:12px;color:var(--muted);margin:10px 0 4px;font-weight:600}
+.vx-card textarea,.vx-card select,.vx-card input,.vx-var{width:100%;box-sizing:border-box;background:var(--elev);border:1px solid var(--line);color:var(--text);border-radius:10px;padding:9px 11px;font:inherit}
+.vx-row{display:flex;gap:12px}.vx-row>div{flex:1}
+.vx-chk{display:flex;align-items:center;gap:8px;color:var(--text);margin:12px 0;font-size:13px}
+.vx-chk input{width:auto}
+.vx-card .btn-approve{margin-top:14px;width:100%}
+.vx-res{background:var(--elev);border:1px solid var(--line);border-radius:10px;padding:12px;margin-top:6px;color:var(--text)}
+.vx-res.ok{border-color:var(--green);background:var(--greensoft)}
+.vx-res.err{border-color:var(--red);background:var(--redsoft)}
+.st-wrap{max-width:720px;margin:0 auto;background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:18px}
+.st-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.st-head h3{margin:0}
+.st-row{display:grid;grid-template-columns:26px 1fr auto;gap:10px;align-items:center;padding:10px 6px;border-bottom:1px solid var(--line)}
+.st-st{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.st-det{grid-column:2/-1;color:var(--muted);font-size:12px;margin-top:-4px}
 </style><meta name="theme-color" content="#1b2d6b">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -672,7 +694,7 @@ button,a.btn,.btn-publish{-webkit-tap-highlight-color:rgba(232,104,10,.2)}
 </div><div class="mf"><button class="btn-ghost" onclick="closeModal('ov-new-proj')">Annuler</button><button class="btn-approve" id="btn-save-proj" onclick="saveNewProject()">Créer le Projet</button></div></div></div>
 <div class="toast" id="toast"></div>
 <script>
-var STAGES=[["review","📝 À réviser"],["approved","✓ Approuvés"],["published","🚀 Publiés"],["drafts","✎ Brouillons"],["rejected","✕ Rejetés"],["visuels","🖼 Visuels"],["video","🎬 Vidéo Veo 3"],["affaires","📋 Affaires"],["calendar","📅 Calendrier"]];
+var STAGES=[["review","📝 À réviser"],["approved","✓ Approuvés"],["published","🚀 Publiés"],["drafts","✎ Brouillons"],["rejected","✕ Rejetés"],["visuels","🖼 Visuels"],["video","🎬 Vidéo Veo 3"],["affaires","📋 Affaires"],["voix","📞 Voix"],["statut","🩺 Statut"],["calendar","📅 Calendrier"]];
 var STAGEMAP={review:"À réviser",approved:"Approuvé ✓",published:"Publié ✓",drafts:"Brouillon",rejected:"Rejeté"};
 var current="review", ITEMS=[], lastCounts={}, CAL_COUNT=0, SCHED=[], PMREPORT="", PROMOS=[], PROMO_COUNT=0;
 function esc(s){return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
@@ -697,7 +719,7 @@ function actionsHtml(it){var f=it.folder;var fl=it.file;
   if(f==="published")return "<button class='btn-publish' data-act='republish' data-file='"+fl+"'>🔄 Re-publier partout</button>"+ed;
   if(f==="rejected")return ed;
   return "";}
-function renderCards(){var el=document.getElementById("cards");if(current==="calendar"){renderCalendar();return;}if(current==="visuels"){renderPromos();return;}if(current==="video"){renderVideo();return;}if(current==="affaires"){renderAffaires();return;}var list=ITEMS.filter(function(it){return it.folder===current;});
+function renderCards(){var el=document.getElementById("cards");if(current==="calendar"){renderCalendar();return;}if(current==="visuels"){renderPromos();return;}if(current==="video"){renderVideo();return;}if(current==="affaires"){renderAffaires();return;}if(current==="voix"){renderVoix();return;}if(current==="statut"){renderStatut();return;}var list=ITEMS.filter(function(it){return it.folder===current;});
   if(!list.length){el.className="";el.innerHTML="<div class='empty'><div class='big'>📭</div>Aucun post ici pour le moment.</div>";return;}
   el.className="grid";
   el.innerHTML=list.map(function(it){
@@ -1136,7 +1158,77 @@ function renderDocList(el,items,pdfs,kind,typeClass){
   html+="</div>";
   el.innerHTML=html;
 }
-document.getElementById("tabs").addEventListener("click",function(e){var t=e.target.closest(".tab");if(t&&t.dataset.stage){current=t.dataset.stage;renderTabs();renderCards();if(current==="video"&&!VIDEO_PRESETS.length)loadVideoPresets();if(current==="affaires")loadAffaires();}});
+/* ─── VOIX (message vocal québécois → Bobby) ───────────────────────────── */
+var VOICE_TPLS=[], VOICE_VOICES={};
+function loadVoiceTemplates(){
+  fetch("/api/ops/voice/templates").then(function(r){return r.json();}).then(function(d){
+    VOICE_TPLS=d.templates||[];VOICE_VOICES=d.voices||{};if(current==="voix")renderVoix();
+  }).catch(function(){if(current==="voix")renderVoix();});
+}
+function voiceModeSel(id){
+  return "<select id='"+id+"'><option value='call'>📞 Appel (joue le message)</option><option value='sms'>🔗 SMS (texto + lien)</option><option value='mms'>🎧 MMS (note audio)</option><option value='file'>💾 Aperçu (aucun envoi)</option></select>";
+}
+function renderVoix(){
+  var el=document.getElementById("cards");el.className="";
+  var voiceOpts="<option value=''>— Voix par défaut —</option>"+Object.keys(VOICE_VOICES).map(function(k){return "<option value='"+esc(VOICE_VOICES[k])+"'>"+esc(k.replace(/_/g," "))+"</option>";}).join("");
+  var tplOpts="<option value=''>— Choisir un modèle —</option>"+VOICE_TPLS.map(function(t){return "<option value='"+esc(t.name)+"'>"+esc(t.name.replace(/_/g," "))+"</option>";}).join("");
+  el.innerHTML=
+   "<div class='vx-wrap'>"
+   +"<div class='vx-card'><h3>📞 Message vocal → Bobby</h3>"
+     +"<p class='vx-sub'>Synthèse québécoise (edge-tts) envoyée par Twilio. Sans clés Twilio, un lien audio jouable est généré.</p>"
+     +"<label>Message</label><textarea id='vx-text' rows='4' placeholder='Ex. Chantier demain 8 h chez Mme Tremblay, pose de céramique.'></textarea>"
+     +"<div class='vx-row'><div><label>Mode</label>"+voiceModeSel("vx-mode")+"</div><div><label>Voix</label><select id='vx-voice'>"+voiceOpts+"</select></div></div>"
+     +"<label class='vx-chk'><input type='checkbox' id='vx-nointro'> Sans intro/outro automatiques</label>"
+     +"<button class='btn-approve' onclick='sendVoice()'>📣 Envoyer à Bobby</button></div>"
+   +"<div class='vx-card'><h3>📋 Modèle pré-écrit</h3>"
+     +"<label>Modèle</label><select id='vx-tpl' onchange='renderVoiceVars()'>"+tplOpts+"</select>"
+     +"<div id='vx-vars'></div>"
+     +"<div class='vx-row'><div><label>Mode</label>"+voiceModeSel("vx-tpl-mode")+"</div></div>"
+     +"<button class='btn-approve' onclick='sendVoiceTpl()'>📣 Envoyer le modèle</button></div>"
+   +"<div class='vx-out' id='vx-out'></div></div>";
+}
+function renderVoiceVars(){
+  var name=document.getElementById("vx-tpl").value;
+  var t=VOICE_TPLS.filter(function(x){return x.name===name;})[0];
+  var box=document.getElementById("vx-vars");if(!box)return;
+  if(!t){box.innerHTML="";return;}
+  box.innerHTML=(t.vars||[]).map(function(v){return "<label>"+esc(v)+"</label><input class='vx-var' data-k='"+esc(v)+"' placeholder='"+esc(v)+"'>";}).join("")
+    +(t.description?"<p class='vx-sub'>"+esc(t.description)+"</p>":"");
+}
+function vxResult(d){
+  var o=document.getElementById("vx-out");var r=(d&&d.result)||{};var ok=d&&d.ok;
+  var msg=ok?("✅ "+(r.mode==="call"?"Appel lancé (SID "+(r.sid||"?")+")":r.mode==="sms"?"Texto envoyé":r.mode==="mms"?"Note audio envoyée":("Audio généré"+(r.url?(" : "+r.url):"")))):("⚠️ "+((r&&r.error)||(d&&d.error)||(d&&d.output)||"échec"));
+  if(o)o.innerHTML="<div class='vx-res "+(ok?"ok":"err")+"'>"+esc(msg)+"</div>";
+  toast(ok?"Voix envoyée ✓":"Voix : échec",ok?"ok":"err");
+}
+function sendVoice(){
+  var text=document.getElementById("vx-text").value.trim();
+  if(!text){toast("Écris un message","err");return;}
+  var body={text:text,mode:document.getElementById("vx-mode").value,no_intro:document.getElementById("vx-nointro").checked};
+  var v=document.getElementById("vx-voice").value;if(v)body.voice=v;
+  var o=document.getElementById("vx-out");if(o)o.innerHTML="<div class='vx-res'>⏳ Synthèse + envoi…</div>";
+  post("/api/ops/voice/say",body).then(function(r){return r.json();}).then(vxResult).catch(function(){toast("Erreur réseau","err");});
+}
+function sendVoiceTpl(){
+  var name=document.getElementById("vx-tpl").value;
+  if(!name){toast("Choisis un modèle","err");return;}
+  var vars={};Array.prototype.forEach.call(document.querySelectorAll(".vx-var"),function(i){vars[i.dataset.k]=i.value;});
+  var body={name:name,vars:vars,mode:document.getElementById("vx-tpl-mode").value};
+  var o=document.getElementById("vx-out");if(o)o.innerHTML="<div class='vx-res'>⏳ Synthèse + envoi…</div>";
+  post("/api/ops/voice/template",body).then(function(r){return r.json();}).then(vxResult).catch(function(){toast("Erreur réseau","err");});
+}
+/* ─── STATUT (services en direct) ──────────────────────────────────────── */
+var STATUS=[], STATUS_AT="";
+function loadStatus(){
+  fetch("/api/ops/status").then(function(r){return r.json();}).then(function(d){STATUS=(d&&d.services)||[];STATUS_AT=(d&&d.at)||"";if(current==="statut")renderStatut();}).catch(function(){STATUS=[];if(current==="statut")renderStatut();});
+}
+function statusDot(s){return s==="up"?"🟢":s==="config"?"🔵":s==="down"?"🔴":"⚪";}
+function renderStatut(){
+  var el=document.getElementById("cards");el.className="";
+  var rows=STATUS.length?STATUS.map(function(s){return "<div class='st-row'><span>"+statusDot(s.state)+"</span><span class='st-lbl'>"+esc(s.label)+"</span><span class='st-st'>"+esc(s.state)+"</span>"+(s.detail?"<span class='st-det'>"+esc(s.detail)+"</span>":"")+"</div>";}).join(""):"<div class='vx-res'>Aucune donnée (relais hors ligne ?).</div>";
+  el.innerHTML="<div class='st-wrap'><div class='st-head'><h3>🩺 Statut des services</h3><button class='btn-ghost' onclick='loadStatus()'>↻ Rafraîchir</button></div>"+rows+"<p class='vx-sub'>🟢 actif · 🔵 configuré · 🔴 hors ligne · ⚪ absent"+(STATUS_AT?(" · maj "+esc(STATUS_AT)):"")+"</p></div>";
+}
+document.getElementById("tabs").addEventListener("click",function(e){var t=e.target.closest(".tab");if(t&&t.dataset.stage){current=t.dataset.stage;renderTabs();renderCards();if(current==="video"&&!VIDEO_PRESETS.length)loadVideoPresets();if(current==="affaires")loadAffaires();if(current==="voix")loadVoiceTemplates();if(current==="statut")loadStatus();}});
 document.getElementById("cards").addEventListener("click",function(e){var btn=e.target.closest("button[data-act]");if(btn)handleAct(btn.dataset.act,btn.dataset.file||btn.dataset.id);});
 document.querySelector(".adv .tools").addEventListener("click",function(e){var btn=e.target.closest("button[data-act='api']");if(btn){post(btn.dataset.url,{}).then(function(){toast("Lancé — voir le journal");setTimeout(refresh,1500);});}});
 document.getElementById("btn-produce").onclick=function(){toast("Production en cours…");post("/api/produce",{platform:document.getElementById("platform").value,concept:document.getElementById("concept").value}).then(function(){setTimeout(refresh,2500);});};
@@ -1299,15 +1391,18 @@ connect();refresh();setInterval(refresh,12000);
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword, signOut, onAuthStateChanged, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-/* ===================== CONFIG FIREBASE A REMPLIR =====================
-   Console Firebase > Parametres du projet > Vos applications (Web) > Config SDK.
-   Collez vos valeurs ci-dessous. Tant que apiKey vaut "A_REMPLIR", la
-   connexion est desactivee et le tableau de bord reste accessible (mode dev). */
+/* ===================== CONFIG FIREBASE (projet cdb-studio) =====================
+   Connexion ACTIVE (apiKey reel). Pour desactiver temporairement (mode dev, acces
+   libre sans login), remettre apiKey a "A_REMPLIR".
+   Domaines autorises requis (Firebase > Authentication > Settings > Domaines) :
+   localhost (auto) + cliniquedubatiment.ca (a ajouter avant la mise en ligne). */
 const firebaseConfig = {
-  apiKey: "A_REMPLIR",
-  authDomain: "A_REMPLIR.firebaseapp.com",
-  projectId: "A_REMPLIR",
-  appId: "A_REMPLIR"
+  apiKey: "AIzaSyCR-_K6H1iBHy-k7XwowQmqCRIqI_Ko6ZE",
+  authDomain: "cdb-studio.firebaseapp.com",
+  projectId: "cdb-studio",
+  storageBucket: "cdb-studio.firebasestorage.app",
+  messagingSenderId: "629699185190",
+  appId: "1:629699185190:web:137e3b83f8e0166d5034e7"
 };
 /* Liste blanche d'emails (vide = tout compte Google accepte) */
 const ALLOWED_EMAILS = ["info@cliniquedubatiment.ca","crimaud34@gmail.com","itechinfomtl@gmail.com"];
@@ -1379,7 +1474,7 @@ if (!firebaseConfig.apiKey || firebaseConfig.apiKey === "A_REMPLIR") {
 </div>
 <script>
 (function(){
-  var ORDER=[["bluesky","Bluesky"],["facebook","Facebook"],["instagram","Instagram"],["tiktok","TikTok"]];
+  var ORDER=[["bluesky","Bluesky"],["facebook","Facebook"],["instagram","Instagram"],["tiktok","TikTok"],["youtube","YouTube"]];
   var body=document.getElementById("cdb-pf-body");
   var head=document.getElementById("cdb-pf-head");
   var toggle=document.getElementById("cdb-pf-toggle");
