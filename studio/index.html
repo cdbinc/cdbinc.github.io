@@ -1335,7 +1335,7 @@ document.getElementById("maint-tools").addEventListener("click",function(e){
   }).catch(function(){toast("Erreur réseau","err");});}
   else if(a==="ollamapull"){var m=(document.getElementById("ollama-model").value||"").trim();if(!m){toast("Entre un nom de modèle (ex: qwen2.5:14b)","err");return;}post("/api/ops/ollama-pull",{model:m}).then(function(){toast("Téléchargement de "+m+" lancé — voir le journal","ok");});}
 });
-document.getElementById("btn-produce").onclick=function(){toast("Production en cours…");post("/api/produce",{platform:document.getElementById("platform").value,concept:document.getElementById("concept").value}).then(function(){setTimeout(refresh,2500);});};
+document.getElementById("btn-produce").onclick=function(){toast("Production en cours…");post("/api/ops/produce",{platform:document.getElementById("platform").value,concept:document.getElementById("concept").value}).then(function(r){return r.json();}).then(function(d){toast(d&&d.text?("Généré : "+d.text.slice(0,60)):"Post généré","ok");setTimeout(refresh,1500);}).catch(function(){setTimeout(refresh,2500);});};
 document.getElementById("btn-verifyall").onclick=function(){toast("Vérification en cours…");post("/api/verify",{engine:"gemini"}).then(function(){setTimeout(refresh,3000);});};
 document.getElementById("ap-cancel").onclick=function(){closeModal("ov-approve");};
 document.getElementById("pub-close").onclick=function(){closeModal("ov-publish");};
