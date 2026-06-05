@@ -731,7 +731,7 @@ button,a.btn,.btn-publish{-webkit-tap-highlight-color:rgba(232,104,10,.2)}
 </div><div class="mf"><button class="btn-ghost" onclick="closeModal('ov-new-proj')">Annuler</button><button class="btn-approve" id="btn-save-proj" onclick="saveNewProject()">Créer le Projet</button></div></div></div>
 <div class="toast" id="toast"></div>
 <script>
-var STAGES=[["review","📝 À réviser"],["approved","✓ Approuvés"],["published","🚀 Publiés"],["drafts","✎ Brouillons"],["rejected","✕ Rejetés"],["visuels","🖼 Visuels"],["video","🎬 Vidéo Veo 3"],["affaires","📋 Affaires"],["voix","📞 Voix"],["statut","🩺 Statut"],["calendar","📅 Calendrier"]];
+var STAGES=[["review","📝 À réviser"],["approved","✓ Approuvés"],["published","🚀 Publiés"],["drafts","✎ Brouillons"],["rejected","✕ Rejetés"],["visuels","🖼 Visuels"],["video","🎬 Vidéo Veo 3"],["affaires","📋 Affaires"],["chantier","📸 Chantier"],["voix","📞 Voix"],["statut","🩺 Statut"],["calendar","📅 Calendrier"]];
 var STAGEMAP={review:"À réviser",approved:"Approuvé ✓",published:"Publié ✓",drafts:"Brouillon",rejected:"Rejeté"};
 var current="review", ITEMS=[], lastCounts={}, CAL_COUNT=0, SCHED=[], PMREPORT="", PROMOS=[], PROMO_COUNT=0;
 function esc(s){return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
@@ -756,7 +756,7 @@ function actionsHtml(it){var f=it.folder;var fl=it.file;
   if(f==="published")return "<button class='btn-publish' data-act='republish' data-file='"+fl+"'>🔄 Re-publier partout</button>"+ed;
   if(f==="rejected")return ed;
   return "";}
-function renderCards(){var el=document.getElementById("cards");if(current==="calendar"){renderCalendar();return;}if(current==="visuels"){renderPromos();return;}if(current==="video"){renderVideo();return;}if(current==="affaires"){renderAffaires();return;}if(current==="voix"){renderVoix();return;}if(current==="statut"){renderStatut();return;}var list=ITEMS.filter(function(it){return it.folder===current;});
+function renderCards(){var el=document.getElementById("cards");if(current==="calendar"){renderCalendar();return;}if(current==="visuels"){renderPromos();return;}if(current==="video"){renderVideo();return;}if(current==="affaires"){renderAffaires();return;}if(current==="voix"){renderVoix();return;}if(current==="statut"){renderStatut();return;}if(current==="chantier"){renderChantier();return;}var list=ITEMS.filter(function(it){return it.folder===current;});
   if(!list.length){el.className="";el.innerHTML="<div class='empty'><div class='big'>📭</div>Aucun post ici pour le moment.</div>";return;}
   el.className="grid";
   el.innerHTML=list.map(function(it){
@@ -1272,6 +1272,43 @@ function sendVoiceTpl(){
   var o=document.getElementById("vx-out");if(o)o.innerHTML="<div class='vx-res'>⏳ Synthèse + envoi…</div>";
   post("/api/ops/voice/template",body).then(function(r){return r.json();}).then(vxResult).catch(function(){toast("Erreur réseau","err");});
 }
+/* ─── CHANTIER (photo/video -> chaine d'agents -> a reviser -> publier) ───── */
+var CHANTIERS=[];
+function loadChantier(){fetch("/api/ops/chantiers").then(function(r){return r.json();}).then(function(d){CHANTIERS=(d&&d.photos)||[];if(current==="chantier")renderChantier();}).catch(function(){CHANTIERS=[];if(current==="chantier")renderChantier();});}
+function uploadChantier(){
+  var inp=document.getElementById("ch-file"),f=inp&&inp.files[0];
+  if(!f){toast("Choisis une photo ou une vidéo","err");return;}
+  var cap=(document.getElementById("ch-cap").value||"").trim();
+  var isVid=/^video\//.test(f.type)||/\.(mp4|mov|webm)$/i.test(f.name);
+  var name="chantier"+(isVid?".mp4":".jpg");
+  var url="/api/ops/upload?kind=chantiers&name="+encodeURIComponent(name)+(cap?("&text="+encodeURIComponent(cap)):"")+(isVid?"&media=video":"");
+  toast(isVid?"Envoi vidéo…":"Envoi + édition par les agents…");
+  f.arrayBuffer().then(function(buf){return fetch(url,{method:"POST",headers:{"Content-Type":isVid?"video/mp4":"image/jpeg"},body:buf});})
+   .then(function(r){return r.json();}).then(function(d){
+     if(d&&d.ok){toast(isVid?"✅ Vidéo envoyée":"✅ Photo éditée → 📝 À réviser","ok");document.getElementById("ch-cap").value="";inp.value="";loadChantier();setTimeout(refresh,900);}
+     else{toast("Erreur : "+((d&&d.error)||"?"),"err");}
+   }).catch(function(){toast("Erreur réseau","err");});
+}
+function renderChantier(){
+  var el=document.getElementById("cards");el.className="";
+  var up="<div style='background:#fff;border:1px solid #e2e6f0;border-radius:12px;padding:16px;margin-bottom:16px'>"+
+    "<h3 style='margin:0 0 10px'>📸 Envoyer une photo ou vidéo de chantier</h3>"+
+    "<input type='file' id='ch-file' accept='image/*,video/*' style='display:block;margin-bottom:10px'>"+
+    "<textarea id='ch-cap' placeholder='Légende (optionnel) — sera publiée' style='width:100%;min-height:60px;box-sizing:border-box;margin-bottom:10px'></textarea>"+
+    "<button class='btn-publish' onclick='uploadChantier()'>Envoyer + Éditer</button>"+
+    "<p class='vx-sub' style='margin-top:8px'>La photo passe par les agents (vision → copie de marque → rendu → QA) et apparaît dans <b>📝 À réviser</b>, prête à approuver et publier partout. Les vidéos sont stockées.</p></div>";
+  var grid;
+  if(CHANTIERS.length){
+    grid="<div style='display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px'>"+CHANTIERS.map(function(c){
+      if(c.type==="video"){
+        return "<a href='"+withTok(c.url)+"' target='_blank' style='position:relative;aspect-ratio:1;border-radius:10px;background:#1b2d6b;display:flex;flex-direction:column;align-items:center;justify-content:center;text-decoration:none;color:#fff'><span style='font-size:30px'>🎥</span><b style='font-size:11px'>VIDÉO</b></a>";
+      }
+      var src=c.edited_url||c.url;
+      return "<div style='position:relative;aspect-ratio:1;border-radius:10px;overflow:hidden;background:#e0e4f0'><img src='"+src+"' alt='chantier' style='width:100%;height:100%;object-fit:cover'>"+(c.edited?"<span style='position:absolute;top:4px;right:4px;background:#e8680a;color:#fff;border-radius:10px;padding:1px 6px;font-weight:700'>✨</span>":"")+"</div>";
+    }).join("")+"</div>";
+  } else { grid="<div class='empty'><div class='big'>📸</div>Aucune photo de chantier envoyée.</div>"; }
+  el.innerHTML="<div style='display:flex;align-items:center;justify-content:space-between'><h3>📸 Chantier</h3><button class='btn-ghost' onclick='loadChantier()'>↻ Rafraîchir</button></div>"+up+"<h3 style='margin:18px 0 8px'>Galerie ("+CHANTIERS.length+")</h3>"+grid;
+}
 /* ─── STATUT (services en direct) ──────────────────────────────────────── */
 var STATUS=[], STATUS_AT="";
 function loadStatus(){
@@ -1283,7 +1320,7 @@ function renderStatut(){
   var rows=STATUS.length?STATUS.map(function(s){return "<div class='st-row'><span>"+statusDot(s.state)+"</span><span class='st-lbl'>"+esc(s.label)+"</span><span class='st-st'>"+esc(s.state)+"</span>"+(s.detail?"<span class='st-det'>"+esc(s.detail)+"</span>":"")+"</div>";}).join(""):"<div class='vx-res'>Aucune donnée (relais hors ligne ?).</div>";
   el.innerHTML="<div class='st-wrap'><div class='st-head'><h3>🩺 Statut des services</h3><button class='btn-ghost' onclick='loadStatus()'>↻ Rafraîchir</button></div>"+rows+"<p class='vx-sub'>🟢 actif · 🔵 configuré · 🔴 hors ligne · ⚪ absent"+(STATUS_AT?(" · maj "+esc(STATUS_AT)):"")+"</p></div>";
 }
-document.getElementById("tabs").addEventListener("click",function(e){var t=e.target.closest(".tab");if(t&&t.dataset.stage){current=t.dataset.stage;renderTabs();renderCards();if(current==="video"&&!VIDEO_PRESETS.length)loadVideoPresets();if(current==="affaires")loadAffaires();if(current==="voix")loadVoiceTemplates();if(current==="statut")loadStatus();}});
+document.getElementById("tabs").addEventListener("click",function(e){var t=e.target.closest(".tab");if(t&&t.dataset.stage){current=t.dataset.stage;renderTabs();renderCards();if(current==="video"&&!VIDEO_PRESETS.length)loadVideoPresets();if(current==="affaires")loadAffaires();if(current==="voix")loadVoiceTemplates();if(current==="statut")loadStatus();if(current==="chantier")loadChantier();}});
 document.getElementById("cards").addEventListener("click",function(e){var btn=e.target.closest("button[data-act]");if(btn)handleAct(btn.dataset.act,btn.dataset.file||btn.dataset.id);});
 document.querySelector(".adv .tools").addEventListener("click",function(e){var btn=e.target.closest("button[data-act='api']");if(btn){post(btn.dataset.url,{}).then(function(){toast("Lancé — voir le journal");setTimeout(refresh,1500);});}});
 document.getElementById("maint-tools").addEventListener("click",function(e){
