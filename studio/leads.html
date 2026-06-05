@@ -35,7 +35,7 @@
       if (!base) return new Response(JSON.stringify({ ok: false, offline: true, error: "Relais CDB hors ligne." }),
         { status: 503, headers: { "Content-Type": "application/json" } });
       init = init || {};
-      init.headers = Object.assign({}, init.headers, { "X-CDB-Token": API_TOKEN });
+      init.headers = Object.assign({}, init.headers, { "X-CDB-Token": API_TOKEN, "ngrok-skip-browser-warning": "1" });
       return fetchT(base + url, init, 30000).catch(function () {
         cachedBase = null;
         return new Response(JSON.stringify({ ok: false, offline: true, error: "Relais injoignable." }),
