@@ -41,31 +41,51 @@
     });
   };
 
-  /* Images : <img src="/api/..."> ne passe PAS par fetch -> on les reecrit vers le
-     tunnel avec le jeton en query (?t=), car une balise img ne peut pas envoyer d'en-tete. */
-  function fixImg(img) {
-    var s = img.getAttribute("src") || "";
-    if (s.indexOf("/api/") !== 0 || img.getAttribute("data-cdb") === "1") return;
+  /* <img src="/api/..."> ET <a href="/api/..."> ne passent PAS par fetch (une balise ne
+     peut pas envoyer d'en-tete) -> on les reecrit vers le tunnel avec le jeton en query
+     (?t=). Couvre les telechargements PDF/HTML (boutons "PDF"/"HTML") rendus dynamiquement. */
+  function withTok(s) { return s + (s.indexOf("?") >= 0 ? "&" : "?") + "t=" + API_TOKEN; }
+  function fixEl(el) {
+    var attr = (el.tagName === "A") ? "href" : "src";
+    var s = el.getAttribute(attr) || "";
+    if (s.indexOf("/api/") !== 0 || el.getAttribute("data-cdb") === "1") return;
     resolveBase().then(function (base) {
       if (!base) return;
-      img.setAttribute("data-cdb", "1");
-      img.src = base + s + (s.indexOf("?") >= 0 ? "&" : "?") + "t=" + API_TOKEN;
+      el.setAttribute("data-cdb", "1");
+      el.setAttribute(attr, withTok(base + s));
     });
   }
-  function scanImgs(root) {
-    try { (root.querySelectorAll ? root.querySelectorAll('img[src^="/api/"]') : []).forEach(fixImg); } catch (e) {}
+  function scan(root) {
+    try { (root.querySelectorAll ? root.querySelectorAll('img[src^="/api/"], a[href^="/api/"]') : []).forEach(fixEl); } catch (e) {}
   }
-  if (document.readyState !== "loading") scanImgs(document);
-  else document.addEventListener("DOMContentLoaded", function () { scanImgs(document); });
+  if (document.readyState !== "loading") scan(document);
+  else document.addEventListener("DOMContentLoaded", function () { scan(document); });
   try {
     new MutationObserver(function (muts) {
       muts.forEach(function (m) {
         (m.addedNodes || []).forEach(function (n) {
-          if (n.nodeType === 1) { if (n.tagName === "IMG") fixImg(n); scanImgs(n); }
+          if (n.nodeType === 1) { if (n.tagName === "IMG" || n.tagName === "A") fixEl(n); scan(n); }
         });
       });
     }).observe(document.documentElement, { childList: true, subtree: true });
   } catch (e) {}
+
+  /* Filet de securite : si un lien /api/ est clique avant d'avoir ete reecrit, on ouvre
+     l'onglet DANS le geste utilisateur (sinon bloque sur mobile) puis on le pointe vers
+     le tunnel une fois la base resolue. Un lien deja reecrit (href absolu) passe tout droit. */
+  document.addEventListener("click", function (e) {
+    var a = (e.target && e.target.closest) ? e.target.closest('a[href^="/api/"]') : null;
+    if (!a) return;
+    var href = a.getAttribute("href") || "";
+    if (href.indexOf("/api/") !== 0) return;   // deja absolu/reecrit -> navigation normale
+    e.preventDefault();
+    var w = window.open("", "_blank");          // ouvert dans le geste -> non bloque
+    resolveBase().then(function (base) {
+      if (!base) { if (w) w.close(); alert("Relais CDB hors ligne — reessayez quand le tunnel est actif."); return; }
+      var full = withTok(base + href);
+      if (w) { w.location = full; } else { window.location.href = full; }
+    });
+  }, true);
 })();
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
