@@ -41,22 +41,24 @@
     });
   };
 
-  /* <img src="/api/..."> ET <a href="/api/..."> ne passent PAS par fetch (une balise ne
-     peut pas envoyer d'en-tete) -> on les reecrit vers le tunnel avec le jeton en query
-     (?t=). Couvre les telechargements PDF/HTML (boutons "PDF"/"HTML") rendus dynamiquement. */
-  function withTok(s) { return s + (s.indexOf("?") >= 0 ? "&" : "?") + "t=" + API_TOKEN; }
-  function fixEl(el) {
-    var attr = (el.tagName === "A") ? "href" : "src";
-    var s = el.getAttribute(attr) || "";
+  /* <img src="/api/..."> ET <a href="/api/..."> ne peuvent pas porter d'en-tete.
+     Pour eviter la page d'avertissement ngrok, on TELECHARGE par fetch (avec
+     X-CDB-Token + ngrok-skip-browser-warning) puis on sert un blob: objectURL. */
+  var HDRS = { "X-CDB-Token": API_TOKEN, "ngrok-skip-browser-warning": "1" };
+  function loadImg(el) {
+    var s = el.getAttribute("src") || "";
     if (s.indexOf("/api/") !== 0 || el.getAttribute("data-cdb") === "1") return;
+    el.setAttribute("data-cdb", "1");
     resolveBase().then(function (base) {
       if (!base) return;
-      el.setAttribute("data-cdb", "1");
-      el.setAttribute(attr, withTok(base + s));
+      fetchT(base + s, { headers: HDRS }, 30000)
+        .then(function (r) { return r.ok ? r.blob() : null; })
+        .then(function (b) { if (b) el.setAttribute("src", URL.createObjectURL(b)); })
+        .catch(function () {});
     });
   }
   function scan(root) {
-    try { (root.querySelectorAll ? root.querySelectorAll('img[src^="/api/"], a[href^="/api/"]') : []).forEach(fixEl); } catch (e) {}
+    try { (root.querySelectorAll ? root.querySelectorAll('img[src^="/api/"]') : []).forEach(loadImg); } catch (e) {}
   }
   if (document.readyState !== "loading") scan(document);
   else document.addEventListener("DOMContentLoaded", function () { scan(document); });
@@ -64,26 +66,31 @@
     new MutationObserver(function (muts) {
       muts.forEach(function (m) {
         (m.addedNodes || []).forEach(function (n) {
-          if (n.nodeType === 1) { if (n.tagName === "IMG" || n.tagName === "A") fixEl(n); scan(n); }
+          if (n.nodeType === 1) { if (n.tagName === "IMG") loadImg(n); scan(n); }
         });
       });
     }).observe(document.documentElement, { childList: true, subtree: true });
   } catch (e) {}
 
-  /* Filet de securite : si un lien /api/ est clique avant d'avoir ete reecrit, on ouvre
-     l'onglet DANS le geste utilisateur (sinon bloque sur mobile) puis on le pointe vers
-     le tunnel une fois la base resolue. Un lien deja reecrit (href absolu) passe tout droit. */
+  /* Liens /api/... (PDF/HTML) : au clic on telecharge par fetch (avec en-tetes) -> blob
+     -> on ouvre l'objectURL. Aucun avertissement ngrok, aucun clic supplementaire. */
   document.addEventListener("click", function (e) {
     var a = (e.target && e.target.closest) ? e.target.closest('a[href^="/api/"]') : null;
     if (!a) return;
     var href = a.getAttribute("href") || "";
-    if (href.indexOf("/api/") !== 0) return;   // deja absolu/reecrit -> navigation normale
+    if (href.indexOf("/api/") !== 0) return;
     e.preventDefault();
     var w = window.open("", "_blank");          // ouvert dans le geste -> non bloque
     resolveBase().then(function (base) {
       if (!base) { if (w) w.close(); alert("Relais CDB hors ligne — reessayez quand le tunnel est actif."); return; }
-      var full = withTok(base + href);
-      if (w) { w.location = full; } else { window.location.href = full; }
+      fetchT(base + href, { headers: HDRS }, 30000)
+        .then(function (r) { return r.ok ? r.blob() : null; })
+        .then(function (b) {
+          if (!b) { if (w) w.close(); return; }
+          var u = URL.createObjectURL(b);
+          if (w) { w.location = u; } else { window.location.href = u; }
+        })
+        .catch(function () { if (w) w.close(); });
     });
   }, true);
 })();
