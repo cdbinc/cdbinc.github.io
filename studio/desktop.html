@@ -334,6 +334,11 @@ textarea#ed-text{width:100%;min-height:140px;resize:vertical;line-height:1.55}
 .cli-status.actif{background:var(--greensoft);color:#7ee2a0}
 .cli-status.inactif{background:#22384e;color:#aebfd0}
 .cli-status.termine{background:var(--bluesoft);color:#9cc0ff}
+.cli-status.matériaux, .cli-status.materiaux{background:rgba(232,104,10,.16);color:#ff9e43}
+.cli-status.outillage{background:rgba(51,80,110,.25);color:#9cb0ff}
+.cli-status.carburant{background:rgba(240,64,64,.16);color:#ff7a7a}
+.cli-status.repas{background:var(--greensoft);color:#7ee2a0}
+.cli-status.bureau{background:rgba(128,64,240,.16);color:#c1a0ff}
 .cli-actions{display:flex;gap:6px}
 .cli-actions button{padding:5px 10px;font-size:11.5px}
 /* Doc cards */
@@ -643,6 +648,7 @@ button,a.btn,.btn-publish{-webkit-tap-highlight-color:rgba(232,104,10,.2)}
     </div>
     <div class="tools">
       <button class="btn-sec" id="btn-verifyall">Vérifier tous les brouillons</button>
+      <button class="btn-publish" id="btn-capacity">Production x100 locale</button>
       <button class="btn-ghost" data-act="api" data-url="/api/produce-plan">Produire le plan</button>
       <button class="btn-ghost" data-act="api" data-url="/api/plan">Plan</button>
       <button class="btn-ghost" data-act="api" data-url="/api/lint-all">Lint tout</button>
@@ -927,7 +933,7 @@ function renderVideo(){var el=document.getElementById("cards");el.className="";
   document.getElementById("vd-render").onclick=function(){if(!LAST_SCENE)return;if(!window.confirm("Générer la vidéo via l'API Veo 3 (service payant) ? La scène doit d'abord être enregistrée."))return;toast("Génération réelle nécessite une scène enregistrée et une clé API — voir le journal.");fetch("/api/pubtoken").then(function(r){return r.json();}).then(function(tk){return post("/api/video/render",{file:LAST_SCENE._file||"",token:(tk&&tk.token)||"",provider:"gemini"});}).then(function(r){return r.json();}).then(function(d){if(d&&d.error)toast("Note : "+d.error,"err");});};
 }
 // ─── AFFAIRES (soumissions / factures / CRM) ───────────────────────────────
-var AF_TAB="crm", AF_CLIENTS=[], AF_SOUMISSIONS=[], AF_FACTURES=[], AF_SOUM_ITEMS=[], AF_FACT_ITEMS=[], AF_PROJETS=[];
+var AF_TAB="crm", AF_CLIENTS=[], AF_SOUMISSIONS=[], AF_FACTURES=[], AF_SOUM_ITEMS=[], AF_FACT_ITEMS=[], AF_PROJETS=[], AF_DEPENSES=[];
 function renderAffaires(){
   var el=document.getElementById("cards");el.className="";
   el.innerHTML="<div class='af-wrap'>"+
@@ -942,6 +948,7 @@ function renderAffaires(){
     "<div class='af-subtab"+(AF_TAB==="crm"?" active":"")+"' data-af='crm'>👥 CRM <span class='af-cnt' id='af-cnt-crm'>0</span></div>"+
     "<div class='af-subtab"+(AF_TAB==="soumissions"?" active":"")+"' data-af='soumissions'>📄 Soumissions <span class='af-cnt' id='af-cnt-soum'>0</span></div>"+
     "<div class='af-subtab"+(AF_TAB==="factures"?" active":"")+"' data-af='factures'>🧾 Factures <span class='af-cnt' id='af-cnt-fact'>0</span></div>"+
+    "<div class='af-subtab"+(AF_TAB==="depenses"?" active":"")+"' data-af='depenses'>💸 Dépenses <span class='af-cnt' id='af-cnt-depe'>0</span></div>"+
     "<div class='af-subtab"+(AF_TAB==="projets"?" active":"")+"' data-af='projets'>🏗 Projets <span class='af-cnt' id='af-cnt-proj'>0</span></div>"+
     "</div>"+
     "<div class='af-body' id='af-body'>Chargement…</div></div>";
@@ -1105,24 +1112,71 @@ function loadAffaires(){
     fetch("/api/ops/clients").then(function(r){return r.json();}).catch(function(){return {clients:[]};}),
     fetch("/api/ops/list?kind=soumissions").then(function(r){return r.json();}).catch(function(){return {items:[],pdfs:[]};}),
     fetch("/api/ops/list?kind=factures").then(function(r){return r.json();}).catch(function(){return {items:[],pdfs:[]};}),
-    fetch("/api/ops/projets").then(function(r){return r.json();}).catch(function(){return {projets:[]};})
+    fetch("/api/ops/projets").then(function(r){return r.json();}).catch(function(){return {projets:[]};}),
+    fetch("/api/ops/depenses").then(function(r){return r.json();}).catch(function(){return {depenses:[]};})
   ]).then(function(all){
     AF_CLIENTS=all[0].clients||[];
     AF_SOUM_ITEMS=all[1].items||[];
     AF_FACT_ITEMS=all[2].items||[];
     AF_PROJETS=all[3].projets||[];
+    AF_DEPENSES=all[4].depenses||[];
     AF_SOUMISSIONS=all[1];AF_FACTURES=all[2];
     // Update counts
     var cc=document.getElementById("af-cnt-crm");if(cc)cc.textContent=AF_CLIENTS.length;
     var cs=document.getElementById("af-cnt-soum");if(cs)cs.textContent=AF_SOUM_ITEMS.length;
     var cf=document.getElementById("af-cnt-fact");if(cf)cf.textContent=AF_FACT_ITEMS.length;
     var cp=document.getElementById("af-cnt-proj");if(cp)cp.textContent=AF_PROJETS.length;
+    var cd=document.getElementById("af-cnt-depe");if(cd)cd.textContent=AF_DEPENSES.length;
     var bdy=document.getElementById("af-body");if(!bdy)return;
     if(AF_TAB==="crm")renderCRM(bdy);
     else if(AF_TAB==="soumissions")renderDocList(bdy,AF_SOUM_ITEMS,AF_SOUMISSIONS.pdfs||[],"soumissions","soum");
     else if(AF_TAB==="factures")renderDocList(bdy,AF_FACT_ITEMS,AF_FACTURES.pdfs||[],"factures","fact");
     else if(AF_TAB==="projets")renderProjets(bdy);
+    else if(AF_TAB==="depenses")renderDepenses(bdy);
   });
+}
+function renderDepenses(el){
+  var html="<div class='af-stats'>";
+  var nTotal=AF_DEPENSES.length;
+  var sumTotal=AF_DEPENSES.reduce(function(acc, d){return acc+(parseFloat(d.total)||0);}, 0);
+  var sumTps=AF_DEPENSES.reduce(function(acc, d){return acc+(parseFloat(d.tps)||0);}, 0);
+  var sumTvq=AF_DEPENSES.reduce(function(acc, d){return acc+(parseFloat(d.tvq)||0);}, 0);
+  
+  html+="<div class='af-stat'><div class='af-stat-val'>"+nTotal+"</div><div class='af-stat-lbl'>Reçus numérisés</div></div>";
+  html+="<div class='af-stat blue'><div class='af-stat-val'>"+sumTotal.toFixed(2)+" $</div><div class='af-stat-lbl'>Dépenses totales</div></div>";
+  html+="<div class='af-stat orange'><div class='af-stat-val'>"+sumTps.toFixed(2)+" $</div><div class='af-stat-lbl'>Récupération TPS (5%)</div></div>";
+  html+="<div class='af-stat green'><div class='af-stat-val'>"+sumTvq.toFixed(2)+" $</div><div class='af-stat-lbl'>Récupération TVQ (9.975%)</div></div>";
+  html+="</div>";
+  
+  if(!AF_DEPENSES.length){
+    html+="<div class='empty'><div class='big'>💸</div>Aucune dépense numérisée. Prenez en photo un reçu depuis l'app mobile !</div>";
+  }else{
+    html+="<div style='overflow-x:auto;max-height:440px;overflow-y:auto'><table class='crm-tbl'><thead><tr><th>Date</th><th>Fournisseur</th><th>Description</th><th>Catégorie</th><th>Total</th><th>TPS</th><th>TVQ</th><th>Actions</th></tr></thead><tbody>";
+    AF_DEPENSES.forEach(function(d){
+      var badgeClass = "cli-status " + (d.categorie || "autre");
+      html+="<tr>";
+      html+="<td><strong style='font-size:13px'>"+esc(d.date)+"</strong></td>";
+      html+="<td><strong style='color:var(--orange2)'>"+esc(d.fournisseur)+"</strong></td>";
+      html+="<td style='font-size:13px;font-style:italic'>"+esc(d.description)+"</td>";
+      html+="<td><span class='"+badgeClass+"' style='font-size:10px;text-transform:uppercase;padding:2px 8px;border-radius:4px'>"+esc(d.categorie || "autre")+"</span></td>";
+      html+="<td><strong>"+(parseFloat(d.total)||0).toFixed(2)+" $</strong></td>";
+      html+="<td style='color:var(--faint)'>"+(parseFloat(d.tps)||0).toFixed(2)+" $</td>";
+      html+="<td style='color:var(--faint)'>"+(parseFloat(d.tvq)||0).toFixed(2)+" $</td>";
+      html+="<td>";
+      if (d.drive_link) {
+        html+="<a href='"+esc(d.drive_link)+"' target='_blank'><button class='btn-approve' style='font-size:11px;padding:4px 8px'>📥 Reçu Drive</button></a>";
+      } else if (d.image) {
+        var fileName = d.image.split(/[\\\/]/).pop();
+        html+="<a href='/api/ops/doc?kind=depenses&file="+encodeURIComponent(fileName)+"' target='_blank'><button class='btn-sec' style='font-size:11px;padding:4px 8px'>🔍 Voir Local</button></a>";
+      } else {
+        html+="<span style='font-size:11px;color:var(--faint)'>—</span>";
+      }
+      html+="</td>";
+      html+="</tr>";
+    });
+    html+="</tbody></table></div>";
+  }
+  el.innerHTML=html;
 }
 function renderCRM(el){
   var html="<div class='af-stats'>";
@@ -1337,6 +1391,7 @@ document.getElementById("maint-tools").addEventListener("click",function(e){
 });
 document.getElementById("btn-produce").onclick=function(){toast("Production en cours…");post("/api/ops/produce",{platform:document.getElementById("platform").value,concept:document.getElementById("concept").value}).then(function(r){return r.json();}).then(function(d){toast(d&&d.text?("Généré : "+d.text.slice(0,60)):"Post généré","ok");setTimeout(refresh,1500);}).catch(function(){setTimeout(refresh,2500);});};
 document.getElementById("btn-verifyall").onclick=function(){toast("Vérification en cours…");post("/api/verify",{engine:"gemini"}).then(function(){setTimeout(refresh,3000);});};
+document.getElementById("btn-capacity").onclick=function(){if(!window.confirm("Lancer la production locale x100 (agents visuels + 300 posts + verification)? Aucune publication live ne sera faite."))return;toast("Production x100 lancee…");post("/api/capacity-run",{}).then(function(){setTimeout(refresh,5000);});};
 document.getElementById("ap-cancel").onclick=function(){closeModal("ov-approve");};
 document.getElementById("pub-close").onclick=function(){closeModal("ov-publish");};
 document.getElementById("ed-cancel").onclick=function(){closeModal("ov-edit");};
