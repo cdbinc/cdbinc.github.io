@@ -27,3 +27,10 @@ LIVRABLES_FINAUX/
 # Fichiers images temporaires hors charte
 what.png
 whatsapp-icon-*.avif
+
+# Journaux de débogage Firebase
+firebase-debug.log
+firebase-debug.*.log
+*-debug.log
+ui-debug.log
+.firebase/
