@@ -1,0 +1,15 @@
+{
+  "name": "CDB Studio",
+  "short_name": "CDB Studio",
+  "description": "Envoyer des photos de chantier et approuver les publications — Clinique du Batiment CDB.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#1b2d6b",
+  "theme_color": "#1b2d6b",
+  "icons": [
+    { "src": "brand-logo.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "brand-logo.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}
