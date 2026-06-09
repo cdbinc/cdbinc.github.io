@@ -188,6 +188,7 @@
   <nav>
     <button id="t-send" class="on" onclick="show('send')"><span class="ic">📸</span>Envoyer</button>
     <button id="t-appr" onclick="show('appr')"><span class="ic">✅</span>Approuver<span class="cnt" id="cnt"></span></button>
+    <button id="t-biz" onclick="show('biz')"><span class="ic">💼</span>Affaires</button>
     <button id="t-stat" onclick="show('stat')"><span class="ic">🩺</span>État</button>
   </nav>
   <main id="view"></main>
@@ -212,10 +213,48 @@ function ping(){ fetch("/api/ops/status").then(function(r){ return r.json(); })
     if(CUR==="stat") renderStat(); }).catch(function(){ $("dot").style.background="#ff5a5a"; SRV=[]; if(CUR==="stat")renderStat(); }); }
 
 function show(tab){ CUR=tab;
-  ["send","appr","stat"].forEach(function(t){ $("t-"+t).className=(t===tab?"on":""); });
+  ["send","appr","biz","stat"].forEach(function(t){ $("t-"+t).className=(t===tab?"on":""); });
   if(tab==="send"){ renderSend(); loadGal(); }
   else if(tab==="appr"){ renderAppr(); loadAppr(); }
+  else if(tab==="biz"){ renderBiz(); loadBiz(); }
   else { renderStat(); ping(); } }
+
+/* ── AFFAIRES : PAY (paiement) + SIGN (signature) ───────────────────────── */
+var PAYL=[], SIGL=[], PAY_STR=false;
+function money(x){ try{x=parseFloat(x)||0;}catch(e){x=0;} return x.toLocaleString("fr-CA",{minimumFractionDigits:2,maximumFractionDigits:2})+" $"; }
+function loadBiz(){
+  fetch("/api/ops/pay/liste").then(function(r){return r.json();}).then(function(d){ if(d&&d.ok){PAYL=d.paiements||[];PAY_STR=!!d.stripe;} if(CUR==="biz")renderBiz(); }).catch(function(){});
+  fetch("/api/ops/sign/liste").then(function(r){return r.json();}).then(function(d){ if(d&&d.ok){SIGL=d.signatures||[];} if(CUR==="biz")renderBiz(); }).catch(function(){});
+}
+function renderBiz(){
+  var pr=PAYL.slice(0,5).map(function(p){ return "<div class='gi'><b>"+esc(p.id)+"</b> · "+money(p.montant)+" · "+(p.statut==="paye"?"<span style='color:#36d27a'>payé</span>":"en attente")+(p.stripe&&p.stripe.url?(" · <a href='"+esc(p.stripe.url)+"' target='_blank'>Stripe</a>"):"")+"</div>"; }).join("")||"<p class='muted'>Aucun paiement.</p>";
+  var sr=SIGL.slice(0,5).map(function(s){ return "<div class='gi'><b>"+esc(s.id)+"</b> · "+esc(s.signataire||"")+" · "+(s.statut==="signe"?"<span style='color:#36d27a'>signé</span>":"en attente")+"</div>"; }).join("")||"<p class='muted'>Aucune signature.</p>";
+  $("view").innerHTML=
+    "<div class='card'><h2>💳 Demander un paiement</h2>"+
+    "<label>Numéro de document</label><input id='bp-doc' placeholder='CDB-S-2026-001'>"+
+    "<label class='mt'>Type / mode</label><div class='pick'>"+
+      "<select id='bp-type' style='flex:1;padding:10px;border-radius:10px;border:1px solid var(--line)'><option value='soumission'>Soumission</option><option value='facture'>Facture</option></select>"+
+      "<select id='bp-mode' style='flex:1;padding:10px;border-radius:10px;border:1px solid var(--line)'><option value='depot'>Acompte</option><option value='solde'>Solde</option></select></div>"+
+    "<button class='btn mt' onclick='bizPay()'>Générer le lien</button>"+
+    "<p class='muted'>"+(PAY_STR?"Stripe actif + Interac":"Interac (Stripe non configuré)")+"</p>"+
+    "<div id='bp-out'></div><div class='mt'>"+pr+"</div></div>"+
+    "<div class='card'><h2>✍️ Demander une signature</h2>"+
+    "<label>Numéro de document</label><input id='bs-doc' placeholder='CDB-S-2026-001'>"+
+    "<label class='mt'>Nom du client</label><input id='bs-nom' placeholder='Mme Tremblay'>"+
+    "<label class='mt'>Contact SMS (optionnel)</label><input id='bs-contact' placeholder='514-555-1234'>"+
+    "<button class='btn mt' onclick='bizSign()'>Envoyer la demande</button>"+
+    "<div id='bs-out'></div><div class='mt'>"+sr+"</div></div>";
+}
+function bizPay(){ var doc=$("bp-doc").value.trim(); if(!doc){toast("Numéro requis","err");return;}
+  $("bp-out").innerHTML="<p class='muted'>⏳ Génération…</p>";
+  post("/api/ops/pay/creer",{doc:doc,type:$("bp-type").value,mode:$("bp-mode").value}).then(function(r){return r.json();}).then(function(d){
+    if(d&&d.ok){ var u=d.stripe_url; $("bp-out").innerHTML="<p style='color:#36d27a'>✅ "+esc(d.paiement.id)+" — "+money(d.paiement.montant)+"</p>"+(u?("<a class='btn ghost' href='"+esc(u)+"' target='_blank'>Ouvrir Stripe</a>"):"<p class='muted'>Virement Interac : "+esc((d.paiement.interac||{}).courriel||"")+"</p>"); toast("Paiement créé ✓","ok"); loadBiz(); }
+    else { $("bp-out").innerHTML="<p style='color:#ff5a5a'>"+esc((d&&d.error)||"erreur")+"</p>"; } }).catch(function(){toast("Réseau","err");}); }
+function bizSign(){ var doc=$("bs-doc").value.trim(),nom=$("bs-nom").value.trim(); if(!doc||!nom){toast("Document et nom requis","err");return;}
+  $("bs-out").innerHTML="<p class='muted'>⏳ Création…</p>";
+  post("/api/ops/sign/demander",{doc:doc,nom:nom,contact:$("bs-contact").value.trim()}).then(function(r){return r.json();}).then(function(d){
+    if(d&&d.ok){ $("bs-out").innerHTML="<p style='color:#36d27a'>✅ Lien créé</p><a class='btn ghost' href='"+esc(d.lien)+"' target='_blank'>Ouvrir</a> <button class='btn ghost' onclick=\"navigator.clipboard.writeText('"+d.lien+"');toast('Copié','ok')\">Copier</button>"; toast("Signature demandée ✓","ok"); loadBiz(); }
+    else { $("bs-out").innerHTML="<p style='color:#ff5a5a'>"+esc((d&&d.error)||"erreur")+"</p>"; } }).catch(function(){toast("Réseau","err");}); }
 
 /* ── ENVOYER ─────────────────────────────────────────────────────────── */
 function renderSend(){

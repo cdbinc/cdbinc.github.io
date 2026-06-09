@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="fr"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="robots" content="noindex">
+<title>Signature — Clinique du Bâtiment CDB</title>
+<style>
+  :root{--navy:#1b2d6b;--navy2:#111e4a;--orange:#e8680a;--bg:#eef1f8;--card:#fff;--ink:#141823;--muted:#69708a;--green:#1e8e4e;--red:#d23b3b;--line:#e3e7f1}
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  body{margin:0;font-family:-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+  header{background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;padding:18px 18px 22px;text-align:center}
+  header .b{font-size:18px;font-weight:800}
+  header .s{font-size:12px;opacity:.85;margin-top:2px}
+  .wrap{max-width:620px;margin:0 auto;padding:16px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 2px 10px rgba(20,30,60,.05)}
+  h2{font-size:16px;color:var(--navy);margin:0 0 10px}
+  .row{display:flex;justify-content:space-between;font-size:14px;padding:6px 0;border-bottom:1px solid var(--line)}
+  .row:last-child{border:0}
+  .row .d{color:var(--muted);max-width:65%}
+  .tot{font-size:20px;font-weight:800;color:var(--navy);text-align:right;margin-top:8px}
+  label{display:block;font-size:13px;color:var(--muted);margin:12px 0 4px;font-weight:600}
+  input[type=text]{width:100%;padding:12px;border:1px solid var(--line);border-radius:10px;font-size:15px}
+  .pad{border:2px dashed #c3cae0;border-radius:12px;background:#fafbff;touch-action:none}
+  canvas{display:block;width:100%;height:200px;border-radius:12px}
+  .padbar{display:flex;justify-content:space-between;align-items:center;margin-top:6px}
+  .clear{background:none;border:0;color:var(--orange);font-weight:700;font-size:13px;cursor:pointer}
+  .chk{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--ink);margin:14px 0}
+  .chk input{margin-top:2px;width:18px;height:18px}
+  .btn{width:100%;padding:15px;border:0;border-radius:12px;font-size:16px;font-weight:800;color:#fff;background:var(--green);cursor:pointer;margin-top:6px}
+  .btn:disabled{background:#9bb4a6;cursor:not-allowed}
+  .muted{color:var(--muted);font-size:12px;text-align:center;margin-top:10px;line-height:1.5}
+  .ok{text-align:center;padding:30px 18px}
+  .ok .big{font-size:54px}
+  .ok h2{font-size:20px;margin:10px 0}
+  .dl{display:inline-block;margin-top:14px;background:var(--navy);color:#fff;text-decoration:none;padding:12px 20px;border-radius:10px;font-weight:700}
+  .err{background:#fdecec;color:var(--red);border-radius:10px;padding:12px;font-size:14px;text-align:center}
+  .spin{text-align:center;padding:40px;color:var(--muted)}
+</style></head>
+<body>
+<header><div class="b">Clinique du Bâtiment CDB Inc.</div><div class="s">Signature électronique — Le souci du détail</div></header>
+<div class="wrap" id="app"><div class="spin">Chargement du document…</div></div>
+
+<script>
+var API_TOKEN="kPIdcmKI5jrEWw0dVo54428hNoLnPNqm";
+var app=document.getElementById("app");
+var BASE=null, PAYLOAD=null, DOC=null;
+
+function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c];});}
+function money(x){try{x=parseFloat(x)||0;}catch(e){x=0;}return x.toLocaleString("fr-CA",{minimumFractionDigits:2,maximumFractionDigits:2}).replace(/ /g," ")+" $";}
+
+function decodePayload(){
+  var h=(location.hash||"").replace(/^#/,"")||(new URLSearchParams(location.search)).get("d")||"";
+  if(!h)return null;
+  try{var s=h.replace(/-/g,"+").replace(/_/g,"/");while(s.length%4)s+="=";return JSON.parse(decodeURIComponent(escape(atob(s))));}
+  catch(e){try{return JSON.parse(atob(h));}catch(e2){return null;}}
+}
+
+function resolveBase(){
+  return fetch("/dispatch/relay.json?_="+Date.now(),{cache:"no-store"})
+    .then(function(r){return r.ok?r.json():null;})
+    .then(function(j){return (j&&j.url)?String(j.url).replace(/\/+$/,""):null;})
+    .catch(function(){return null;});
+}
+
+function api(path,opts){
+  opts=opts||{};opts.headers=Object.assign({},opts.headers,{"X-CDB-Token":API_TOKEN,"ngrok-skip-browser-warning":"1"});
+  return fetch(BASE+path,opts);
+}
+
+function fail(msg){app.innerHTML='<div class="card"><div class="err">'+esc(msg)+'</div><p class="muted">Si le problème persiste, contactez-nous au info@cliniquedubatiment.ca</p></div>';}
+
+function start(){
+  PAYLOAD=decodePayload();
+  if(!PAYLOAD||!PAYLOAD.tok){return fail("Lien de signature invalide ou incomplet.");}
+  resolveBase().then(function(b){
+    if(!b)return fail("Service temporairement hors ligne. Réessayez dans quelques minutes.");
+    BASE=b;
+    api("/api/ops/sign/doc?tok="+encodeURIComponent(PAYLOAD.tok)).then(function(r){return r.json();}).then(function(d){
+      if(!d||!d.ok){
+        if(d&&d.error==="deja_signe")return fail("Ce document a déjà été signé le "+esc(d.signe_le||"")+". Merci!");
+        return fail((d&&d.error)||"Document introuvable.");
+      }
+      DOC=d;render();
+    }).catch(function(){fail("Impossible de charger le document.");});
+  });
+}
+
+function render(){
+  var lignes=(DOC.lignes||[]).map(function(l){
+    var m=((parseFloat(l.quantite)||0)*(parseFloat(l.prix)||0));
+    return '<div class="row"><span class="d">'+esc(l.description)+'</span><span>'+esc(l.quantite)+" "+esc(l.unite||"")+'</span></div>';
+  }).join("");
+  app.innerHTML=
+    '<div class="card"><h2>'+esc(DOC.doc_type==="facture"?"Facture":"Soumission")+" "+esc(DOC.doc_id)+'</h2>'
+    +'<div style="font-size:14px;color:var(--muted);margin-bottom:6px">'+esc(DOC.titre||"")+'</div>'
+    +lignes
+    +'<div class="tot">Total : '+money(DOC.total)+'</div></div>'
+    +'<div class="card"><h2>Votre signature</h2>'
+    +'<label>Nom complet</label><input type="text" id="nom" value="'+esc(DOC.signataire||"")+'" placeholder="Votre nom">'
+    +'<label>Signez ci-dessous avec votre doigt</label>'
+    +'<div class="pad"><canvas id="pad"></canvas></div>'
+    +'<div class="padbar"><span class="muted" style="margin:0">Tracez votre signature</span><button class="clear" onclick="clearPad()">Effacer</button></div>'
+    +'<label class="chk"><input type="checkbox" id="consent"><span>Je consens à signer ce document électroniquement et je confirme avoir pris connaissance de son contenu. Cette signature a la même valeur juridique qu\'une signature manuscrite (LCCJTI, Québec).</span></label>'
+    +'<button class="btn" id="go" onclick="submitSig()">✍️ Signer le document</button>'
+    +'<p class="muted">Horodatage, adresse IP et empreinte du document sont enregistrés pour votre protection.</p></div>';
+  initPad();
+}
+
+var ctx,drawing=false,hasInk=false;
+function initPad(){
+  var c=document.getElementById("pad");
+  var ratio=window.devicePixelRatio||1;
+  var rect=c.getBoundingClientRect();
+  c.width=rect.width*ratio;c.height=200*ratio;
+  ctx=c.getContext("2d");ctx.scale(ratio,ratio);
+  ctx.lineWidth=2.4;ctx.lineCap="round";ctx.lineJoin="round";ctx.strokeStyle="#11203f";
+  function pos(e){var r=c.getBoundingClientRect();var t=e.touches?e.touches[0]:e;return{x:t.clientX-r.left,y:t.clientY-r.top};}
+  function down(e){drawing=true;var p=pos(e);ctx.beginPath();ctx.moveTo(p.x,p.y);e.preventDefault();}
+  function move(e){if(!drawing)return;var p=pos(e);ctx.lineTo(p.x,p.y);ctx.stroke();hasInk=true;e.preventDefault();}
+  function up(){drawing=false;}
+  c.addEventListener("mousedown",down);c.addEventListener("mousemove",move);window.addEventListener("mouseup",up);
+  c.addEventListener("touchstart",down,{passive:false});c.addEventListener("touchmove",move,{passive:false});c.addEventListener("touchend",up);
+}
+function clearPad(){var c=document.getElementById("pad");ctx.clearRect(0,0,c.width,c.height);hasInk=false;}
+
+function submitSig(){
+  var nom=(document.getElementById("nom").value||"").trim();
+  var consent=document.getElementById("consent").checked;
+  if(!nom){alert("Veuillez saisir votre nom.");return;}
+  if(!hasInk){alert("Veuillez tracer votre signature.");return;}
+  if(!consent){alert("Veuillez cocher la case de consentement.");return;}
+  var data=document.getElementById("pad").toDataURL("image/png");
+  var btn=document.getElementById("go");btn.disabled=true;btn.textContent="Envoi…";
+  api("/api/ops/sign/signer",{method:"POST",headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({tok:PAYLOAD.tok,signature:data,nom:nom,consent:true})})
+    .then(function(r){return r.json();}).then(function(d){
+      if(d&&d.ok){success(d);}else{btn.disabled=false;btn.textContent="✍️ Signer le document";alert("Erreur : "+((d&&d.error)||"réessayez"));}
+    }).catch(function(){btn.disabled=false;btn.textContent="✍️ Signer le document";alert("Erreur réseau, réessayez.");});
+}
+
+function success(d){
+  var pdf=BASE+"/api/ops/sign/pdf?id="+encodeURIComponent(d.id)+"&t="+encodeURIComponent(API_TOKEN);
+  app.innerHTML='<div class="card ok"><div class="big">✅</div><h2>Document signé!</h2>'
+    +'<p class="muted">Merci. Votre signature a été enregistrée le '+esc(d.signe_le||"")+'.<br>Code de preuve : <b>'+esc(d.preuve||"")+'</b></p>'
+    +(d.pdf?('<a class="dl" href="'+pdf+'" target="_blank">📄 Télécharger le certificat signé</a>'):'')
+    +'<p class="muted">Une copie a été transmise à Clinique du Bâtiment CDB Inc.</p></div>';
+}
+start();
+</script></body></html>

@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="fr"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Paiement reçu — Clinique du Bâtiment CDB</title>
+<style>
+  body{margin:0;font-family:-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:#eef1f8;color:#141823;display:flex;min-height:100vh;align-items:center;justify-content:center}
+  .card{background:#fff;border-radius:18px;padding:38px 30px;max-width:440px;text-align:center;box-shadow:0 6px 30px rgba(20,30,60,.12);margin:16px}
+  .big{font-size:64px}
+  h1{color:#1b2d6b;font-size:22px;margin:12px 0 6px}
+  p{color:#69708a;font-size:15px;line-height:1.6}
+  .ref{font-weight:700;color:#1b2d6b}
+  a{display:inline-block;margin-top:18px;background:#1b2d6b;color:#fff;text-decoration:none;padding:12px 22px;border-radius:10px;font-weight:700}
+</style></head>
+<body><div class="card">
+  <div class="big">✅</div>
+  <h1>Merci, votre paiement est reçu!</h1>
+  <p>Clinique du Bâtiment CDB Inc. vous remercie. Un reçu vous sera transmis et vos travaux peuvent être planifiés.</p>
+  <p id="ref"></p>
+  <a href="https://cliniquedubatiment.ca">Retour au site</a>
+</div>
+<script>
+  var pid=(new URLSearchParams(location.search)).get("pid");
+  if(pid)document.getElementById("ref").innerHTML='Référence : <span class="ref">'+pid.replace(/[^A-Za-z0-9-]/g,"")+'</span>';
+</script>
+</body></html>
