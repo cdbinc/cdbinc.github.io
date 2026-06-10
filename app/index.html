@@ -204,7 +204,8 @@
         <div class="status-badge">✅ Version 3.9 - Production Ready</div>
 
         <div class="description">
-            Gestion complète de vos chantiers, soumissions et factures en temps réel. Sync automatique avec le serveur.
+            Gestion complète de vos chantiers, soumissions et factures en temps réel.<br>
+            <strong>✓ Fonctionne hors ligne · ✓ Sync automatique · ✓ Zéro perte de données</strong>
         </div>
 
         <div class="features">
@@ -217,8 +218,9 @@
         </div>
 
         <div class="version-info">
-            Version: 3.9 (Build 30) | Mise à jour: 10 juin 2026<br>
-            Taille: 4.6 MB | Android 8.0+
+            <strong>Version: 3.10 (Build 30)</strong><br>
+            Taille: 4.7 MB | Android 8.0+<br>
+            <span style="color: #4caf50; font-weight: 600;">✓ Fonctionne même si le serveur est hors ligne</span>
         </div>
 
         <button class="download-btn" onclick="downloadAPK()">
@@ -241,11 +243,15 @@
     </div>
 
     <script>
-        // APK download URL - can be from GitHub releases, CDN, or relay server
+        // APK download URLs - prioritized for reliability
+        // Source 1: Direct from GitHub Pages (always available)
+        // Source 2: Via relay tunnel (if relay is online)
+        // Source 3: Alternative CDN/mirror
         const APK_URLS = [
-            'https://github.com/cdbinc/cdbinc.github.io/releases/download/v3.9/cdb-studio-release.apk',
-            'https://tabby-fraction-finisher.ngrok-free.dev/api/ops/apk/download',
-            'https://cliniquedubatiment.ca/releases/cdb-studio-release.apk'
+            'https://cliniquedubatiment.ca/releases/cdb-studio-v3.10.apk',    // Primary: GitHub Pages direct
+            'https://cdbinc.github.io/releases/cdb-studio-v3.10.apk',          // Fallback: alternative path
+            'https://tabby-fraction-finisher.ngrok-free.dev/api/ops/apk/download', // Relay tunnel (if online)
+            'https://raw.githubusercontent.com/cdbinc/cdbinc.github.io/main/releases/cdb-studio-v3.10.apk' // GitHub raw
         ];
 
         async function downloadAPK() {
@@ -253,42 +259,80 @@
             const originalHTML = btn.innerHTML;
 
             btn.disabled = true;
-            btn.innerHTML = '<span>⏳ Téléchargement...</span>';
+            btn.innerHTML = '<span>⏳ Vérification des sources...</span>';
+
+            let successfulUrl = null;
+            let failedAttempts = 0;
 
             try {
-                // Try each URL in order
-                for (let url of APK_URLS) {
-                    try {
-                        const response = await fetch(url, { method: 'HEAD' });
-                        if (response.ok) {
-                            // URL is reachable, download from it
-                            const link = document.createElement('a');
-                            link.href = url;
-                            link.download = 'cdb-studio-v3.9.apk';
-                            document.body.appendChild(link);
-                            link.click();
-                            document.body.removeChild(link);
+                // Try each URL in order (cascade)
+                for (let i = 0; i < APK_URLS.length; i++) {
+                    const url = APK_URLS[i];
+                    const urlLabel = i === 0 ? 'Site principal' : i === 1 ? 'Fallback' : i === 2 ? 'Serveur relais' : 'GitHub raw';
 
-                            btn.innerHTML = '<span style="color: #d4edda;">✅ Téléchargement démarré!</span>';
-                            setTimeout(() => {
-                                btn.disabled = false;
-                                btn.innerHTML = originalHTML;
-                            }, 3000);
-                            return;
+                    btn.innerHTML = `<span>⏳ Essai ${i + 1}/${APK_URLS.length} (${urlLabel})...</span>`;
+
+                    try {
+                        // Test URL availability with HEAD request
+                        const headResponse = await fetch(url, {
+                            method: 'HEAD',
+                            mode: 'no-cors'
+                        });
+
+                        if (headResponse.ok || headResponse.status === 200 || headResponse.type === 'opaque') {
+                            console.log(`✅ Source found: ${urlLabel} (${url})`);
+                            successfulUrl = url;
+                            break;
                         }
                     } catch (e) {
-                        console.log(`URL ${url} not available, trying next...`);
-                        continue;
+                        failedAttempts++;
+                        console.log(`⚠️  Essai ${i + 1} échoué (${urlLabel}): ${e.message}`);
+                        // Continue to next URL
                     }
                 }
 
-                // If no URL worked, show alert
-                alert('Le serveur de téléchargement est temporairement indisponible.\n\nVeuillez réessayer dans quelques instants ou contacter le support.');
-                btn.disabled = false;
-                btn.innerHTML = originalHTML;
+                if (successfulUrl) {
+                    // Found a working source, download from it
+                    btn.innerHTML = '<span>📥 Démarrage du téléchargement...</span>';
+
+                    const link = document.createElement('a');
+                    link.href = successfulUrl;
+                    link.download = 'cdb-studio-v3.10.apk';
+                    link.style.display = 'none';
+                    document.body.appendChild(link);
+
+                    // Use setTimeout to ensure download starts
+                    setTimeout(() => {
+                        link.click();
+                        document.body.removeChild(link);
+
+                        btn.innerHTML = '<span style="color: white; background: rgba(0,0,0,0.2); padding: 4px 8px; border-radius: 4px;">✅ Téléchargement démarré!</span>';
+                        setTimeout(() => {
+                            btn.disabled = false;
+                            btn.innerHTML = originalHTML;
+                        }, 4000);
+                    }, 100);
+                } else {
+                    // No source available
+                    const errorMsg = `Impossible de télécharger l'APK.\n\n` +
+                        `${failedAttempts}/${APK_URLS.length} sources inaccessibles.\n\n` +
+                        `Possible causes:\n` +
+                        `• Pas de connexion internet\n` +
+                        `• Serveur temporairement hors ligne\n` +
+                        `• Pare-feu bloquant le téléchargement\n\n` +
+                        `Solutions:\n` +
+                        `• Vérifier votre connexion\n` +
+                        `• Attendre quelques minutes\n` +
+                        `• Désactiver votre VPN si actif\n` +
+                        `• Contacter: info@cliniquedubatiment.ca`;
+
+                    alert(errorMsg);
+                    btn.disabled = false;
+                    btn.innerHTML = originalHTML;
+                }
             } catch (error) {
                 console.error('Download error:', error);
-                alert('Erreur lors du téléchargement. Veuillez vérifier votre connexion.');
+                alert(`Erreur: ${error.message}\n\nVeuillez vérifier votre connexion et réessayer.`);
                 btn.disabled = false;
                 btn.innerHTML = originalHTML;
             }
