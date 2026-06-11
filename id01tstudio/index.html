@@ -1,171 +1,519 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>iD01t Studio — La plateforme complète des entrepreneurs en construction du Québec</title>
-<meta name="description" content="iD01t Studio : soumissions et factures conformes RBQ/TPS/TVQ, app mobile de chantier, marketing automatisé par IA locale, comptabilité de reçus par photo. Licence à vie 4 995 $ CAD, installation incluse.">
-<style>
-:root{--navy:#1b2d6b;--navy2:#2a3f8f;--orange:#e8680a;--cream:#fdf8e3;--text:#3c4043;--muted:#70757a}
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Segoe UI',Tahoma,Arial,sans-serif;color:var(--text);line-height:1.6;background:#fff}
-.wrap{max-width:1080px;margin:0 auto;padding:0 22px}
-header{background:linear-gradient(140deg,var(--navy) 0%,var(--navy2) 70%);color:#fff;padding:64px 0 80px;text-align:center}
-.kicker{display:inline-block;background:var(--orange);color:#fff;font-weight:700;font-size:13px;letter-spacing:2px;text-transform:uppercase;padding:6px 16px;border-radius:18px;margin-bottom:22px}
-h1{font-size:44px;line-height:1.15;font-weight:800;max-width:850px;margin:0 auto 18px}
-.sub{font-size:19px;color:#dfe4f5;max-width:760px;margin:0 auto 34px}
-.cta{display:inline-block;background:var(--orange);color:#fff;font-weight:700;font-size:19px;padding:16px 44px;border-radius:12px;text-decoration:none;box-shadow:0 8px 24px rgba(232,104,10,.4)}
-.cta:hover{transform:translateY(-2px)}
-.price-tag{margin-top:18px;color:#f3b056;font-weight:700;font-size:17px}
-section{padding:64px 0}
-h2{color:var(--navy);font-size:32px;font-weight:800;text-align:center;margin-bottom:10px}
-.lead{text-align:center;color:var(--muted);max-width:680px;margin:0 auto 44px;font-size:17px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:22px}
-.card{background:#fafbfe;border:1px solid #e8ecf6;border-left:4px solid var(--orange);border-radius:12px;padding:24px}
-.card h3{color:var(--navy);font-size:18px;margin-bottom:8px}
-.card p{font-size:14.5px;color:var(--muted)}
-.shots{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:22px;align-items:start}
-.shot{background:#fff;border:1px solid #e8ecf6;border-radius:14px;overflow:hidden;box-shadow:0 10px 30px rgba(27,45,107,.10)}
-.shot img{width:100%;display:block}
-.shot figcaption{padding:12px 16px;font-size:13.5px;color:var(--muted);border-top:1px solid #eef1f8}
-.band{background:var(--cream)}
-.pricing{max-width:560px;margin:0 auto;background:var(--navy);color:#fff;border-radius:20px;padding:44px 40px;text-align:center;box-shadow:0 18px 50px rgba(27,45,107,.35)}
-.pricing .amount{font-size:58px;font-weight:800;color:#fff}
-.pricing .amount small{font-size:22px;color:#f3b056}
-.pricing ul{list-style:none;text-align:left;margin:26px 0;font-size:15.5px}
-.pricing li{padding:7px 0 7px 32px;position:relative}
-.pricing li::before{content:"✓";position:absolute;left:0;color:var(--orange);font-weight:800;font-size:18px}
-.pricing .note{font-size:13px;color:#cdd3e8;margin-top:14px}
-table.compare{width:100%;border-collapse:collapse;font-size:14.5px}
-table.compare th{background:var(--navy);color:#fff;padding:12px;text-align:left}
-table.compare td{padding:11px 12px;border-bottom:1px solid #eef1f8}
-table.compare tr td:first-child{font-weight:600;color:var(--navy)}
-.ok{color:#1d8a3c;font-weight:700}.no{color:#b3261e}
-.faq{max-width:780px;margin:0 auto}
-.faq details{background:#fafbfe;border:1px solid #e8ecf6;border-radius:10px;padding:16px 20px;margin-bottom:12px}
-.faq summary{font-weight:700;color:var(--navy);cursor:pointer;font-size:16px}
-.faq p{margin-top:10px;font-size:14.5px;color:var(--muted)}
-footer{background:var(--navy);color:#cdd3e8;text-align:center;padding:34px 0;font-size:13.5px}
-footer a{color:#f3b056;text-decoration:none}
-.final{background:linear-gradient(140deg,var(--navy),var(--navy2));color:#fff;text-align:center}
-.final h2{color:#fff}
-@media(max-width:640px){h1{font-size:31px}.pricing .amount{font-size:44px}}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iD01t Studio - L'Elite de l'Automatisation Construction au Québec</title>
+    <meta name="description" content="iD01t Studio : Le bureau complet automatisé pour entrepreneurs en construction. Soumissions conformes RBQ, IA locale, marketing autonome et gestion de chantiers.">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Outfit:wght@400;700;900&display=swap');
+
+        :root {
+            --primary: #0A2A43;
+            --secondary: #F2792A;
+            --accent: #00D2FF;
+            --dark: #051622;
+            --light: #F8FAFC;
+            --white: #FFFFFF;
+            --glass: rgba(255, 255, 255, 0.05);
+            --gradient: linear-gradient(135deg, var(--primary) 0%, var(--dark) 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--dark);
+            color: var(--white);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: -1px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Hero Section */
+        header {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--gradient);
+            position: relative;
+            text-align: center;
+            padding: 100px 0;
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(to top, var(--dark), transparent);
+        }
+
+        .hero-content h1 {
+            font-size: clamp(3rem, 10vw, 6rem);
+            line-height: 0.9;
+            margin-bottom: 20px;
+            background: linear-gradient(to bottom, #fff, #888);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-content h1 span {
+            color: var(--secondary);
+            -webkit-text-fill-color: var(--secondary);
+        }
+
+        .hero-content p {
+            font-size: 1.5rem;
+            color: var(--accent);
+            font-weight: 300;
+            max-width: 800px;
+            margin: 0 auto 40px;
+        }
+
+        .cta-group {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 20px 50px;
+            background: var(--secondary);
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 1.2rem;
+            border-radius: 5px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 10px 30px rgba(242, 121, 42, 0.3);
+        }
+
+        .cta-button.secondary {
+            background: transparent;
+            border: 2px solid var(--white);
+            box-shadow: none;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(242, 121, 42, 0.5);
+        }
+
+        /* Features Section */
+        section {
+            padding: 100px 0;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .section-header h2 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .section-header p {
+            font-size: 1.2rem;
+            color: #8892b0;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-card {
+            background: var(--glass);
+            padding: 40px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: border-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            border-color: var(--secondary);
+            transform: translateY(-10px);
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--secondary);
+        }
+
+        .feature-card p {
+            color: #8892b0;
+            font-size: 1rem;
+        }
+
+        /* Comparison Section */
+        .comparison {
+            background: #0a192f;
+            padding: 80px 40px;
+            border-radius: 30px;
+            margin: 50px 0;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        .comp-item {
+            padding: 20px;
+        }
+
+        .comp-item h4 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #e6f1ff;
+        }
+
+        .comp-list {
+            list-style: none;
+        }
+
+        .comp-list li {
+            margin-bottom: 15px;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .comp-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--secondary);
+            font-weight: bold;
+        }
+
+        .comp-bad li::before {
+            content: '✕';
+            color: #ff4d4d;
+        }
+
+        /* Pricing Section */
+        .pricing-box {
+            background: var(--glass);
+            padding: 60px;
+            border-radius: 30px;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+            border: 1px solid var(--secondary);
+        }
+
+        .price-value {
+            font-size: 5rem;
+            font-weight: 900;
+            color: var(--white);
+            margin: 20px 0;
+        }
+
+        .price-value span {
+            font-size: 1.5rem;
+            color: var(--secondary);
+        }
+
+        .pricing-list {
+            text-align: left;
+            margin: 40px auto;
+            max-width: 500px;
+            list-style: none;
+        }
+
+        .pricing-list li {
+            margin-bottom: 15px;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .pricing-list li::before {
+            content: '★';
+            position: absolute;
+            left: 0;
+            color: var(--secondary);
+        }
+
+        /* FAQ */
+        .faq-grid {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        details {
+            background: var(--glass);
+            margin-bottom: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        summary {
+            font-weight: 700;
+            font-size: 1.2rem;
+            outline: none;
+        }
+
+        details p {
+            margin-top: 15px;
+            color: #8892b0;
+        }
+
+        /* ROI Table */
+        .roi-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--glass);
+            border-radius: 15px;
+            overflow: hidden;
+            margin-top: 40px;
+        }
+
+        .roi-table th, .roi-table td {
+            padding: 25px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .roi-table th {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--secondary);
+            text-transform: uppercase;
+        }
+
+        .roi-total {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--secondary);
+            text-align: right;
+            padding: 40px;
+        }
+
+        /* Footer */
+        footer {
+            padding: 80px 0;
+            text-align: center;
+            background: var(--dark);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        @media (max-width: 768px) {
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+            .hero-content h1 {
+                font-size: 3.5rem;
+            }
+            .price-value {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
 </head>
 <body>
+    <header>
+        <div class="container hero-content">
+            <div style="background: var(--secondary); color: white; display: inline-block; padding: 5px 15px; border-radius: 20px; font-weight: 800; font-size: 0.8rem; margin-bottom: 20px; letter-spacing: 2px;">ÉDITION WHITE-LABEL</div>
+            <h1>iD01t <span>Studio</span></h1>
+            <p>Le bureau complet de votre compagnie de construction, qui travaille pendant que vous êtes au chantier.</p>
+            <div class="cta-group">
+                <a href="#prix" class="cta-button">OBTENIR LA LICENCE À VIE</a>
+                <a href="iD01t_Studio_Offre_PRO_Tier.pdf" target="_blank" class="cta-button secondary">DOSSIER STRATÉGIQUE (PDF)</a>
+            </div>
+        </div>
+    </header>
 
-<header>
-  <div class="wrap">
-    <div class="kicker">iD01t Studio · édition white-label</div>
-    <h1>Le bureau complet de votre compagnie de construction, qui travaille pendant que vous êtes au chantier.</h1>
-    <p class="sub">Soumissions et factures conformes (RBQ, TPS/TVQ) en 2 minutes depuis votre cellulaire. Photos de chantier transformées en publicités professionnelles par IA, publiées sur vos réseaux. Reçus de matériaux lus par photo et comptabilisés dans votre Excel. Installé chez vous, vos données restent chez vous.</p>
-    <a class="cta" href="#prix">Obtenir iD01t Studio — 4 995 $</a>
-    <div class="price-tag">Licence à vie · installation clé en main incluse · conçu au Québec, pour le Québec</div>
-  </div>
-</header>
+    <section id="features">
+        <div class="container">
+            <div class="section-header">
+                <h2>L'Élite de l'IA Locale</h2>
+                <p>Pas un logiciel américain traduit. Une infrastructure souveraine conçue au Québec pour les entrepreneurs d'ici.</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h3>Souveraineté des Données</h3>
+                    <p>L'IA Locale (Ollama) analyse vos devis et factures directement sur votre machine. Vos secrets d'entreprise ne quittent jamais votre bureau.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Bouclier RBQ Native</h3>
+                    <p>Vérification de conformité déterministe sur chaque document. Licence 5821-2606-01 et normes publicitaires intégrées d'office.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Marketing Autonome</h3>
+                    <p>Transformez vos photos brutes en publicités professionnelles. Montage vidéo automatique avec filigrane et narration pour TikTok/Reels.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Comptabilité Vision</h3>
+                    <p>Prenez vos reçus (Rona, Home Depot) en photo. L'IA extrait les taxes québécoises et remplit votre Excel comptable instantanément.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Speed-to-Lead</h3>
+                    <p>Réponse instantanée aux demandes Gmail. Qualification intelligente des prospects et création automatique de dossiers sur Google Drive.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Système Auto-Réparateur</h3>
+                    <p>Un "Docteur" intégré surveille 26 points critiques et répare les services automatiquement. Zéro maintenance technique requise.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<section>
-  <div class="wrap">
-    <h2>Tout ce qu'une petite compagnie de construction gère… automatisé</h2>
-    <p class="lead">Développé et utilisé chaque jour par un entrepreneur en rénovation de la Rive-Sud. Pas un logiciel américain adapté : un système pensé pour les règles du Québec.</p>
-    <div class="grid">
-      <div class="card"><h3>📋 Soumissions &amp; factures conformes</h3><p>Documents PDF professionnels au gabarit comptable québécois : NEQ, RBQ, numéros TPS/TVQ en en-tête et pied de page, calculs de taxes exacts, acomptes et facturation progressive, numérotation automatique.</p></div>
-      <div class="card"><h3>📱 Application mobile de chantier</h3><p>App Android native : photos et vidéos de chantier, création de soumissions sur place, approbation des publications d'un seul tap, galeries, fonctionne même hors ligne.</p></div>
-      <div class="card"><h3>✨ Marketing automatique par IA</h3><p>Chaque photo de chantier devient une publication professionnelle à votre image (analyse IA locale de la pièce, texte français, votre logo, votre licence). Vidéos montées automatiquement : filigrane, bannière de fin, narration.</p></div>
-      <div class="card"><h3>📣 Publication multi-réseaux</h3><p>Facebook, Instagram, Bluesky, YouTube, Pinterest, TikTok : file de publication avec cadence quotidienne. Rien ne part sans votre approbation depuis le cellulaire (verrou propriétaire).</p></div>
-      <div class="card"><h3>🧾 Comptabilité des dépenses par photo</h3><p>Photographiez un reçu Rona ou Home Depot : l'IA locale lit fournisseur, date et montants, valide les taxes du Québec et inscrit la ligne dans votre classeur Excel comptable, avec formules et totaux. Aucun montant inventé : lecture locale garantie.</p></div>
-      <div class="card"><h3>💼 Suite d'affaires complète</h3><p>CRM clients, suivi de projets, liens de paiement (Stripe/Interac), signatures électroniques conformes, échéanciers Gantt, bons de commande fournisseurs, multi-utilisateurs avec rôles.</p></div>
-      <div class="card"><h3>🤖 Centre de contrôle Slack + voix</h3><p>Pilotez tout depuis Slack (menu à boutons) ; messages vocaux québécois automatiques vers votre cellulaire (Twilio) ; boîte vocale d'entreprise avec messages relayés dans Slack.</p></div>
-      <div class="card"><h3>🔒 Vos données chez vous</h3><p>Installé sur VOTRE ordinateur : clients, soumissions, comptabilité et photos restent chez vous. IA locale (Ollama) — pas d'abonnement infonuagique obligatoire, pas de données envoyées à des tiers.</p></div>
-      <div class="card"><h3>🩺 Auto-diagnostic &amp; auto-réparation</h3><p>Un « docteur » intégré vérifie 26 points du système, répare ce qui peut l'être et redémarre les services tout seul. Conçu pour tourner sans technicien.</p></div>
-    </div>
-  </div>
-</section>
+    <section class="container">
+        <div class="comparison">
+            <div class="section-header">
+                <h2>iD01t vs Le Reste du Monde</h2>
+            </div>
+            <div class="comparison-grid">
+                <div class="comp-item">
+                    <h4>iD01t Studio (Pro Tier)</h4>
+                    <ul class="comp-list">
+                        <li>Licence à vie (Payez une seule fois)</li>
+                        <li>IA Locale & Privée (Ollama)</li>
+                        <li>Conformité RBQ nativement intégrée</li>
+                        <li>Déploiement White-Label à votre image</li>
+                        <li>Support technique local (Rive-Sud)</li>
+                    </ul>
+                </div>
+                <div class="comp-item">
+                    <h4>Logiciels US (Houzz, Buildertrend)</h4>
+                    <ul class="comp-list comp-bad">
+                        <li>Abonnement mensuel à perpétuité</li>
+                        <li>Données sur des serveurs Cloud US</li>
+                        <li>Non adapté aux spécificités RBQ/Québec</li>
+                        <li>Interface rigide et branding limité</li>
+                        <li>Support client impersonnel</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<section class="band">
-  <div class="wrap">
-    <h2>Le vrai produit, pas des maquettes</h2>
-    <p class="lead">Captures prises directement du système en production chez Clinique du Bâtiment CDB Inc.</p>
-    <div class="shots">
-      <figure class="shot"><img src="img/soumission.png" alt="Soumission PDF conforme RBQ TPS TVQ" loading="lazy"><figcaption><b>Soumission PDF</b> — gabarit comptable conforme : NEQ, RBQ, TPS/TVQ, signature client.</figcaption></figure>
-      <figure class="shot"><img src="img/facture.png" alt="Facture d'acompte avec taxes du Québec" loading="lazy"><figcaption><b>Facture d'acompte 30 %</b> — taxes calculées et vérifiées, échéance, modalités.</figcaption></figure>
-      <figure class="shot"><img src="img/promo.jpg" alt="Publication marketing générée par IA depuis une photo de chantier" loading="lazy"><figcaption><b>Publicité générée par IA</b> — à partir d'une simple photo de chantier prise avec l'app.</figcaption></figure>
-      <figure class="shot"><img src="img/video-montage.jpg" alt="Vidéo de chantier montée automatiquement avec filigrane" loading="lazy"><figcaption><b>Vidéo montée automatiquement</b> — filigrane de marque, bannière de fin, prête pour les Stories et YouTube.</figcaption></figure>
-    </div>
-  </div>
-</section>
+    <section id="roi">
+        <div class="container">
+            <div class="section-header">
+                <h2>Rentabilité & ROI</h2>
+                <p>Une infrastructure qui se paie d'elle-même en moins de 12 mois.</p>
+            </div>
 
-<section id="prix">
-  <div class="wrap">
-    <h2>Un prix fixe. Pas d'abonnement obligatoire.</h2>
-    <p class="lead">Les plateformes comparables coûtent de 2 000 $ à 6 000 $ PAR ANNÉE, pour toujours. iD01t Studio s'achète une fois.</p>
-    <div class="pricing">
-      <div style="font-size:15px;letter-spacing:2px;color:#f3b056;font-weight:700;text-transform:uppercase">Licence à vie</div>
-      <div class="amount">4 995 $ <small>CAD</small></div>
-      <div style="color:#cdd3e8;font-size:14px">taxes en sus · paiement unique</div>
-      <ul>
-        <li>Installation clé en main sur votre ordinateur (à distance ou sur place, Rive-Sud)</li>
-        <li>Personnalisation complète : votre logo, vos couleurs, votre RBQ, vos numéros de taxes</li>
-        <li>Application mobile Android compilée à votre marque</li>
-        <li>Branchement de vos réseaux sociaux et de votre numéro d'affaires</li>
-        <li>Formation de 2 heures + guides d'utilisation en français</li>
-        <li>30 jours de support de démarrage inclus</li>
-        <li>Toutes les fonctionnalités, sans module caché</li>
-      </ul>
-      <a class="cta" href="mailto:info@cliniquedubatiment.ca?subject=iD01t%20Studio%20-%20Demande%20d'information&body=Bonjour,%20je%20veux%20en%20savoir%20plus%20sur%20iD01t%20Studio%20pour%20ma%20compagnie%20de%20construction.%0ANom%20de%20l'entreprise%20:%0AT%C3%A9l%C3%A9phone%20:">Je veux iD01t Studio</a>
-      <div class="note">Option : accompagnement continu (mises à jour, surveillance, ajustements) — 149 $/mois, annulable en tout temps. Aucuns frais cachés.</div>
-    </div>
-  </div>
-</section>
+            <table class="roi-table">
+                <thead>
+                    <tr>
+                        <th>Indicateur de Performance</th>
+                        <th>Gain / Économie</th>
+                        <th>Valeur Annuelle (CAD)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Productivité Administrative (140h/an)</td>
+                        <td>Temps récupéré au chantier</td>
+                        <td>~ 9 600 $</td>
+                    </tr>
+                    <tr>
+                        <td>Conversion Leads (+1 projet/an)</td>
+                        <td>Réactivité speed-to-lead</td>
+                        <td>~ 5 000 $ - 10 000 $</td>
+                    </tr>
+                    <tr>
+                        <td>Économie de Risque (Bouclier RBQ)</td>
+                        <td>Zéro amende publicitaire</td>
+                        <td>Inestimable</td>
+                    </tr>
+                    <tr>
+                        <td>Valorisation de l'Actif</td>
+                        <td>Propriété de l'IP White-Label</td>
+                        <td>+ 50 000 $</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="roi-total">ROI ESTIMÉ : 17 100 $ + / AN</div>
+        </div>
+    </section>
 
-<section class="band">
-  <div class="wrap">
-    <h2>Comparez avant d'acheter</h2>
-    <p class="lead">Sur 3 ans, iD01t Studio coûte 3 à 10 fois moins cher que les abonnements américains.</p>
-    <table class="compare">
-      <tr><th>&nbsp;</th><th>iD01t Studio</th><th>Houzz Pro</th><th>Buildertrend</th><th>Joist</th></tr>
-      <tr><td>Coût sur 3 ans</td><td class="ok">4 995 $ (une fois)</td><td>≈ 7 700 $+</td><td>≈ 21 500 $+</td><td>≈ 1 200 $+</td></tr>
-      <tr><td>Taxes TPS/TVQ et RBQ du Québec</td><td class="ok">Natif</td><td>Partiel</td><td>Partiel</td><td>Partiel</td></tr>
-      <tr><td>Marketing automatique par IA (photos → pubs)</td><td class="ok">Inclus</td><td class="no">Non</td><td class="no">Non</td><td class="no">Non</td></tr>
-      <tr><td>Reçus de dépenses lus par photo → Excel</td><td class="ok">Inclus (IA locale)</td><td class="no">Non</td><td>Partiel</td><td class="no">Non</td></tr>
-      <tr><td>Publication multi-réseaux avec approbation mobile</td><td class="ok">Inclus</td><td class="no">Non</td><td class="no">Non</td><td class="no">Non</td></tr>
-      <tr><td>Vos données sur VOTRE ordinateur</td><td class="ok">Oui</td><td class="no">Infonuagique</td><td class="no">Infonuagique</td><td class="no">Infonuagique</td></tr>
-      <tr><td>En français québécois</td><td class="ok">Oui, partout</td><td>Partiel</td><td class="no">Non</td><td>Partiel</td></tr>
-    </table>
-    <p style="text-align:center;color:var(--muted);font-size:12.5px;margin-top:14px">Prix des concurrents : tarifs publics 2026 convertis en CAD, à titre indicatif.</p>
-  </div>
-</section>
+    <section id="prix">
+        <div class="container">
+            <div class="pricing-box">
+                <h2 style="color: var(--white);">Investissement Stratégique</h2>
+                <div class="price-value">4 995 <span>$ CAD</span></div>
+                <p style="opacity: 0.7;">Licence à vie · Paiement unique · Taxes en sus</p>
+                
+                <ul class="pricing-list">
+                    <li>Installation clé en main (Rive-Sud ou distance)</li>
+                    <li>Personnalisation White-Label (Logo/Couleurs)</li>
+                    <li>Application Mobile Android à votre marque</li>
+                    <li>Branchement réseaux sociaux & API Google</li>
+                    <li>Formation complète & Guides en français</li>
+                    <li>30 jours de support VIP inclus</li>
+                </ul>
 
-<section>
-  <div class="wrap">
-    <h2>Questions fréquentes</h2>
-    <div class="faq">
-      <details><summary>Pour qui est-ce fait ?</summary><p>Les compagnies de construction et de rénovation du Québec de 1 à 10 employés : entrepreneurs généraux, rénovation résidentielle, après-sinistre, finition, planchers. Si vous faites vos soumissions le soir et votre marketing « quand vous aurez le temps », c'est pour vous.</p></details>
-      <details><summary>Ai-je besoin d'être bon avec les ordinateurs ?</summary><p>Non. L'installation est faite pour vous, tout démarre tout seul à l'ouverture de l'ordinateur, et l'usage quotidien se fait depuis l'app mobile (prendre des photos, taper « PUBLIER » ou « Approuver »). Un système d'auto-réparation surveille le tout.</p></details>
-      <details><summary>C'est quoi la différence avec un abonnement ?</summary><p>Vous achetez le système une fois et il vous appartient, comme vos outils. Pas de mensualité obligatoire, pas d'augmentation annuelle, pas de données prises en otage sur le serveur d'une compagnie américaine.</p></details>
-      <details><summary>De quoi ai-je besoin ?</summary><p>Un PC Windows 11 qui reste allumé (un portable de bureau suffit), un cellulaire Android, et vos comptes de réseaux sociaux. C'est tout.</p></details>
-      <details><summary>L'IA envoie-t-elle mes données quelque part ?</summary><p>Non. L'analyse des photos et la lecture des reçus se font par des modèles d'IA installés LOCALEMENT sur votre ordinateur. Votre comptabilité ne sort jamais de chez vous.</p></details>
-      <details><summary>Et si je veux des changements après l'achat ?</summary><p>Le forfait d'accompagnement (149 $/mois, annulable) couvre les mises à jour, la surveillance et les ajustements. Sans forfait, le système continue de fonctionner tel quel, à vie.</p></details>
-      <details><summary>Qui est derrière iD01t Studio ?</summary><p>iD01t Studio est développé au Québec et roule en production chez Clinique du Bâtiment CDB Inc. (RBQ 5821-2606-01), entrepreneur en rénovation de la Rive-Sud. Vous achetez un outil que son créateur utilise tous les jours pour sa propre compagnie.</p></details>
-    </div>
-  </div>
-</section>
+                <a href="mailto:info@cliniquedubatiment.ca" class="cta-button">DEMANDER UNE DÉMONSTRATION</a>
+                <p style="margin-top: 20px; font-size: 0.9rem; opacity: 0.6;">Option accompagnement continu : 149 $/mois (mises à jour & surveillance)</p>
+            </div>
+        </div>
+    </section>
 
-<section class="final">
-  <div class="wrap" style="padding:26px 22px">
-    <h2>Prêt à passer au bureau automatisé ?</h2>
-    <p class="sub" style="margin-bottom:30px">Démonstration gratuite de 30 minutes, en personne sur la Rive-Sud ou à distance.</p>
-    <a class="cta" href="mailto:info@cliniquedubatiment.ca?subject=iD01t%20Studio%20-%20Demande%20de%20d%C3%A9monstration">Réserver ma démonstration</a>
-    <div class="price-tag">info@cliniquedubatiment.ca · (819) 452-4788</div>
-  </div>
-</section>
+    <section id="faq">
+        <div class="container">
+            <div class="section-header">
+                <h2>Questions Fréquentes</h2>
+            </div>
+            <div class="faq-grid">
+                <details>
+                    <summary>Est-ce compliqué à utiliser ?</summary>
+                    <p>Non. L'usage quotidien se fait depuis une application mobile ultra-simple. Prenez une photo, l'IA fait le reste. Le système de "Docteur" intégré gère toute la technique en arrière-plan.</p>
+                </details>
+                <details>
+                    <summary>Où sont stockées mes données ?</summary>
+                    <p>Sur votre ordinateur. iD01t Studio utilise des modèles d'IA locaux. Vos listes de clients, vos prix et vos photos ne sont jamais envoyés sur des serveurs tiers.</p>
+                </details>
+                <details>
+                    <summary>Puis-je l'installer sur plusieurs postes ?</summary>
+                    <p>La licence de base couvre une infrastructure serveur locale. Vous pouvez y accéder depuis plusieurs appareils mobiles et tablettes sur vos chantiers.</p>
+                </details>
+                <details>
+                    <summary>Qui supporte le produit ?</summary>
+                    <p>L'équipe de Clinique du Bâtiment CDB Inc. à Longueuil. Nous utilisons ce système quotidiennement pour nos propres chantiers.</p>
+                </details>
+            </div>
+        </div>
+    </section>
 
-<footer>
-  <div class="wrap">
-    <p><b>iD01t Studio</b> — édition white-label · distribué par Clinique du Bâtiment CDB Inc. (RBQ 5821-2606-01)</p>
-    <p style="margin-top:6px"><a href="https://cliniquedubatiment.ca">cliniquedubatiment.ca</a> · Rive-Sud de Montréal, Québec · © 2026</p>
-  </div>
-</footer>
-
+    <footer>
+        <div class="container">
+            <h3>iD01t PRODUCTIONS x Clinique du Bâtiment</h3>
+            <p style="margin-top: 10px; opacity: 0.6;">(819) 452-4788 · info@cliniquedubatiment.ca</p>
+            <p style="margin-top: 20px; font-size: 0.8rem; opacity: 0.4;">© 2026 - RBQ 5821-2606-01 - Souveraineté Technologique pour la Construction.</p>
+        </div>
+    </footer>
 </body>
 </html>
