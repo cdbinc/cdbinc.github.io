@@ -58,7 +58,7 @@
       {
         "@type": "FAQPage",
         "mainEntity": [
-          { "@type": "Question", "name": "Est-ce compliqué à utiliser au quotidien ?", "acceptedAnswer": { "@type": "Answer", "text": "Non. L'usage quotidien se fait depuis l'application mobile : prenez une photo, l'IA fait le reste. Le « Docteur » intégré surveille 26 points critiques en arrière-plan et répare les anomalies automatiquement. Aucune compétence technique requise." } },
+          { "@type": "Question", "name": "Est-ce compliqué à utiliser au quotidien ?", "acceptedAnswer": { "@type": "Answer", "text": "Non. L'usage quotidien se fait depuis l'application mobile : prenez une photo, l'IA fait le reste. Le « Docteur » intégré exécute 10 familles de vérifications en arrière-plan et répare les anomalies automatiquement. Aucune compétence technique requise." } },
           { "@type": "Question", "name": "Où sont stockées mes données ?", "acceptedAnswer": { "@type": "Answer", "text": "Directement sur votre ordinateur. iD01t Studio utilise Ollama, un moteur d'IA qui tourne en local. Vos listes de clients, vos prix, vos photos de chantier et vos soumissions ne sont jamais envoyés sur des serveurs tiers." } },
           { "@type": "Question", "name": "Puis-je l'utiliser sur plusieurs appareils ?", "acceptedAnswer": { "@type": "Answer", "text": "La licence couvre une infrastructure serveur locale. Vous et vos employés y accédez depuis plusieurs téléphones Android et tablettes via l'APK. Le module TEAM gère les rôles et permissions de chaque membre." } },
           { "@type": "Question", "name": "Comment fonctionne l'approbation des publications marketing ?", "acceptedAnswer": { "@type": "Answer", "text": "Le pipeline génère et vérifie automatiquement chaque publication. Vous recevez un SMS avec un lien cliquable : un seul tap sur votre cellulaire pour approuver ou refuser, depuis n'importe où." } },
@@ -510,8 +510,8 @@
   <div class="container">
     <div class="stats-grid">
       <div class="stat-item" data-reveal>
-        <div class="stat-value"><span class="counter" data-target="26">0</span></div>
-        <div class="stat-label">Points diagnostics automatiques</div>
+        <div class="stat-value"><span class="counter" data-target="32">0</span></div>
+        <div class="stat-label">Tests automatisés (selftest)</div>
       </div>
       <div class="stat-item" data-reveal data-reveal-delay="1">
         <div class="stat-value"><span class="counter" data-target="140">0</span><span>h</span></div>
@@ -623,7 +623,7 @@
       <div class="bento-card span-4" data-reveal data-reveal-delay="1">
         <div class="bento-icon">🩺</div>
         <h3>Système Auto-Réparateur</h3>
-        <p>Le Docteur surveille <strong style="color:var(--white);">26 points critiques</strong> en continu. Dossiers corrompus, services hors ligne — réparation automatique, zéro maintenance.</p>
+        <p>Le Docteur exécute <strong style="color:var(--white);">10 familles de vérifications</strong> et 32 tests automatisés. Dossiers corrompus, services hors ligne — réparation automatique, zéro maintenance.</p>
       </div>
     </div>
   </div>
@@ -722,7 +722,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr><td>Modèle de coût</td><td class="hl-col"><span class="chk-yes">✓</span> Licence à vie (une seule fois)</td><td><span class="chk-no">✗</span> Abonnement mensuel US$</td><td><span class="chk-prt">△</span> Gratuit mais non scalable</td></tr>
+          <tr><td>Modèle de coût</td><td class="hl-col"><span class="chk-yes">✓</span> 4 995 $ CAD, une seule fois</td><td><span class="chk-no">✗</span> ~115 $ à 1 000 $+ CAD/mois, à perpétuité</td><td><span class="chk-prt">△</span> Gratuit mais non scalable</td></tr>
           <tr><td>Confidentialité des données</td><td class="hl-col"><span class="chk-yes">✓</span> IA locale, vos données chez vous</td><td><span class="chk-no">✗</span> Serveurs cloud américains</td><td><span class="chk-yes">✓</span> Local, mais risque perte</td></tr>
           <tr><td>Conformité réglementaire Québec</td><td class="hl-col"><span class="chk-yes">✓</span> Native, déterministe</td><td><span class="chk-no">✗</span> Inexistante</td><td><span class="chk-no">✗</span> Manuelle, erreur-prone</td></tr>
           <tr><td>Application mobile Android</td><td class="hl-col"><span class="chk-yes">✓</span> APK personnalisé inclus</td><td><span class="chk-prt">△</span> App générique US</td><td><span class="chk-no">✗</span> Aucune</td></tr>
@@ -741,40 +741,41 @@
   <div class="container">
     <div data-reveal>
       <div class="section-label">// Rentabilité & ROI</div>
-      <h2 class="section-title">Remboursé en<br>moins de 12 mois.</h2>
-      <p class="section-sub">Une infrastructure qui génère de la valeur réelle dès la première semaine d'utilisation.</p>
+      <h2 class="section-title">Remboursé en<br>3 à 4 mois.</h2>
+      <p class="section-sub">Une infrastructure qui génère de la valeur réelle dès la première semaine d'utilisation — chiffres prudents, en dollars canadiens.</p>
     </div>
     <div class="roi-grid">
       <div class="roi-items">
         <div class="roi-row" data-reveal>
           <div class="roi-icon">⏱️</div>
-          <div class="roi-text"><h5>Productivité administrative</h5><p>140 h/an récupérées pour aller au chantier</p></div>
-          <div class="roi-value">~9 600 $/an</div>
+          <div class="roi-text"><h5>Productivité administrative</h5><p>140 h/an récupérées × 70 $/h (taux chargé)</p></div>
+          <div class="roi-value">~9 800 $/an</div>
         </div>
         <div class="roi-row" data-reveal data-reveal-delay="1">
           <div class="roi-icon">🎯</div>
-          <div class="roi-text"><h5>Conversion leads supplémentaire</h5><p>+1 projet/an grâce au speed-to-lead</p></div>
-          <div class="roi-value">+5 000–10 000 $</div>
+          <div class="roi-text"><h5>Conversion leads supplémentaire</h5><p>+1 projet/an — marge nette ~25 % d'un projet de 20 000–40 000 $</p></div>
+          <div class="roi-value">+5 000–10 000 $/an</div>
         </div>
         <div class="roi-row" data-reveal data-reveal-delay="2">
-          <div class="roi-icon">⚖️</div>
-          <div class="roi-text"><h5>Conformité réglementaire active</h5><p>Bouclier actif sur chaque document généré</p></div>
-          <div class="roi-value">Inestimable</div>
+          <div class="roi-icon">📣</div>
+          <div class="roi-text"><h5>Marketing remplacé</h5><p>Pigiste réseaux sociaux (~300 $/mois) rendu inutile</p></div>
+          <div class="roi-value">~3 600 $/an</div>
         </div>
         <div class="roi-row" data-reveal data-reveal-delay="3">
-          <div class="roi-icon">🏢</div>
-          <div class="roi-text"><h5>Valorisation de l'actif</h5><p>Propriété de l'IP White-Label, revendable</p></div>
-          <div class="roi-value">+50 000 $</div>
+          <div class="roi-icon">⚖️</div>
+          <div class="roi-text"><h5>Conformité réglementaire active</h5><p>Bouclier actif sur chaque document — amendes évitées</p></div>
+          <div class="roi-value">Risque écarté</div>
         </div>
       </div>
       <div class="roi-total-box" data-reveal data-reveal-delay="2">
-        <div class="label">ROI Estimé Annuel</div>
+        <div class="label">Gain annuel estimé (bas de fourchette)</div>
         <div class="roi-big-num"><span class="counter-roi">0</span><span>$</span></div>
-        <p>De gain et d'économies dès la première année. La licence se rembourse seule en moins de 6 mois d'utilisation normale.</p>
+        <p>18 400 $ à 23 400 $ CAD de gains et d'économies par année. À 4 995 $, la licence se rembourse seule en 3 à 4 mois d'utilisation normale.</p>
         <br>
         <div style="display:inline-flex;align-items:center;gap:8px;padding:10px 20px;background:rgba(242,121,42,0.1);border-radius:100px;font-size:0.8rem;color:var(--orange);">⚡ Inclus : 30 jours de support VIP</div>
       </div>
     </div>
+    <p data-reveal style="margin-top:32px;font-size:0.78rem;color:var(--muted);max-width:760px;">Hypothèses prudentes : ~12 h d'administration récupérées par mois à 70 $/h (taux horaire chargé d'un entrepreneur) ; +1 projet converti par année grâce à la réponse instantanée, à 5 000–10 000 $ de marge nette ; remplacement d'un pigiste réseaux sociaux à ~300 $/mois. Sans compter l'accélération des encaissements (lien de paiement dans chaque facture) ni l'évitement d'amendes réglementaires.</p>
   </div>
 </section>
 
@@ -809,7 +810,7 @@
       </div>
       <div class="pricing-cta">
         <a href="#contact" class="btn-primary">Demander une démonstration gratuite</a>
-        <p class="sub-note">Ou consultez le <a href="iD01t_Studio_Offre_PRO_Tier.pdf" target="_blank" rel="noopener">dossier stratégique complet (PDF)</a>.<br>Option accompagnement continu : 149 $/mois (mises à jour & surveillance).</p>
+        <p class="sub-note">Ou consultez le <a href="iD01t_Studio_Offre_PRO_Tier.pdf" target="_blank" rel="noopener">dossier stratégique complet (PDF)</a>.<br>Option accompagnement continu : 149 $/mois (mises à jour & surveillance).<br>À titre comparatif : 5 ans d'un abonnement concurrent à ~200 $/mois = <strong style="color:rgba(240,246,255,0.85);">12 000 $ et plus</strong>, sans rien posséder.</p>
       </div>
     </div>
   </div>
@@ -825,7 +826,7 @@
     <div class="faq-list">
       <div class="faq-item" data-reveal>
         <button class="faq-q" aria-expanded="false">Est-ce compliqué à utiliser au quotidien ?<span class="faq-arrow" aria-hidden="true">↓</span></button>
-        <div class="faq-a"><div class="faq-a-inner">Non. L'usage quotidien se fait depuis l'application mobile ultra-simple : prenez une photo, l'IA fait le reste. Le « Docteur » intégré surveille 26 points critiques en arrière-plan et répare les anomalies automatiquement. Aucune compétence technique requise.</div></div>
+        <div class="faq-a"><div class="faq-a-inner">Non. L'usage quotidien se fait depuis l'application mobile ultra-simple : prenez une photo, l'IA fait le reste. Le « Docteur » intégré exécute 10 familles de vérifications en arrière-plan et répare les anomalies automatiquement. Aucune compétence technique requise.</div></div>
       </div>
       <div class="faq-item" data-reveal>
         <button class="faq-q" aria-expanded="false">Où sont stockées mes données ?<span class="faq-arrow" aria-hidden="true">↓</span></button>
@@ -1029,7 +1030,7 @@ document.querySelectorAll('.counter').forEach(el => counterObs.observe(el));
 const roiEl = document.querySelector('.counter-roi');
 if (roiEl) {
   const roiObs = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) { animateCounter(roiEl, 17100, ' +'); roiObs.unobserve(e.target); } });
+    entries.forEach(e => { if (e.isIntersecting) { animateCounter(roiEl, 18400, ' +'); roiObs.unobserve(e.target); } });
   }, { threshold: 0.5 });
   roiObs.observe(roiEl);
 }
@@ -1048,7 +1049,7 @@ const lines = [
   { delay: 2700, html: '<span class="t-ok">✓</span> <span class="t-cmd">Bouclier Conformité</span> <span class="t-info">actif sur 100% des docs</span>' },
   { delay: 2950, html: '<span class="t-ok">✓</span> <span class="t-cmd">Modules PAY·TEAM·SIGN·PLAN·SUPPLY</span>' },
   { delay: 3200, html: '<span class="t-info">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>' },
-  { delay: 3400, html: '<span style="color:#28C840;font-weight:bold;">✅ PRODUCTION-READY</span> <span class="t-info">— 26/26 vérifications passées</span>' },
+  { delay: 3400, html: '<span style="color:#28C840;font-weight:bold;">✅ PRODUCTION-READY</span> <span class="t-info">— 32/32 tests · 10/10 sections doctor</span>' },
   { delay: 3700, html: '<span class="t-prompt">iD01t Studio:~$</span> <span class="t-cursor"></span>' },
 ];
 const output = document.getElementById('terminal-output');
