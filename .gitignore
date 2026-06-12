@@ -34,3 +34,5 @@ firebase-debug.*.log
 *-debug.log
 ui-debug.log
 .firebase/
+
+id01t/
