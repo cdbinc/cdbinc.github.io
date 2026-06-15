@@ -688,6 +688,7 @@ function paintDocs(kind){ var el=$("dbody"); if(!el) return; var list=DOCS[kind]
       (kind==="soumissions"?"<button class='hbtn' style='background:var(--red-soft);color:var(--red)' onclick=\"delSoum('"+esc(num)+"')\">🗑</button>":"")+"</div>"+
       "<div class='flexrow mt8'><div style='flex:1;font-size:20px;font-weight:900;color:var(--orange)'>"+money(tot)+"</div>"+(ty?"<span class='muted2'>"+esc(ty.toUpperCase())+"</span>":"")+"</div>"+
       "<div class='row mt8'><a class='btn ghost sm' href='"+docUrl(kind,num+'.pdf')+"' target='_blank'>📄 PDF</a>"+
+      "<button class='btn o-ghost sm' onclick=\"emailDoc('"+kind+"','"+esc(num)+"')\">📧 COURRIEL</button>"+
       (kind==="soumissions"?"<button class='btn green sm' onclick=\"factureDlg('"+esc(num)+"')\">💰 FACTURER</button>":"")+"</div></div>";
   }).join("");
 }
@@ -711,6 +712,37 @@ function genFacture(num){ var type=window._ftype||"depot"; var pct=type==="final
   jpost("/api/ops/facture/generer",b).then(function(d){ if(d&&d.ok){ $("fmsg").innerHTML="<div class='statbar g'>✅ Facture créée</div>"; toast("Facture créée ✓","ok"); setTimeout(closeDialog,900); loadDocs("factures"); }
     else $("fmsg").innerHTML="<div class='statbar r'>❌ "+esc((d&&d.error)||"Échec")+"</div>"; })
     .catch(function(){ $("fmsg").innerHTML="<div class='statbar r'>❌ Erreur réseau</div>"; }); }
+
+/* ===== Courriel client (soumission / facture / paiement / signature) ===== */
+function emailBar(d){
+  if(!d) return "<div class='statbar r'>❌ Serveur injoignable</div>";
+  if(d.ok) return "<div class='statbar g'>📧 Courriel envoyé"+(d.to?(" à "+esc(d.to)):"")+(d.copie?" (copie info@)":"")+"</div>";
+  if(d.degrade) return "<div class='statbar o'>📧 Mis en file — SMTP non configuré, sera renvoyé au « flush »</div>";
+  return "<div class='statbar r'>❌ "+esc(d.message||d.error||"échec")+"</div>";
+}
+function emailToast(d){
+  if(!d){ toast("❌ Serveur injoignable","err"); return; }
+  if(d.ok){ toast("📧 Courriel envoyé"+(d.to?(" à "+d.to):""),"ok"); return; }
+  if(d.degrade){ toast("📧 Mis en file (SMTP non configuré)","ok"); return; }
+  toast("❌ "+(d.message||d.error||"échec"),"err");
+}
+function emailDoc(kind,num){
+  var d=(DOCS[kind]||[]).filter(function(x){return (x.numero||"")===num;})[0]||{};
+  var cl=(d.client&&d.client.nom)||"";
+  dialog({title:"Envoyer au client", body:
+    "<p class='muted'>Envoyer la "+(kind==="soumissions"?"soumission":"facture")+" "+esc(num)+(cl?(" à "+esc(cl)):"")+" en PDF par courriel.</p>"+
+    "<label class='mt'>Courriel (vide = fiche client)</label><input id='emto' inputmode='email' placeholder='client@exemple.com'><div id='emmsg'></div>",
+    actions:[{label:"Fermer",cls:"ghost"},{label:"ENVOYER",cls:"",keep:true,onClick:function(){ emailDocSend(kind,num); }}]});
+}
+function emailDocSend(kind,num){
+  var to=(($("emto")&&$("emto").value)||"").trim();
+  $("emmsg").innerHTML="<div class='statbar o'>Envoi…</div>";
+  var ep=kind==="soumissions"?"/api/ops/email/soumission":"/api/ops/email/facture";
+  var b={num:num}; if(to)b.to=to;
+  jpost(ep,withU(b)).then(function(d){ $("emmsg").innerHTML=emailBar(d); if(d&&d.ok){ toast("Courriel envoyé ✓","ok"); setTimeout(closeDialog,1100); } })
+    .catch(function(){ $("emmsg").innerHTML="<div class='statbar r'>❌ Erreur réseau</div>"; }); }
+function emailPay(id){ toast("Envoi du courriel…"); jpost("/api/ops/email/pay",withU({id:id})).then(emailToast).catch(function(){ toast("❌ Réseau","err"); }); }
+function emailSignId(id){ toast("Envoi du courriel…"); jpost("/api/ops/email/sign",withU({id:id})).then(emailToast).catch(function(){ toast("❌ Réseau","err"); }); }
 
 /* Nouvelle soumission — formulaire complet */
 var LINES=[];
@@ -945,6 +977,7 @@ function paintPay(){ var el=$("paybody"); if(!el)return;
       "<span class='schip' style='background:"+(paid?"var(--green-soft);color:var(--green)":"var(--orange-soft);color:var(--amber)")+"'>"+(paid?"payé":"en attente")+"</span></div>"+
       (p.stripe&&p.stripe.url?"<a class='btn o-ghost sm mt8' href='"+esc(p.stripe.url)+"' target='_blank'>💳 Payer par carte (Stripe)</a>":"")+
       (!paid&&p.interac?"<div class='card' style='margin-top:8px;padding:12px'><b>💸 Virement Interac</b><div class='muted'>Destinataire : "+esc(p.interac.courriel||"")+"<br>Montant : "+money(p.interac.montant)+"<br>Question : "+esc(p.interac.question||"")+"<br>Réponse : "+esc(p.interac.reponse||"")+"</div></div>":"")+
+      (!paid?"<button class='btn o-ghost sm mt8' onclick=\"emailPay('"+esc(p.id)+"')\">📧 Envoyer le lien au client</button>":"")+
       (!paid?"<button class='btn green sm mt8' onclick=\"payPaid('"+esc(p.id)+"')\">Marquer payé</button>":"")+"</div>"; }).join("")
     :"<div class='empty'><div class='big'>💳</div><div class='et'>Aucun paiement</div><div class='es'>Générez un lien ci-dessus.</div></div>";
   el.innerHTML=form+list;
@@ -971,7 +1004,8 @@ function paintSign(){ var el=$("signbody"); if(!el)return;
   var list=SIGS.length?SIGS.map(function(s){ var signed=s.statut==="signe";
     return "<div class='item'><div class='flexrow'><div style='flex:1'><div class='t'>"+esc(s.id)+" · "+esc(s.signataire||"")+"</div><div class='s'>"+esc((s.doc_id||"")+" · "+money(s.montant||0))+"</div></div>"+
       "<span class='schip' style='background:"+(signed?"var(--green-soft);color:var(--green)":"var(--orange-soft);color:var(--amber)")+"'>"+(signed?"signé":"en attente")+"</span></div>"+
-      (signed&&s.pdf?"<a class='btn o-ghost sm mt8' href='/api/ops/sign/pdf?id="+encodeURIComponent(s.id)+"' target='_blank'>Certificat PDF</a>":"")+"</div>"; }).join("")
+      (signed&&s.pdf?"<a class='btn o-ghost sm mt8' href='/api/ops/sign/pdf?id="+encodeURIComponent(s.id)+"' target='_blank'>Certificat PDF</a>":"")+
+      (!signed?"<button class='btn o-ghost sm mt8' onclick=\"emailSignId('"+esc(s.id)+"')\">📧 Renvoyer le lien au client</button>":"")+"</div>"; }).join("")
     :"<div class='empty'><div class='big'>✍️</div><div class='et'>Aucune signature</div><div class='es'>Créez une demande ci-dessus.</div></div>";
   el.innerHTML=form+list;
 }
