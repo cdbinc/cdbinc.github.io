@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
 <meta name="robots" content="noindex,nofollow">
 <title>CDB Studio</title>
+<script src="../config.js"></script>
 <script>
 /* ===================================================================
    PONT API CDB — transport environment-aware (miroir de CdbApi.kt).
@@ -18,8 +19,7 @@ window.CDB = window.CDB || {};
   var isLocal = ["localhost", "127.0.0.1", ""].indexOf(location.hostname) !== -1
              || location.protocol === "file:";
   window.CDB.isLocal = isLocal;
-  window.CDB.API_TOKEN = "kPIdcmKI5jrEWw0dVo54428hNoLnPNqm";
-  window.CDB.DISPATCH_TOKEN = "jJaSZrugRk5HE1Q0dDWywH5ZHk2IWeag";
+
   window.CDB.base = "";                 // "" en local ; tunnel en ligne
   if (isLocal) return;
 

@@ -4,12 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex,nofollow">
 <title>CDB Studio — Leads & Intégrations</title>
+<script src="../config.js"></script>
 <script>
 /* PONT API CDB — publie par scripts/publier_studio_web.py. NE PAS editer ici (regenere). */
 (function () {
   var isLocal = ["localhost", "127.0.0.1"].indexOf(location.hostname) !== -1;
   if (isLocal) return;
-  var API_TOKEN = "kPIdcmKI5jrEWw0dVo54428hNoLnPNqm";
+  var API_TOKEN = window.CDB.API_TOKEN;
   var orig = window.fetch.bind(window);
   function fetchT(url, opts, ms) {
     opts = opts || {};

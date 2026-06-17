@@ -83,12 +83,13 @@
   <div class="foot">Lien privé — ne pas partager · © 2026 Clinique du Bâtiment CDB Inc.</div>
 </div>
 
+<script src="../config.js"></script>
 <script>
 (function(){
   // ---- email destination for approvals (same as the public contact form) ----
-  var TO = "info@cliniquedubatiment.ca";
+  var TO = window.CDB.TO_EMAIL;
   // ---- local relay (Slack + auto-envoi). URL published by dispatch_relay.py ----
-  var RELAY_TOKEN = "jJaSZrugRk5HE1Q0dDWywH5ZHk2IWeag";
+  var RELAY_TOKEN = window.CDB.DISPATCH_TOKEN;
 
   // fetch avec délai d'expiration : un tunnel qui pend bascule sur le repli courriel.
   function fetchT(url, opts, ms){
