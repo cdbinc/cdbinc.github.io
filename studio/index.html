@@ -123,6 +123,9 @@ window.CDB = window.CDB || {};
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="CDB Studio">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="brand-logo.png">
+<link rel="apple-touch-icon" href="brand-logo.png">
 <style>
 /* ===== APK dark theme (exact tokens from ui/theme/Color.kt) ===== */
 :root{
@@ -315,6 +318,21 @@ hr.sep{ border:0; border-top:1px solid var(--navy-line); margin:14px 0; }
 .totrow .v{ font-weight:900; }
 .totbox{ background:rgba(68,85,126,.35); border:1px solid var(--green-soft); border-radius:16px; padding:14px; margin-top:8px; }
 </style>
+<style id="cdb-responsive">
+/* La base est deja mobile-first (.app max 560px, inputs 16px, safe-area).
+   Ces regles ne font qu'affiner les tres petits et les grands ecrans. */
+@media (max-width:360px){
+  main{ padding:12px 12px 92px; }
+  .card{ padding:15px; border-radius:16px; }
+  header .hrow{ padding-left:12px; padding-right:12px; }
+  .htitle h1{ font-size:19px; }
+}
+@media (min-width:760px){
+  .app{ max-width:680px; }
+  nav{ max-width:680px; }
+  main{ padding:22px 22px 96px; }
+}
+</style>
 </head>
 <body>
 <div class="app">
@@ -325,6 +343,7 @@ hr.sep{ border:0; border-top:1px solid var(--navy-line); margin:14px 0; }
         <h1>CDB<span class="o"> Studio</span><span class="badge-sync" id="syncb" style="display:none">⟳ <span id="syncn">0</span></span></h1>
         <div class="hstatus"><span class="glow" id="glow"></span><span id="stxt">Vérification…</span></div>
       </div>
+      <a class="hbtn" href="leads.html" title="Leads & Intégrations" style="text-decoration:none">👥</a>
       <button class="hbtn" id="gear" onclick="toggleSys()" title="Système">⚙</button>
       <button class="hbtn" onclick="refreshAll()" title="Rafraîchir">↻</button>
     </div>
@@ -1114,6 +1133,13 @@ function sysSante(b){ b.disabled=true; $("sys_m").innerHTML="<div class='statbar
 checkConn(); refreshPending();
 setInterval(checkConn,45000); setInterval(refreshPending,60000);
 show("photos");
+
+/* ===================== PWA / Service Worker ===================== */
+if ("serviceWorker" in navigator && location.protocol.indexOf("http") === 0) {
+  window.addEventListener("load", function () {
+    navigator.serviceWorker.register("sw.js").catch(function () {});
+  });
+}
 </script>
 </body>
 </html>
