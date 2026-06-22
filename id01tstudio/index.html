@@ -167,12 +167,13 @@
     .hero-bg::after { content: ''; position: absolute; top: -10%; left: 18%; width: 700px; height: 500px; background: radial-gradient(circle, rgba(184,112,64,0.12) 0%, transparent 70%); pointer-events: none; }
     .hero-glow-cyan { position: absolute; bottom: 5%; right: 12%; width: 500px; height: 400px; background: radial-gradient(circle, rgba(95,184,126,0.08) 0%, transparent 70%); pointer-events: none; }
     .hero-content { position: relative; z-index: 1; max-width: 940px; margin: 0 auto; text-align: center; padding: 0 24px; }
-    /* Hero banner (FR desktop): designed banner replaces the stacked text hero */
+    /* Hero banner (desktop): designed banner per language replaces the stacked text hero */
     .hero-banner { display: none; width: 100%; max-width: 1180px; margin: 0 auto 34px; }
     .hero-banner img { width: 100%; height: auto; display: block; border-radius: 18px; border: 1px solid var(--border); box-shadow: 0 36px 90px rgba(0,0,0,0.55); }
     @media (min-width: 861px) {
       .hero-content { max-width: 1180px; }
-      .hero-banner { display: block; }
+      html[lang="fr-CA"] .hero-banner-fr { display: block; }
+      html[lang="en-CA"] .hero-banner-en { display: block; }
       .hero-html { display: none; }
       .hero-quote { display: none; }
       .hero-terminal { display: none; }
@@ -516,9 +517,13 @@
   <div class="hero-bg" aria-hidden="true"></div>
   <div class="hero-glow-cyan" aria-hidden="true"></div>
   <div class="hero-content">
-    <picture class="hero-banner">
+    <picture class="hero-banner hero-banner-fr">
       <source srcset="img/hero-banner.webp" type="image/webp">
       <img src="img/hero-banner.png" width="1672" height="941" alt="ChantierOS — Récupérez 10+ heures par semaine sur vos soumissions, factures et marketing. Bureau administratif local des entrepreneurs RBQ du Québec : IA locale, garde-fous RBQ, paiement unique, APK Android inclus." fetchpriority="high">
+    </picture>
+    <picture class="hero-banner hero-banner-en">
+      <source srcset="img/hero-banner-en.webp" type="image/webp">
+      <img src="img/hero-banner-en.png" width="1672" height="941" alt="ChantierOS — Reclaim 10+ hours every week on your quotes, invoices and marketing. The local back-office for Quebec's RBQ contractors: local AI, RBQ guardrails, one-time payment, Android APK included." loading="lazy">
     </picture>
     <div class="hero-html">
     <div class="hero-badge" data-reveal data-i18n="hero.badge">Le système d'exploitation des entrepreneurs du Québec</div>
