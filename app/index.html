@@ -201,7 +201,7 @@
             <div class="tagline">Le souci du détail</div>
         </div>
 
-        <div class="status-badge">✅ Version 3.18 - Production Ready</div>
+        <div class="status-badge">✅ Version 3.20 - Production Ready</div>
 
         <div class="description">
             Gestion complète de vos chantiers, soumissions et factures en temps réel.<br>
@@ -218,7 +218,7 @@
         </div>
 
         <div class="version-info">
-            <strong>Version: 3.18 (Build 36)</strong><br>
+            <strong>Version: 3.20 (Build 36)</strong><br>
             Taille: 5.0 MB | Android 7.0+<br>
             <span style="color: #4caf50; font-weight: 600;">✓ Fonctionne même si le serveur est hors ligne</span>
         </div>
@@ -352,7 +352,7 @@
                 if (response.ok) {
                     const data = await response.json();
                     const latestVersion = data.tag_name.replace('v', '');
-                    const currentVersion = '3.18';
+                    const currentVersion = '3.20';
 
                     if (latestVersion !== currentVersion) {
                         console.log(`New version available: ${latestVersion}`);
