@@ -248,9 +248,9 @@
         // Source 2: Via relay tunnel (if relay is online)
         // Source 3: Alternative CDN/mirror
         const APK_URLS = [
-            'https://cliniquedubatiment.ca/releases/cdb-studio-v3.18.apk',    // Primary: GitHub Pages direct
-            'https://cdbinc.github.io/releases/cdb-studio-v3.18.apk',          // Fallback: alternative path
-            'https://raw.githubusercontent.com/cdbinc/cdbinc.github.io/main/releases/cdb-studio-v3.18.apk' // GitHub raw
+            'https://cliniquedubatiment.ca/releases/cdb-studio-v3.20.apk',    // Primary: GitHub Pages direct
+            'https://cdbinc.github.io/releases/cdb-studio-v3.20.apk',          // Fallback: alternative path
+            'https://raw.githubusercontent.com/cdbinc/cdbinc.github.io/main/releases/cdb-studio-v3.20.apk' // GitHub raw
         ];
 
         async function downloadAPK() {
@@ -296,7 +296,7 @@
 
                     const link = document.createElement('a');
                     link.href = successfulUrl;
-                    link.download = 'cdb-studio-v3.18.apk';
+                    link.download = 'cdb-studio-v3.20.apk';
                     link.style.display = 'none';
                     document.body.appendChild(link);
 
