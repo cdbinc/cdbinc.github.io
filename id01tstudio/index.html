@@ -473,6 +473,148 @@
       .nav, .sticky-cta, .scroll-progress, .skip-link, .lightbox, .hero-terminal { display: none !important; }
       .section, .contact-section { padding: 40px 0; }
     }
+
+    /* ═══════════════════════════════════════════════════════════════
+       ✦ PRO-POLISH LAYER — premium visual upgrade (2026)
+       Purely additive: layered on top of the base styles above.
+       No content, i18n or behaviour is changed by this block.
+       ═══════════════════════════════════════════════════════════════ */
+    :root {
+      --grad-orange: linear-gradient(135deg, #C17B47 0%, #E2A867 100%);
+      --grad-cyan:   linear-gradient(135deg, #5FB87E 0%, #86DBA6 100%);
+      --shadow-sm: 0 1px 2px rgba(0,0,0,.3), 0 3px 8px rgba(0,0,0,.22);
+      --shadow-md: 0 10px 28px rgba(0,0,0,.34), 0 2px 8px rgba(0,0,0,.28);
+      --shadow-lg: 0 32px 74px rgba(0,0,0,.5), 0 12px 26px rgba(0,0,0,.34);
+    }
+
+    /* Crisper text + anchor offset under the fixed nav */
+    html { scroll-padding-top: 92px; }
+    body { text-rendering: optimizeLegibility; }
+    ::selection { background: rgba(193,123,71,.38); color: #fff; }
+
+    /* 1 ─ Richer canvas: soft ambient light + base gradient */
+    body {
+      background:
+        radial-gradient(120% 80% at 50% -10%, rgba(95,184,126,.07) 0%, transparent 55%),
+        radial-gradient(90% 55% at 100% 0%, rgba(184,112,64,.06) 0%, transparent 50%),
+        linear-gradient(180deg, #0F1E14 0%, var(--navy-deep) 32%, #0A140E 100%);
+      background-attachment: fixed;
+    }
+
+    /* 2 ─ Film-grain overlay — the "expensive" texture */
+    body::after {
+      content: ''; position: fixed; inset: 0; z-index: 4;
+      pointer-events: none; opacity: .035; mix-blend-mode: overlay;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    /* 3 ─ Headings wrap beautifully */
+    .hero h1, .section-title, .contact-info h3, .tier h3 { text-wrap: balance; }
+    .section-sub, .hero-sub, .tier-tagline { text-wrap: pretty; }
+
+    /* 4 ─ Section labels: gradient ink */
+    .section-label {
+      background: var(--grad-orange); -webkit-background-clip: text;
+      background-clip: text; -webkit-text-fill-color: transparent; color: transparent;
+    }
+
+    /* 5 ─ Big numbers: gradient ink (leaf elements only) */
+    .profile-gain, .bento-hl-num, .tier-price {
+      background: var(--grad-orange); -webkit-background-clip: text;
+      background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .tier-price small { -webkit-text-fill-color: var(--muted); }
+    .audit-price {
+      background: var(--grad-cyan); -webkit-background-clip: text;
+      background-clip: text; -webkit-text-fill-color: transparent;
+    }
+
+    /* 6 ─ Premium primary buttons: gradient + inner highlight + shine sweep */
+    .btn-primary, .nav-cta,
+    .tier.featured .btn-tier, .cta-opt.featured .btn-opt {
+      position: relative; overflow: hidden;
+      background-image: var(--grad-orange);
+      box-shadow: 0 10px 30px rgba(184,112,64,.34), inset 0 1px 0 rgba(255,255,255,.28);
+    }
+    .btn-primary::after, .nav-cta::after,
+    .tier.featured .btn-tier::after, .cta-opt.featured .btn-opt::after {
+      content: ''; position: absolute; top: 0; left: -130%;
+      width: 60%; height: 100%; pointer-events: none;
+      background: linear-gradient(110deg, transparent, rgba(255,255,255,.4), transparent);
+      transform: skewX(-18deg); transition: left .65s var(--ease-out);
+    }
+    .btn-primary:hover::after, .nav-cta:hover::after,
+    .tier.featured .btn-tier:hover::after, .cta-opt.featured .btn-opt:hover::after { left: 140%; }
+    .btn-ghost { background: rgba(255,255,255,.025); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+
+    /* 7 ─ Floating nav with a gradient hairline */
+    .nav.scrolled, .nav.menu-open {
+      background:
+        linear-gradient(rgba(11,21,15,.74), rgba(11,21,15,.74)) padding-box,
+        linear-gradient(90deg, transparent, rgba(184,112,64,.45), rgba(95,184,126,.35), transparent) border-box;
+      border-bottom: 1px solid transparent;
+      -webkit-backdrop-filter: saturate(150%) blur(18px); backdrop-filter: saturate(150%) blur(18px);
+      box-shadow: 0 10px 34px rgba(0,0,0,.32);
+    }
+    .scroll-progress { box-shadow: 0 0 12px rgba(95,184,126,.55); }
+
+    /* 8 ─ Cards: lit-from-top sheen, deeper shadows, cursor spotlight */
+    .bento-card, .tier, .cta-opt, .module-card, .pain-card, .profile-card,
+    .flow-step, .showcase-card, .contact-form {
+      border-color: rgba(255,255,255,.07);
+      box-shadow: var(--shadow-md);
+    }
+    .bento-card, .tier, .cta-opt, .module-card, .pain-card, .profile-card { position: relative; }
+    .bento-card, .module-card, .pain-card, .profile-card, .flow-step {
+      background-image: linear-gradient(180deg, rgba(255,255,255,.028), rgba(255,255,255,0) 130px);
+    }
+    .bento-card:hover, .tier:hover, .cta-opt:hover, .module-card:hover,
+    .pain-card:hover, .profile-card:hover, .flow-step:hover { box-shadow: var(--shadow-lg); }
+
+    .bento-card::after, .module-card::after, .pain-card::after,
+    .cta-opt::after, .profile-card::after {
+      content: ''; position: absolute; inset: 0; border-radius: inherit;
+      pointer-events: none; opacity: 0; transition: opacity .3s;
+      background: radial-gradient(300px circle at var(--mx,50%) var(--my,50%), rgba(226,168,103,.12), transparent 62%);
+    }
+    .bento-card:hover::after, .module-card:hover::after, .pain-card:hover::after,
+    .cta-opt:hover::after, .profile-card:hover::after { opacity: 1; }
+
+    /* 9 ─ Hero banner: ambient glow + gentle lift */
+    .hero-banner { position: relative; }
+    .hero-banner::before {
+      content: ''; position: absolute; inset: -8% -4% 4%; z-index: -1;
+      background: radial-gradient(60% 60% at 50% 38%, rgba(184,112,64,.2), transparent 70%);
+      filter: blur(34px);
+    }
+    .hero-banner img { transition: transform .6s var(--ease-out), box-shadow .6s; }
+    @media (min-width: 861px) {
+      .hero-banner img:hover { transform: translateY(-5px) scale(1.006); box-shadow: 0 54px 120px rgba(0,0,0,.62); }
+    }
+    .hero h1 em { filter: drop-shadow(0 6px 26px rgba(184,112,64,.3)); }
+    .hero-badge { -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); box-shadow: 0 6px 20px rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.08); }
+    .hero-pill { -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); transition: border-color .25s, transform .25s, background .25s; }
+    .hero-pill:hover { border-color: var(--border-hi); transform: translateY(-2px); background: rgba(255,255,255,.06); }
+
+    /* 10 ─ Drifting ambient glows in the hero */
+    @keyframes drift { 0%,100% { transform: translate(0,0); } 50% { transform: translate(34px,-22px); } }
+    .hero-bg::after { animation: drift 16s var(--ease-out) infinite; }
+    .hero-glow-cyan { animation: drift 21s var(--ease-out) infinite reverse; }
+
+    /* 11 ─ Data tables: depth + row hover */
+    .data-table { box-shadow: var(--shadow-md); }
+    .data-table tbody tr { transition: background .2s; }
+    .data-table tbody tr:hover td { background: rgba(255,255,255,.028); }
+    .data-table tbody tr:hover td.hl-col { background: rgba(184,112,64,.09); }
+
+    /* 12 ─ Featured tier: subtle glow ring */
+    .tier.featured { box-shadow: 0 26px 74px rgba(0,0,0,.42), 0 0 0 1px rgba(184,112,64,.28); }
+
+    /* Pro-polish honours reduced-motion (base block already disables animation/transition) */
+    @media (prefers-reduced-motion: reduce) {
+      .bento-card::after, .module-card::after, .pain-card::after,
+      .cta-opt::after, .profile-card::after { display: none; }
+    }
   </style>
 </head>
 <body>
@@ -1617,6 +1759,20 @@ if (form) {
     }
   });
 }
+
+/* ════════ CURSOR SPOTLIGHT ON CARDS (premium polish) ════════ */
+(function () {
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if (window.matchMedia && window.matchMedia('(hover: none)').matches) return;
+  const cards = document.querySelectorAll('.bento-card, .module-card, .pain-card, .cta-opt, .profile-card');
+  cards.forEach(card => {
+    card.addEventListener('pointermove', (e) => {
+      const r = card.getBoundingClientRect();
+      card.style.setProperty('--mx', ((e.clientX - r.left) / r.width * 100) + '%');
+      card.style.setProperty('--my', ((e.clientY - r.top) / r.height * 100) + '%');
+    });
+  });
+})();
 </script>
 </body>
 </html>
