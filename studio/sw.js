@@ -8,14 +8,13 @@
      On tente le réseau, on met le cache à jour, et on ne sert le cache QUE si
      le réseau échoue (mode hors-ligne). Les données restent donc fraîches.
    Pour publier une nouvelle version : changer le numéro de CACHE ci-dessous. */
-var CACHE = "cdb-studio-v1";
+var CACHE = "cdb-studio-v2";
 var SHELL = [
   "./",
   "./index.html",
   "./leads.html",
   "./manifest.webmanifest",
-  "./brand-logo.png",
-  "../config.js"
+  "./brand-logo.png"
 ];
 
 self.addEventListener("install", function (e) {
