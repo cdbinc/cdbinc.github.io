@@ -864,7 +864,7 @@ function pollDep(job){ var n=0,iv=setInterval(function(){ n++; jget("/api/ops/de
 }).catch(function(){ if(n>66)clearInterval(iv); }); },1800); }
 function paintDep(){ var el=$("fbody"); if(!el)return;
   var head="<div class='flexrow' style='margin-bottom:8px'><div style='flex:1'><div style='font-size:24px;font-weight:900'>CDB Factures</div><div class='muted2'>Rapprochement et comptabilité sémantique</div></div>"+
-    (DEP.length?"<button class='hbtn' style='background:var(--navy-line)' onclick='shareDep()'>↗</button><button class='hbtn' style='background:var(--red-soft);color:var(--red)' onclick='resetDep()'>↺</button>":"")+"<button class='hbtn' style='background:var(--navy-line)' onclick='loadDep()'>↻</button></div>";
+    (DEP.length?"<button class='hbtn' style='background:var(--navy-line)' onclick='shareDep()'>↗</button><button class='hbtn' style='background:var(--red-soft);color:var(--red)' onclick='resetDep()'>↺</button>":"")+"<button class='hbtn' style='background:var(--orange);color:#fff' onclick='compilerComptable()' title='Compiler (comptable)'>🧮</button><button class='hbtn' style='background:var(--navy-line)' onclick='downloadExcelComptable()' title='Excel comptable'>⬇</button><button class='hbtn' style='background:var(--navy-line)' onclick='loadDep()'>↻</button></div>";
   if(!DEP.length){ el.innerHTML=head+"<div class='empty'><div class='big'>🧾</div><div class='et'>Aucune dépense numérisée</div><div class='es'>Prenez en photo vos reçus (Home Depot, Rona, essence, repas). L'IA extrait les totaux, taxes, et met à jour votre Excel !</div><button class='btn mt' style='max-width:260px;margin:14px auto 0' onclick='depScan()'>📷 NUMÉRISER UN REÇU</button></div>"; return; }
   var tot=0,tps=0,tvq=0; DEP.forEach(function(e){ tot+=num(e.total); tps+=num(e.tps); tvq+=num(e.tvq); });
   var mtd="<div class='card' style='background:linear-gradient(180deg,var(--navy-dark),var(--navy-deep));border:0'><div class='flexrow'><div style='flex:1;color:rgba(255,255,255,.7);font-size:11px;font-weight:800;letter-spacing:1.5px'>TOTAL DES DÉPENSES</div><span class='schip' style='background:var(--orange);color:#fff'>"+DEP.length+" REÇUS</span></div>"+
@@ -899,6 +899,28 @@ function delDep(id,four,tot){ confirmBox("Supprimer ce reçu ?",four+" — "+mon
   jpost("/api/ops/depenses/supprimer",{id:id}).then(function(d){ toast(d&&d.ok?"Supprimé":"❌ Échec de la suppression",d&&d.ok?"ok":"err"); loadDep(); }); },"SUPPRIMER","red"); }
 function resetDep(){ confirmBox("Réinitialiser les Factures ?","Tous les reçus seront ARCHIVÉS (réversible côté serveur) et la liste repart à zéro. Le classeur Excel est aussi archivé.",function(){
   jpost("/api/ops/depenses/reset",{}).then(function(d){ toast(d&&d.ok?("Factures réinitialisées ✅ ("+(d.archived||0)+" archivé(s))"):"❌ Échec",d&&d.ok?"ok":"err"); loadDep(); }); },"RÉINITIALISER","red"); }
+
+function compilerComptable(){ toast("Compilation comptable…");
+  jpost("/api/ops/depenses/compiler",{}).then(function(d){
+    if(d&&d.ok&&d.success!==false){ var t=d.totals||{};
+      dialog({title:"🧮 Compilation comptable",body:
+        "<div class='muted2' style='margin-bottom:8px'>Prêt pour le comptable — feuilles Sommaire · par mois · trimestre · fournisseur · catégorie · À réviser.</div>"+
+        "<div class='row'><div><div class='muted2'>PIÈCES</div><div style='font-weight:900;font-size:18px'>"+(d.records||0)+"</div></div><div><div class='muted2'>À RÉVISER</div><div style='font-weight:900;font-size:18px;color:var(--red)'>"+(d.anomalies||0)+"</div></div></div>"+
+        "<hr class='sep'><div class='row'><div><div class='muted2'>M.HT</div><div style='font-weight:800'>"+money(t.mht)+"</div></div><div><div class='muted2'>TPS</div><div style='font-weight:800'>"+money(t.tps)+"</div></div></div>"+
+        "<div class='row'><div><div class='muted2'>TVQ</div><div style='font-weight:800'>"+money(t.tvq)+"</div></div><div><div class='muted2'>TTI</div><div style='font-weight:800'>"+money(t.tti)+"</div></div></div>"+
+        "<div class='muted2' style='margin-top:8px'>Période : "+esc(d.period||"—")+" · Réconciliation : "+(d.reconcile_ok?"✅ écart 0,00 $":"⚠️ écart")+"</div>",
+        actions:[{label:"Fermer",cls:"ghost"},{label:"⬇ Excel",cls:"",onClick:downloadExcelComptable}]});
+      toast("Compilation comptable ✅","ok");
+    } else { toast("❌ "+((d&&d.errors&&d.errors.join&&d.errors.join("; "))||(d&&d.error)||"Échec de la compilation"),"err"); }
+  }).catch(function(){ toast("Serveur injoignable","err"); }); }
+
+function downloadExcelComptable(){ var u="/api/ops/depenses-excel";
+  if(window.CDB.isLocal){ window.open(u,"_blank"); return; }
+  window.CDB.resolveBase().then(function(base){ if(!base){ toast("Relais hors ligne","err"); return; }
+    fetch(base+u,{headers:{"X-CDB-Token":window.CDB.API_TOKEN,"ngrok-skip-browser-warning":"1"}})
+      .then(function(r){ return r.ok?r.blob():null; }).then(function(b){ if(!b){ toast("Excel indisponible","err"); return; }
+        var url=URL.createObjectURL(b); var a=document.createElement("a"); a.href=url; a.download="CDB-Comptabilite-Depenses.xlsx"; document.body.appendChild(a); a.click(); a.remove(); setTimeout(function(){ URL.revokeObjectURL(url); },4000); })
+      .catch(function(){ toast("Téléchargement impossible","err"); }); }); }
 function shareDep(){ var tot=0; DEP.forEach(function(e){tot+=num(e.total);});
   var lines=DEP.map(function(e){return "• "+(e.date||"")+" | "+(e.fournisseur||"")+" : "+money(e.total);}).join("\n");
   var txt="CDB Factures - Sommaire des dépenses\n\n"+lines+"\n\nTOTAL : "+money(tot);
