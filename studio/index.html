@@ -34,7 +34,12 @@ window.CDB = window.CDB || {};
     }
     return orig(url, opts);
   }
-  var cachedBase = null;
+  /* Tunnel Cloudflare = URL ephemere : on garde le dernier bon connu (localStorage)
+     et on revalide regulierement pour capter un changement d'URL automatiquement. */
+  var BKEY = "cdb_base", BASE_TTL = 120000;   // revalide le relais apres 120 s
+  var cachedBase = null, baseAt = 0, pending = null;
+  try { cachedBase = localStorage.getItem(BKEY) || null; } catch (e) {}
+  if (cachedBase) window.CDB.base = cachedBase;
   var RELAY_SOURCES = [
     "/dispatch/relay.json",
     "https://raw.githubusercontent.com/cdbinc/cdbinc.github.io/main/dispatch/relay.json",
@@ -51,12 +56,25 @@ window.CDB = window.CDB || {};
       })
       .catch(function () { return tryRelay(i + 1); });
   }
-  function resolveBase() {
-    if (cachedBase) return Promise.resolve(cachedBase);
-    return tryRelay(0).then(function (b) { cachedBase = b; window.CDB.base = b || ""; return b; });
+  function resolveBase(force) {
+    if (cachedBase && !force && (Date.now() - baseAt < BASE_TTL)) return Promise.resolve(cachedBase);
+    if (pending) return pending;
+    pending = tryRelay(0).then(function (b) {
+      pending = null;
+      if (b) {
+        cachedBase = b; baseAt = Date.now(); window.CDB.base = b;
+        try { localStorage.setItem(BKEY, b); } catch (e) {}
+        return b;
+      }
+      return cachedBase || null;   // relais introuvable -> on retente le dernier bon connu
+    });
+    return pending;
   }
   window.CDB.resolveBase = resolveBase;
-  window.CDB.dropBase = function () { cachedBase = null; window.CDB.base = ""; };
+  window.CDB.dropBase = function () { cachedBase = null; baseAt = 0; window.CDB.base = ""; try { localStorage.removeItem(BKEY); } catch (e) {} };
+  window.CDB.staleBase = function () { baseAt = 0; };   // force une re-resolution au prochain appel (garde le dernier bon connu)
+  /* Cloudflare renvoie une page d'erreur 5xx (sans lever d'exception) quand l'origine du tunnel est morte. */
+  function isDead(res) { return !res || res.status === 0 || res.status === 502 || res.status === 503 || res.status === 504 || res.status === 521 || res.status === 522 || res.status === 523 || res.status === 530 || res.status >= 599; }
 
   window.fetch = function (input, init) {
     var url = (typeof input === "string") ? input : (input && input.url) || "";
@@ -67,8 +85,15 @@ window.CDB = window.CDB || {};
         { status: 503, headers: { "Content-Type": "application/json" } });
       init = init || {};
       init.headers = Object.assign({}, init.headers, { "X-CDB-Token": API_TOKEN, "ngrok-skip-browser-warning": "1" });
-      return fetchT(base + url, init, 60000).catch(function () {
-        cachedBase = null; window.CDB.base = "";
+      return fetchT(base + url, init, 60000).then(function (res) {
+        if (isDead(res)) {                      // tunnel mort : invalide la base -> re-resolution au prochain appel
+          window.CDB.staleBase();
+          return new Response(JSON.stringify({ ok: false, offline: true, error: "Relais injoignable (" + res.status + ")." }),
+            { status: 503, headers: { "Content-Type": "application/json" } });
+        }
+        return res;
+      }).catch(function () {
+        window.CDB.staleBase();
         return new Response(JSON.stringify({ ok: false, offline: true, error: "Relais injoignable." }),
           { status: 503, headers: { "Content-Type": "application/json" } });
       });
@@ -470,13 +495,31 @@ function setConn(online,label){ ST.online=online;
 }
 function checkConn(){
   jget("/api/ops/status").then(function(d){
-    if(d&&d.offline){ setConn(false); return; }
+    if(d&&d.offline){ onConn(false); return; }
     ST.services=(d&&d.services)||[]; ST.channels=(d&&d.channels)||ST.channels;
-    setConn(true);
+    onConn(true);
     // user label
     if(userTok()) jget(uq("/api/ops/team/whoami")).then(function(w){ if(w&&w.ok) setConn(true,(w.nom||w.user||"Connecté")); }).catch(function(){});
     if(SYS) renderSysteme();
-  }).catch(function(){ setConn(false); });
+  }).catch(function(){ onConn(false); });
+}
+/* Repeint l'onglet courant sans toucher aux champs de saisie (ex : la note photo). */
+function refreshActive(){
+  try{
+    if(TAB==="photos") loadChantiers();
+    else if(TAB==="voir") loadAppr();
+    else if(TAB==="studio"){ if(STSEG==="video") loadVideos(); else if(STSEG==="photos") loadEdited(); else loadVoix(); }
+    else if(TAB==="soum") loadDocs("soumissions");
+    else if(TAB==="fact") loadDocs("factures");
+    else render();
+  }catch(e){ try{ render(); }catch(_){} }
+}
+var WASON=null;
+function onConn(online){
+  setConn(online);
+  if(online===false && window.CDB.staleBase) window.CDB.staleBase();              // tunnel HS -> forcer une re-resolution
+  if(online===true && WASON===false){ toast("Reconnecté ✓","ok"); refreshActive(); } // serveur revenu -> repeindre vidéos/galerie automatiquement
+  WASON=online;
 }
 function reconnect(){ window.CDB.dropBase && window.CDB.dropBase(); setConn(null); checkConn(); toast("Reconnexion…"); }
 
@@ -1153,7 +1196,11 @@ function sysSante(b){ b.disabled=true; $("sys_m").innerHTML="<div class='statbar
 
 /* ===================== INIT ===================== */
 checkConn(); refreshPending();
-setInterval(checkConn,45000); setInterval(refreshPending,60000);
+/* Surveillance adaptative : reconnexion rapide (15 s) hors ligne, veille (45 s) en ligne. */
+var CONN_T=null;
+function loopConn(){ if(CONN_T) clearTimeout(CONN_T); var d=(ST.online===false)?15000:45000; CONN_T=setTimeout(function(){ checkConn(); loopConn(); }, d); }
+loopConn();
+setInterval(refreshPending,60000);
 show("photos");
 
 /* ===================== PWA / Service Worker ===================== */

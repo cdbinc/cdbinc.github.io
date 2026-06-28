@@ -8,7 +8,7 @@
      On tente le réseau, on met le cache à jour, et on ne sert le cache QUE si
      le réseau échoue (mode hors-ligne). Les données restent donc fraîches.
    Pour publier une nouvelle version : changer le numéro de CACHE ci-dessous. */
-var CACHE = "cdb-studio-v2";
+var CACHE = "cdb-studio-v3";
 var SHELL = [
   "./",
   "./index.html",
