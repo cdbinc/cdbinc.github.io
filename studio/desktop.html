@@ -936,15 +936,15 @@ function editDep(j){ var e=typeof j==="string"?JSON.parse(j):j;
     "<label class='mt'>Description</label><textarea id='ed_desc'>"+esc(e.description||"")+"</textarea>",
     actions:[{label:"Annuler",cls:"ghost"},{label:"ENREGISTRER",cls:"",onClick:function(){
       jpost("/api/ops/depenses/modifier",{id:e.id,total:num($("ed_t").value),fournisseur:$("ed_f").value.trim(),description:$("ed_desc").value.trim(),categorie:($("ed_c").value||"autre").trim().toLowerCase(),date:$("ed_d").value.trim()})
-        .then(function(d){ toast(d&&d.ok?"Reçu corrigé ✅":"❌ Échec de la correction",d&&d.ok?"ok":"err"); loadDep(); }); }}]});
+        .then(function(d){ toast(d&&d.ok?"Reçu corrigé ✅":"❌ Échec de la correction",d&&d.ok?"ok":"err"); loadDep(); }).catch(function(){ toast("❌ Réseau","err"); }); }}]});
 }
 function delDep(id,four,tot){ confirmBox("Supprimer ce reçu ?",four+" — "+money(tot)+". Action définitive.",function(){
-  jpost("/api/ops/depenses/supprimer",{id:id}).then(function(d){ toast(d&&d.ok?"Supprimé":"❌ Échec de la suppression",d&&d.ok?"ok":"err"); loadDep(); }); },"SUPPRIMER","red"); }
+  jpost("/api/ops/depenses/supprimer",{id:id}).then(function(d){ toast(d&&d.ok?"Supprimé":"❌ Échec de la suppression",d&&d.ok?"ok":"err"); loadDep(); }).catch(function(){ toast("❌ Réseau","err"); }); },"SUPPRIMER","red"); }
 function resetDep(){ confirmBox("Réinitialiser les Factures ?","Tous les reçus seront ARCHIVÉS (réversible côté serveur) et la liste repart à zéro. Le classeur Excel est aussi archivé.",function(){
-  jpost("/api/ops/depenses/reset",{}).then(function(d){ toast(d&&d.ok?("Factures réinitialisées ✅ ("+(d.archived||0)+" archivé(s))"):"❌ Échec",d&&d.ok?"ok":"err"); loadDep(); }); },"RÉINITIALISER","red"); }
+  jpost("/api/ops/depenses/reset",{}).then(function(d){ toast(d&&d.ok?("Factures réinitialisées ✅ ("+(d.archived||0)+" archivé(s))"):"❌ Échec",d&&d.ok?"ok":"err"); loadDep(); }).catch(function(){ toast("❌ Réseau","err"); }); },"RÉINITIALISER","red"); }
 
-function compilerComptable(){ toast("Compilation comptable…");
-  jpost("/api/ops/depenses/compiler",{}).then(function(d){
+function compilerComptable(){ if(window._DEPCOMPILING){ toast("Compilation déjà en cours…"); return; } window._DEPCOMPILING=true; toast("Compilation comptable…");
+  jpost("/api/ops/depenses/compiler",{}).then(function(d){ window._DEPCOMPILING=false;
     if(d&&d.ok&&d.success!==false){ var t=d.totals||{};
       dialog({title:"🧮 Compilation comptable",body:
         "<div class='muted2' style='margin-bottom:8px'>Prêt pour le comptable — feuilles Sommaire · par mois · trimestre · fournisseur · catégorie · À réviser.</div>"+
@@ -955,7 +955,7 @@ function compilerComptable(){ toast("Compilation comptable…");
         actions:[{label:"Fermer",cls:"ghost"},{label:"⬇ Excel",cls:"",onClick:downloadExcelComptable}]});
       toast("Compilation comptable ✅","ok");
     } else { toast("❌ "+((d&&d.errors&&d.errors.join&&d.errors.join("; "))||(d&&d.error)||"Échec de la compilation"),"err"); }
-  }).catch(function(){ toast("Serveur injoignable","err"); }); }
+  }).catch(function(){ window._DEPCOMPILING=false; toast("Serveur injoignable","err"); }); }
 
 function downloadExcelComptable(){ var u="/api/ops/depenses-excel";
   if(window.CDB.isLocal){ window.open(u,"_blank"); return; }
