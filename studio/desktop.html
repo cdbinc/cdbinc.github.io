@@ -45,14 +45,20 @@ window.CDB = window.CDB || {};
     "https://raw.githubusercontent.com/cdbinc/cdbinc.github.io/main/dispatch/relay.json",
     "https://cliniquedubatiment.ca/dispatch/relay.json"
   ];
+  function probeRelay(u) { // sonde /health : n'adopte un relais que s'il est vivant (evite relay.json perime)
+    return fetchT(u + "/health?_=" + Date.now(), { cache: "no-store" }, 4000)
+      .then(function (r) { return !!(r && r.ok); })
+      .catch(function () { return false; });
+  }
   function tryRelay(i) {
     if (i >= RELAY_SOURCES.length) return Promise.resolve(null);
     return fetchT(RELAY_SOURCES[i] + (RELAY_SOURCES[i].indexOf("?") < 0 ? "?_=" : "&_=") + Date.now(), { cache: "no-store" }, 6000)
       .then(function (r) { return r.ok ? r.json() : null; })
       .then(function (j) {
         var u = j && (j.url || j.base);
-        if (u) { return String(u).replace(/\/+$/, ""); }
-        return tryRelay(i + 1);
+        if (!u) return tryRelay(i + 1);
+        u = String(u).replace(/\/+$/, "");
+        return probeRelay(u).then(function (ok) { return ok ? u : tryRelay(i + 1); });
       })
       .catch(function () { return tryRelay(i + 1); });
   }
