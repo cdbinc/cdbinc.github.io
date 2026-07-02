@@ -36,3 +36,7 @@ ui-debug.log
 .firebase/
 
 id01t/
+
+# Base de connaissances locale (jamais dans le depot public)
+_kb/
+*.zip

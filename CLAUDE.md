@@ -52,4 +52,30 @@ All production JS is **inline in `index.html`** just before `</body>` (`script.j
 - Scroll reveal (`IntersectionObserver` on `.reveal`)
 - Mobile menu (burger toggle + Escape)
 - Checkbox active state (`.check input`)
-- Success banner after redirect (`?envoye
+- Success banner after redirect (`?envoye=1`)
+- CC injection for the form (assembled in JS so the address isn't in static HTML)
+- Phone number auto-formatting
+- Portfolio: category filters + accessible lightbox (←/→/Échap)
+- Scroll-spy for active nav link
+
+### Form submission
+
+**FormSubmit.co** (not Formspree) posts to `info@cliniquedubatiment.ca`. The action URL is on the `<form id="quoteForm">` in `index.html`. Anti-spam: hidden `_honey` honeypot field. A `_cc` copy to a personal address is injected by inline JS at load time — keep it out of the static HTML. After submit, FormSubmit redirects to `/?envoye=1#contact`, which triggers the inline success banner.
+
+### SEO
+
+JSON-LD: `HomeAndConstructionBusiness` + `FAQPage` in `<head>`. Do NOT add `aggregateRating` unless real, on-page, markup-verifiable reviews exist. `sitemap.xml` and `robots.txt` at root — update `sitemap.xml` `lastmod` when pages change.
+
+## Key files
+
+| File | Purpose |
+|---|---|
+| `index.html` | Entire homepage content + inline styles/scripts |
+| `services/*.html` | 3 service landing pages (après-sinistre, salle de bain, finition) |
+| `mentions-legales.html` | Legal / privacy / terms |
+| `style.css` | Global variables, component classes, responsive layout |
+| `script.js` | Reference stub only — production JS is inline in index.html |
+| `sitemap.xml` / `robots.txt` | SEO |
+| `CNAME` | GitHub Pages custom domain (`cliniquedubatiment.ca`) |
+| `logo.png` | Brand logo (240×240, optimized ~26 KB) used in header, footer, favicon, JSON-LD |
+| `images/` | Portfolio photos (WebP, lazy-loaded, descriptive French alt text) |
