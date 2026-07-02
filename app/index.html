@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CDB Studio - TÃ©lÃ©charger l'App</title>
+    <title>CDB Studio - Télécharger l'App</title>
     <style>
         * {
             margin: 0;
@@ -88,7 +88,7 @@
         }
 
         .feature-item::before {
-            content: "âœ“";
+            content: "✓";
             color: #e8680a;
             font-weight: bold;
             margin-right: 10px;
@@ -198,36 +198,36 @@
                 <text x="40" y="55" font-size="24" font-weight="bold" fill="white" text-anchor="middle" font-family="Arial">CDB</text>
             </svg>
             <h1>CDB Studio</h1>
-            <div class="tagline">Le souci du dÃ©tail</div>
+            <div class="tagline">Le souci du détail</div>
         </div>
 
-        <div class="status-badge">âœ… Version 3.23 - Production Ready</div>
+        <div class="status-badge">✅ Version 3.23 - Production Ready</div>
 
         <div class="description">
-            Gestion complÃ¨te de vos chantiers, soumissions et factures en temps rÃ©el.<br>
-            <strong>âœ“ Fonctionne hors ligne Â· âœ“ Sync automatique Â· âœ“ ZÃ©ro perte de donnÃ©es</strong>
+            Gestion complète de vos chantiers, soumissions et factures en temps réel.<br>
+            <strong>✓ Fonctionne hors ligne · ✓ Sync automatique · ✓ Zéro perte de données</strong>
         </div>
 
         <div class="features">
-            <h3>FonctionnalitÃ©s</h3>
-            <div class="feature-item">Photos & vidÃ©os en haute qualitÃ©</div>
-            <div class="feature-item">Soumissions et devis instantanÃ©s</div>
+            <h3>Fonctionnalités</h3>
+            <div class="feature-item">Photos & vidéos en haute qualité</div>
+            <div class="feature-item">Soumissions et devis instantanés</div>
             <div class="feature-item">Suivi des chantiers en direct</div>
-            <div class="feature-item">Factures automatisÃ©es avec taxes</div>
+            <div class="feature-item">Factures automatisées avec taxes</div>
             <div class="feature-item">Sync offline + fallback automatique</div>
         </div>
 
         <div class="version-info">
             <strong>Version: 3.23 (Build 41)</strong><br>
             Taille: 5.0 MB | Android 7.0+<br>
-            <span style="color: #4caf50; font-weight: 600;">âœ“ Fonctionne mÃªme si le serveur est hors ligne</span>
+            <span style="color: #4caf50; font-weight: 600;">✓ Fonctionne même si le serveur est hors ligne</span>
         </div>
 
         <button class="download-btn" onclick="downloadAPK()">
             <svg fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
             </svg>
-            TÃ©lÃ©charger l'APK
+            Télécharger l'APK
         </button>
 
         <button class="secondary-btn" onclick="openWebVersion()">
@@ -235,9 +235,9 @@
         </button>
 
         <div class="footer">
-            <p>Â© 2026 Clinique du BÃ¢timent CDB Inc.</p>
+            <p>© 2026 Clinique du Bâtiment CDB Inc.</p>
             <p style="margin-top: 10px;">
-                <a href="/" style="color: #e8680a; text-decoration: none;">â† Retour au site</a>
+                <a href="/" style="color: #e8680a; text-decoration: none;">← Retour au site</a>
             </p>
         </div>
     </div>
@@ -258,7 +258,7 @@
             const originalHTML = btn.innerHTML;
 
             btn.disabled = true;
-            btn.innerHTML = '<span>â³ VÃ©rification des sources...</span>';
+            btn.innerHTML = '<span>⏳ Vérification des sources...</span>';
 
             let successfulUrl = null;
             let failedAttempts = 0;
@@ -269,7 +269,7 @@
                     const url = APK_URLS[i];
                     const urlLabel = i === 0 ? 'Site principal' : i === 1 ? 'Fallback' : 'GitHub raw';
 
-                    btn.innerHTML = `<span>â³ Essai ${i + 1}/${APK_URLS.length} (${urlLabel})...</span>`;
+                    btn.innerHTML = `<span>⏳ Essai ${i + 1}/${APK_URLS.length} (${urlLabel})...</span>`;
 
                     try {
                         // Test URL availability with HEAD request
@@ -279,20 +279,20 @@
                         });
 
                         if (headResponse.ok || headResponse.status === 200 || headResponse.type === 'opaque') {
-                            console.log(`âœ… Source found: ${urlLabel} (${url})`);
+                            console.log(`✅ Source found: ${urlLabel} (${url})`);
                             successfulUrl = url;
                             break;
                         }
                     } catch (e) {
                         failedAttempts++;
-                        console.log(`âš ï¸  Essai ${i + 1} Ã©chouÃ© (${urlLabel}): ${e.message}`);
+                        console.log(`⚠️  Essai ${i + 1} échoué (${urlLabel}): ${e.message}`);
                         // Continue to next URL
                     }
                 }
 
                 if (successfulUrl) {
                     // Found a working source, download from it
-                    btn.innerHTML = '<span>ðŸ“¥ DÃ©marrage du tÃ©lÃ©chargement...</span>';
+                    btn.innerHTML = '<span>📥 Démarrage du téléchargement...</span>';
 
                     const link = document.createElement('a');
                     link.href = successfulUrl;
@@ -305,7 +305,7 @@
                         link.click();
                         document.body.removeChild(link);
 
-                        btn.innerHTML = '<span style="color: white; background: rgba(0,0,0,0.2); padding: 4px 8px; border-radius: 4px;">âœ… TÃ©lÃ©chargement dÃ©marrÃ©!</span>';
+                        btn.innerHTML = '<span style="color: white; background: rgba(0,0,0,0.2); padding: 4px 8px; border-radius: 4px;">✅ Téléchargement démarré!</span>';
                         setTimeout(() => {
                             btn.disabled = false;
                             btn.innerHTML = originalHTML;
@@ -313,17 +313,17 @@
                     }, 100);
                 } else {
                     // No source available
-                    const errorMsg = `Impossible de tÃ©lÃ©charger l'APK.\n\n` +
+                    const errorMsg = `Impossible de télécharger l'APK.\n\n` +
                         `${failedAttempts}/${APK_URLS.length} sources inaccessibles.\n\n` +
                         `Possible causes:\n` +
-                        `â€¢ Pas de connexion internet\n` +
-                        `â€¢ Serveur temporairement hors ligne\n` +
-                        `â€¢ Pare-feu bloquant le tÃ©lÃ©chargement\n\n` +
+                        `• Pas de connexion internet\n` +
+                        `• Serveur temporairement hors ligne\n` +
+                        `• Pare-feu bloquant le téléchargement\n\n` +
                         `Solutions:\n` +
-                        `â€¢ VÃ©rifier votre connexion\n` +
-                        `â€¢ Attendre quelques minutes\n` +
-                        `â€¢ DÃ©sactiver votre VPN si actif\n` +
-                        `â€¢ Contacter: info@cliniquedubatiment.ca`;
+                        `• Vérifier votre connexion\n` +
+                        `• Attendre quelques minutes\n` +
+                        `• Désactiver votre VPN si actif\n` +
+                        `• Contacter: info@cliniquedubatiment.ca`;
 
                     alert(errorMsg);
                     btn.disabled = false;
@@ -331,7 +331,7 @@
                 }
             } catch (error) {
                 console.error('Download error:', error);
-                alert(`Erreur: ${error.message}\n\nVeuillez vÃ©rifier votre connexion et rÃ©essayer.`);
+                alert(`Erreur: ${error.message}\n\nVeuillez vérifier votre connexion et réessayer.`);
                 btn.disabled = false;
                 btn.innerHTML = originalHTML;
             }
