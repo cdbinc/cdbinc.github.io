@@ -10,6 +10,11 @@ build/
 # Médias lourds / archives
 *.mp4
 *.zip
+# Exception : vidéos promo du site (servies par GitHub Pages)
+!media/*.mp4
+
+# Cartes sociales sources (matiere premiere, pas pour le site)
+images/pro/
 
 # Fichiers de sauvegarde
 *.bak
