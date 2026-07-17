@@ -64,7 +64,7 @@ function resolveBase(){
 }
 
 function api(path,opts){
-  opts=opts||{};opts.headers=Object.assign({},opts.headers,{"X-CDB-Token":API_TOKEN,"ngrok-skip-browser-warning":"1"});
+  opts=opts||{};opts.headers=Object.assign({},opts.headers,{"X-CDB-Token":API_TOKEN});
   return fetch(BASE+path,opts);
 }
 

@@ -90,7 +90,7 @@ window.CDB = window.CDB || {};
       if (!base) return new Response(JSON.stringify({ ok: false, offline: true, error: "Relais CDB hors ligne." }),
         { status: 503, headers: { "Content-Type": "application/json" } });
       init = init || {};
-      init.headers = Object.assign({}, init.headers, { "X-CDB-Token": API_TOKEN, "ngrok-skip-browser-warning": "1" });
+      init.headers = Object.assign({}, init.headers, { "X-CDB-Token": API_TOKEN });
       return fetchT(base + url, init, 60000).then(function (res) {
         if (isDead(res)) {                      // tunnel mort : invalide la base -> re-resolution au prochain appel
           window.CDB.staleBase();
@@ -107,7 +107,7 @@ window.CDB = window.CDB || {};
   };
 
   /* <img src="/api/..."> ne porte pas d'en-tete : on telecharge en blob (avec jeton). */
-  var HDRS = { "X-CDB-Token": API_TOKEN, "ngrok-skip-browser-warning": "1" };
+  var HDRS = { "X-CDB-Token": API_TOKEN };
   function loadImg(el) {
     var s = el.getAttribute("src") || "";
     if (s.indexOf("/api/") !== 0 || el.getAttribute("data-cdb") === "1") return;
@@ -448,7 +448,7 @@ function approveCard(id,decision,type,title){
   }
   return window.CDB.resolveBase().then(function(base){
     if(!base) return {ok:false,error:"Relais hors ligne"};
-    return fetch(base+"/approve",{method:"POST",headers:{"Content-Type":"application/json","X-CDB-Token":window.CDB.API_TOKEN,"ngrok-skip-browser-warning":"1"},
+    return fetch(base+"/approve",{method:"POST",headers:{"Content-Type":"application/json","X-CDB-Token":window.CDB.API_TOKEN},
       body:JSON.stringify({token:window.CDB.DISPATCH_TOKEN,id:id,decision:decision,type:type||"marketing",title:title||""})})
       .then(function(r){ return r.json().catch(function(){ return {ok:r.ok}; }); }); });
 }
@@ -473,7 +473,7 @@ function playVideo(url,title){
   if(!url){ toast("❌ Lecture indisponible (serveur hors ligne)","err"); return; }
   if(!window.CDB.isLocal && url.indexOf("/api/")===0){
     window.CDB.resolveBase().then(function(base){ if(!base){toast("Relais hors ligne","err");return;}
-      fetch(base+url,{headers:{"X-CDB-Token":window.CDB.API_TOKEN,"ngrok-skip-browser-warning":"1"}})
+      fetch(base+url,{headers:{"X-CDB-Token":window.CDB.API_TOKEN}})
         .then(function(r){return r.ok?r.blob():null;}).then(function(b){ go(b?URL.createObjectURL(b):base+url); })
         .catch(function(){ go(base+url); }); });
   } else go(url);
@@ -966,7 +966,7 @@ function compilerComptable(){ if(window._DEPCOMPILING){ toast("Compilation déj�
 function downloadExcelComptable(){ var u="/api/ops/depenses-excel";
   if(window.CDB.isLocal){ window.open(u,"_blank"); return; }
   window.CDB.resolveBase().then(function(base){ if(!base){ toast("Relais hors ligne","err"); return; }
-    fetch(base+u,{headers:{"X-CDB-Token":window.CDB.API_TOKEN,"ngrok-skip-browser-warning":"1"}})
+    fetch(base+u,{headers:{"X-CDB-Token":window.CDB.API_TOKEN}})
       .then(function(r){ return r.ok?r.blob():null; }).then(function(b){ if(!b){ toast("Excel indisponible","err"); return; }
         var url=URL.createObjectURL(b); var a=document.createElement("a"); a.href=url; a.download="CDB-Comptabilite-Depenses.xlsx"; document.body.appendChild(a); a.click(); a.remove(); setTimeout(function(){ URL.revokeObjectURL(url); },4000); })
       .catch(function(){ toast("Téléchargement impossible","err"); }); }); }

@@ -36,7 +36,7 @@
       if (!base) return new Response(JSON.stringify({ ok: false, offline: true, error: "Relais CDB hors ligne." }),
         { status: 503, headers: { "Content-Type": "application/json" } });
       init = init || {};
-      init.headers = Object.assign({}, init.headers, { "X-CDB-Token": API_TOKEN, "ngrok-skip-browser-warning": "1" });
+      init.headers = Object.assign({}, init.headers, { "X-CDB-Token": API_TOKEN });
       return fetchT(base + url, init, 30000).catch(function () {
         cachedBase = null;
         return new Response(JSON.stringify({ ok: false, offline: true, error: "Relais injoignable." }),
@@ -46,9 +46,9 @@
   };
 
   /* <img src="/api/..."> ET <a href="/api/..."> ne peuvent pas porter d'en-tete.
-     Pour eviter la page d'avertissement ngrok, on TELECHARGE par fetch (avec
-     X-CDB-Token + ngrok-skip-browser-warning) puis on sert un blob: objectURL. */
-  var HDRS = { "X-CDB-Token": API_TOKEN, "ngrok-skip-browser-warning": "1" };
+     On TELECHARGE donc par fetch (avec le jeton X-CDB-Token) puis on sert un
+     blob: objectURL. */
+  var HDRS = { "X-CDB-Token": API_TOKEN };
   function loadImg(el) {
     var s = el.getAttribute("src") || "";
     if (s.indexOf("/api/") !== 0 || el.getAttribute("data-cdb") === "1") return;
